@@ -89,6 +89,8 @@
         }
         
         .glass-card {
+            position: relative;
+            overflow: hidden;
             background: rgba(26, 26, 26, 0.7);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(7, 96, 238, 0.2);
@@ -105,10 +107,22 @@
         }
         
         .glass-card:hover {
-            transform: translateY(-8px);
             border-color: rgba(7, 96, 238, 0.6);
             box-shadow: 0 20px 60px rgba(7, 96, 238, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
+
+        /* Spotlight footer .card (inchangé) */
+        .spotlight {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: inherit;
+        }
+
+
         
         .animated-bg { position: relative; overflow: hidden; }
         
@@ -338,6 +352,148 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
+        .cards-container {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        /* ===== CARD ===== */
+        .card {
+          position: relative;
+          width: 165px;
+          padding: 28px 18px 22px;
+          border-radius: 18px;
+          background: #0a0a0e;
+          border: 1px solid #1e1e28;
+          overflow: hidden;
+          cursor: pointer;
+          transition:
+            border-color 0.4s ease,
+            box-shadow 0.4s ease,
+            transform 0.4s cubic-bezier(.22,.68,0,1.2);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+        }
+
+
+        .card:hover {
+          transform: translateY(-8px) scale(1.03);
+        }
+
+        /* ===== CONTENU ===== */
+        .card-icon {
+          position: relative;
+          z-index: 1;
+          width: 54px;
+          height: 54px;
+          border-radius: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 0.3s ease;
+        }
+
+        .card-icon svg { width: 27px; height: 27px; fill: #fff; }
+        .card:hover .card-icon { transform: scale(1.12) rotate(-4deg); }
+
+        .card-name {
+          position: relative;
+          z-index: 1;
+          font-size: 0.83rem;
+          font-weight: 600;
+          color: #d0d0d0;
+        }
+
+        .card-followers {
+          position: relative;
+          z-index: 1;
+          font-size: 0.67rem;
+          color: #555;
+          transition: color 0.3s;
+        }
+
+        .card:hover .card-followers { color: #999; }
+
+        .card-btn {
+          position: relative;
+          z-index: 1;
+          margin-top: 8px;
+          padding: 6px 20px;
+          border-radius: 50px;
+          border: none;
+          font-family: 'Poppins', sans-serif;
+          font-size: 0.7rem;
+          font-weight: 600;
+          cursor: pointer;
+          color: #fff;
+          background: rgba(255,255,255,0.08);
+          transition: background 0.3s ease, transform 0.2s ease;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+        }
+
+        .card-btn svg { width: 11px; height: 11px; fill: currentColor; }
+        .card:hover .card-btn { background: rgba(255,255,255,0.18); transform: scale(1.05); }
+
+        /* ===== COULEURS PAR RÉSEAU ===== */
+        .card--instagram .card-icon {
+          background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+        .card--instagram:hover {
+          border-color: rgba(225,48,108,0.4);
+          box-shadow: 0 18px 50px rgba(225,48,108,0.15);
+        }
+
+        .card--tiktok .card-icon {
+          background: #010101;
+          border: 1.5px solid #222;
+        }
+        .card--tiktok:hover {
+          border-color: rgba(210,210,210,0.25);
+          box-shadow: 0 18px 50px rgba(210,210,210,0.08);
+        }
+
+        .card--youtube .card-icon { background: #ff0000; }
+        .card--youtube:hover {
+          border-color: rgba(255,0,0,0.4);
+          box-shadow: 0 18px 50px rgba(255,0,0,0.15);
+        }
+
+        .card--twitch .card-icon { background: #9146ff; }
+        .card--twitch:hover {
+          border-color: rgba(145,70,255,0.45);
+          box-shadow: 0 18px 50px rgba(145,70,255,0.18);
+        }
+
+        .card--soundcloud .card-icon { background: #ff5500; }
+        .card--soundcloud:hover {
+          border-color: rgba(255,85,0,0.45);
+          box-shadow: 0 18px 50px rgba(255,85,0,0.18);
+        }
+    
+        /* Variante petite pour le footer */
+        .card-sm {
+          width: 108px !important;
+          padding: 16px 10px 14px !important;
+          gap: 5px !important;
+          border-radius: 14px !important;
+        }
+        .card-sm .card-icon { width: 36px !important; height: 36px !important; border-radius: 10px !important; }
+        .card-sm .card-icon svg { width: 18px !important; height: 18px !important; }
+        .card-sm .card-name { font-size: 0.72rem !important; }
+        .card-sm .card-followers { font-size: 0.58rem !important; }
+        .card-sm .card-btn { padding: 4px 12px !important; font-size: 0.6rem !important; margin-top: 4px !important; }
+
+        @media (max-width: 768px) {
+            #main-nav nav { display: none; }
+            #main-nav .mobile-btn { display: block; }
+        }
+
     </style>
 </head>
 <body class="bg-primary text-secondary font-poppins min-h-screen">
@@ -348,29 +504,27 @@
                 <a href="#" onclick="showSection('home', event); return false;" class="cursor-pointer group">
                     <h1 class="text-3xl font-display font-bold tracking-wider">
                         <span class="text-accent group-hover:text-accent2 transition-colors" style="font-family: 'Arial', sans-serif;">DJ</span> 
-                        <span class="text-secondary group-hover:gradient-text transition-all" style="font-family: 'Arial', sans-serif;">Arthur</span>
+                        <span class="text-secondary group-hover:text-accent transition-colors">Arthur</span>
                     </h1>
                 </a>
-                
-                <div class="hidden md:flex gap-8">
-                    <a onclick="showSection('home', event); return false;" class="nav-link active relative text-gray hover:text-accent transition-all duration-300 cursor-pointer font-medium text-lg">
+                <div class="hidden md:flex items-center gap-8">
+                    <a onclick="showSection('home', event); return false;" class="nav-link active text-secondary hover:text-accent transition-colors font-medium cursor-pointer relative">
                         <i class="fas fa-home mr-2"></i>Accueil
-                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300"></span>
+                        <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
                     </a>
-                    <a onclick="showSection('demo', event); return false;" class="nav-link relative text-gray hover:text-accent transition-all duration-300 cursor-pointer font-medium text-lg">
+                    <a onclick="showSection('demo', event); return false;" class="nav-link text-secondary hover:text-accent transition-colors font-medium cursor-pointer relative">
                         <i class="fas fa-music mr-2"></i>Démo
-                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300"></span>
+                        <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
                     </a>
-                    <a onclick="showSection('karaoke', event); return false;" class="nav-link relative text-gray hover:text-accent transition-all duration-300 cursor-pointer font-medium text-lg">
+                    <a onclick="showSection('karaoke', event); return false;" class="nav-link text-secondary hover:text-accent transition-colors font-medium cursor-pointer relative">
                         <i class="fas fa-microphone mr-2"></i>Karaoké
-                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300"></span>
+                        <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
                     </a>
-                    <a onclick="showSection('booking', event); return false;" class="nav-link relative text-gray hover:text-accent transition-all duration-300 cursor-pointer font-medium text-lg">
+                    <a onclick="showSection('booking', event); return false;" class="nav-link text-secondary hover:text-accent transition-colors font-medium cursor-pointer relative">
                         <i class="fas fa-calendar-alt mr-2"></i>Contact
-                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300"></span>
+                        <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
                     </a>
                 </div>
-                
                 <button id="mobileMenuBtn" class="md:hidden text-accent text-2xl">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -384,7 +538,6 @@
             <button id="closeMobileMenu" class="absolute top-6 right-6 text-accent text-3xl">
                 <i class="fas fa-times"></i>
             </button>
-            
             <a onclick="showSection('home', event); closeMobileMenuFunc(); return false;" class="text-2xl font-heading text-gray hover:text-accent transition-colors">
                 <i class="fas fa-home mr-3"></i>ACCUEIL
             </a>
@@ -398,6 +551,8 @@
                 <i class="fas fa-calendar-alt mr-3"></i>CONTACT
             </a>
         </div>
+    </div>
+    </div>
     </div>
 
     <!-- Main Content -->
@@ -462,75 +617,125 @@
                         Découvrez mes mixes et performances. Chaque set est unique et adapté à l'ambiance de votre événement.
                     </p>
                 </div>
-                
-                <!-- Grid de médias -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                    
-                    <!-- Média 1 - Audio -->
-                    <div class="glass-card rounded-3xl p-6 hover:scale-105 transition-all duration-300 group">
-                        <div class="flex items-center mb-4">
-                            <div class="w-14 h-14 bg-gradient-to-br from-accent to-accent2 rounded-full flex items-center justify-center mr-4 vinyl-spin group-hover:animate-spin-slow">
-                                <i class="fas fa-music text-primary text-xl"></i>
+
+                <!-- Filtres par tags -->
+                <div class="flex flex-wrap justify-center gap-3 mb-10">
+                    <button data-filter="all"      class="demo-filter-btn active-filter px-5 py-2 rounded-full text-sm font-semibold border border-accent/50 text-accent bg-accent/10 transition-all duration-300">Tous</button>
+                    <button data-filter="electro"  class="demo-filter-btn px-5 py-2 rounded-full text-sm font-semibold border border-accent10/40 text-accent10 bg-transparent hover:bg-accent10/10 transition-all duration-300">Electro</button>
+                    <button data-filter="house"    class="demo-filter-btn px-5 py-2 rounded-full text-sm font-semibold border border-accent11/40 text-accent11 bg-transparent hover:bg-accent11/10 transition-all duration-300">House</button>
+                    <button data-filter="ambiance" class="demo-filter-btn px-5 py-2 rounded-full text-sm font-semibold border border-accent16/40 text-accent16 bg-transparent hover:bg-accent16/10 transition-all duration-300">Ambiance</button>
+                    <button data-filter="live"     class="demo-filter-btn px-5 py-2 rounded-full text-sm font-semibold border border-accent15/40 text-accent15 bg-transparent hover:bg-accent15/10 transition-all duration-300">Live</button>
+                    <button data-filter="urbain"   class="demo-filter-btn px-5 py-2 rounded-full text-sm font-semibold border border-accent12/40 text-accent12 bg-transparent hover:bg-accent12/10 transition-all duration-300">Urbain</button>
+                </div>
+
+                <!-- GRILLE 3 COLONNES -->
+                <div id="demoGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto items-start">
+
+                    <!-- ── CELLULE 1 : Carrousel Fête de la Musique – Chartrettes ── -->
+                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="live,ambiance">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 bg-gradient-to-br from-accent2 to-accent3 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-video text-primary"></i>
                             </div>
-                            <div>
-                                <h3 class="text-xl font-heading font-bold text-accent">Mix Dynamique</h3>
-                                <p class="text-gray text-sm">Août 2025 • 15 min</p>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-heading font-bold text-accent2 truncate">Fête de la Musique</h3>
+                                <p class="text-gray text-xs">Juin 2025 · Chartrettes</p>
                             </div>
+                            <span class="px-2 py-1 bg-accent16/20 border border-accent16/40 text-accent16 rounded-full text-xs font-semibold whitespace-nowrap">2 clips</span>
                         </div>
-                        <div class="relative w-full pt-[177.78%] bg-dark/50 rounded-xl p-4 overflow-hidden mb-3 items-center justify-center">
-                            <iframe src="https://archive.org/embed/audio_20260208_1324" class="absolute top-0 left-0 w-full h-full" allowfullscreen></iframe>
-                        </div>
-                        <div class="flex gap-2">
-                            <span class="px-3 py-1 bg-accent10/20 text-accent10 rounded-full text-xs">Electro</span>
-                            <span class="px-3 py-1 bg-accent12/20 text-accent12 rounded-full text-xs">Urbain</span>
-                            <span class="px-3 py-1 bg-accent11/20 text-accent11 rounded-full text-xs">House</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Média 2 - Vidéo -->
-                    <div class="glass-card rounded-3xl p-6 hover:scale-105 transition-all duration-300 group">
-                        <div class="flex items-center mb-4">
-                            <div class="w-14 h-14 bg-gradient-to-br from-accent2 to-accent3 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-video text-primary text-xl"></i>
+                        <div class="relative">
+                            <button id="carouselPrev" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-20 w-8 h-8 rounded-full bg-dark border border-accent2/40 text-accent2 flex items-center justify-center hover:bg-accent2/20 transition-all duration-200 shadow-lg text-xs">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button id="carouselNext" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-20 w-8 h-8 rounded-full bg-dark border border-accent2/40 text-accent2 flex items-center justify-center hover:bg-accent2/20 transition-all duration-200 shadow-lg text-xs">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <div class="overflow-hidden rounded-2xl">
+                                <div id="carouselTrack" class="flex transition-transform duration-500 ease-in-out">
+                                    <div class="carousel-slide min-w-full">
+                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden">
+                                            <iframe 
+                                                src="https://drive.google.com/file/d/1DdfEXZ7PBg2Rh5dXPQEzEMxoTB_8HJS3/preview" 
+                                                width="100%" 
+                                                height="480" 
+                                                allow="autoplay">
+                                            </iframe>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-slide min-w-full">
+                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden">
+                                            <iframe 
+                                                src="https://drive.google.com/file/d/1yJB0l0vP4iAugKB2HTm-TNH1-JqNyDYy/preview" 
+                                                width="100%" 
+                                                height="480" 
+                                                allow="autoplay">
+                                            </iframe>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <h3 class="text-xl font-heading font-bold text-accent2">Fête de la Musique</h3>
-                                <p class="text-gray text-sm">Juin 2025 • Chartrettes</p>
-                            </div>
+                            <div id="carouselDots" class="flex justify-center gap-2 mt-3"></div>
+                            <p class="text-center text-gray text-xs mt-1"><span id="carouselCurrent">1</span> / <span id="carouselTotal">2</span></p>
                         </div>
-                        <div class="relative w-full pt-[177.78%] bg-dark/50 rounded-xl overflow-hidden mb-3 items-center justify-center">
-                            <iframe src="https://archive.org/embed//video_20260208" 
-                                class="absolute top-0 left-0 w-full h-full"
-                                frameborder="0"
-                                allowfullscreen>
-                            </iframe>
-                        </div>
-                        <div class="flex gap-2">
+                        <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-accent15/20 text-accent15 rounded-full text-xs">Live</span>
                             <span class="px-3 py-1 bg-accent16/20 text-accent16 rounded-full text-xs">Ambiance</span>
                         </div>
                     </div>
 
-                    <!-- Média 4 - Vidéo -->
-                    <div class="glass-card rounded-3xl p-6 hover:scale-105 transition-all duration-300 group">
-                        <div class="flex items-center mb-4">
-                            <div class="w-14 h-14 bg-gradient-to-br from-accent to-accent3 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-video text-primary text-xl"></i>
+                    <!-- ── CELLULE 2 : Vidéo Dammarie-les-Lys ── -->
+                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="live,electro">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 bg-gradient-to-br from-accent to-accent3 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-video text-primary"></i>
                             </div>
-                            <div>
-                                <h3 class="text-xl font-heading font-bold text-accent">Fête de la Musiqe</h3>
-                                <p class="text-gray text-sm">Juin 2025 • EPB Dammarie-les-Lys</p>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-heading font-bold text-accent truncate">Fête de la Musique</h3>
+                                <p class="text-gray text-xs">Juin 2025 · EPB Dammarie-les-Lys</p>
                             </div>
                         </div>
-                        <div class="relative w-full pt-[177.78%] bg-dark/50 rounded-xl overflow-hidden mb-3 items-center justify-center">
-                            <iframe src="https://archive.org/embed/video-4_202602" class="absolute top-0 left-0 w-full h-full" allowfullscreen></iframe>
+                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden">
+                            <iframe 
+                                src="https://drive.google.com/file/d/1O8wRL9dO74uqnz-qVPIavO-KZLuuLiqr/preview" 
+                                width="100%" 
+                                height="480" 
+                                allow="autoplay">
+                            </iframe>
                         </div>
-                        <div class="flex gap-2">
-                            <span class="px-3 py-1 bg-accent10/20 text-accent10 rounded-full text-xs">Concert</span>
-                            <span class="px-3 py-1 bg-accent11/20 text-accent11 rounded-full text-xs">Warm-Up</span>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-accent15/20 text-accent15 rounded-full text-xs">Live</span>
+                            <span class="px-3 py-1 bg-accent10/20 text-accent10 rounded-full text-xs">Electro</span>
                         </div>
                     </div>
-                                    
+
+                    <!-- ── CELLULE 3 : Mix Audio ── -->
+                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4 md:col-span-2 xl:col-span-1" data-tags="electro,house,urbain">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 bg-gradient-to-br from-accent to-accent2 rounded-full flex items-center justify-center flex-shrink-0 vinyl-spin">
+                                <i class="fas fa-music text-primary"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-heading font-bold text-accent truncate">Mix Dynamique</h3>
+                                <p class="text-gray text-xs">Août 2025 · 15 min</p>
+                            </div>
+                        </div>
+                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden">
+                            <iframe 
+                                src="https://drive.google.com/file/d/1b7K6LKFXTWl17rLx00tlagHCJPclsTJP/preview" 
+                                width="100%" 
+                                height="480" 
+                                allow="autoplay">
+                            </iframe>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-accent10/20 text-accent10 rounded-full text-xs">Electro</span>
+                            <span class="px-3 py-1 bg-accent12/20 text-accent12 rounded-full text-xs">Urbain</span>
+                            <span class="px-3 py-1 bg-accent11/20 text-accent11 rounded-full text-xs">House</span>
+                        </div>
+                    </div>
+
+                </div>
+
                 <!-- CTA -->
                 <div class="text-center mt-16">
                     <p class="text-gray mb-6 text-lg">Besoin d'entendre plus de démos ?</p>
@@ -632,8 +837,8 @@
                                 <div>
                                     <h4 class="font-bold mb-1">Email</h4>
                                     <p class="text-gray">
-                                        <a href="mailto:contact@djarthur.com" class="text-accent2 hover:text-accent transition-colors">
-                                            dj.art4m@gmx.com
+                                        <a href="/cdn-cgi/l/email-protection#20434f4e5441435460444a4152544855520e434f4d" class="text-accent2 hover:text-accent transition-colors">
+                                            <span class="__cf_email__" data-cfemail="8aeee0a4ebf8febee7caede7f2a4e9e5e7">[email&#160;protected]</span>
                                         </a>
                                     </p>
                                 </div>
@@ -756,53 +961,95 @@
     </main>
 
     <!-- Footer -->
-    <footer class="text-Popins bg-primary border-t border-gray/20 py-8" style="font-family: 'Arial', sans-serif;">
+    <footer class="bg-primary border-t border-gray/20 pt-12 pb-6" style="font-family: 'Poppins', sans-serif;">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
-                    <h3 class="text-2xl font-bold mb-2">
-                        <a href="#">
-                            <span class="text-accent">DJ</span> 
-                            <span class="text-secondary">Arthur</span>
-                        </a>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10 items-start">
+
+                <!-- Col 1 : Logo + genres -->
+                <div class="flex flex-col gap-3">
+                    <h3 class="text-2xl font-bold">
+                        <a href="#"><span class="text-accent">DJ</span> <span class="text-secondary">Arthur</span></a>
                     </h3>
-                    <p class="text-gray">Electro-Dance • House • Urbain • Latino • Funk</p>
-                </div>
-                
-                <div class="mb-6 md:mb-0">
-                    <p class="text-gray mb-4 text-center">Suivez-moi sur les réseaux</p>
-                    <div class="flex justify-center space-x-6">
-                        <a href="https://www.instagram.com/dj.art4m/" target="_blank" class="social-icon">
-                            <i class="fab fa-instagram text-2xl text-gray hover:text-accent transition-colors"></i>
-                        </a>
-                        <a href="https://www.tiktok.com/@dj.art4m" target="_blank" class="social-icon">
-                            <i class="fab fa-tiktok text-2xl text-gray hover:text-accent transition-colors"></i>
-                        </a>
-                        <a href="https://www.youtube.com/@dj.art4m" target="_blank" class="social-icon">
-                            <i class="fab fa-youtube text-2xl text-gray hover:text-accent transition-colors"></i>
-                        </a>
-                        <a href="https://www.twitch.tv/djart4m" target="_blank" class="social-icon">
-                            <i class="fab fa-twitch text-2xl text-gray hover:text-accent transition-colors"></i>
-                        </a>
-                        <a href="https://soundcloud.com/djart4m" target="_blank" class="social-icon">
-                            <i class="fab fa-soundcloud text-2xl text-gray hover:text-accent transition-colors"></i>
-                        </a>
+                    <div class="flex gap-2 flex-wrap mt-1">
+                        <span class="px-2 py-0.5 bg-accent10/20 border border-accent10/40 rounded-full text-accent10 text-xs">ELECTRO</span>
+                        <span class="px-2 py-0.5 bg-accent11/20 border border-accent11/40 rounded-full text-accent11 text-xs">HOUSE</span>
+                        <span class="px-2 py-0.5 bg-accent12/20 border border-accent12/40 rounded-full text-accent12 text-xs">URBAIN</span>
+                        <span class="px-2 py-0.5 bg-accent13/20 border border-accent13/40 rounded-full text-accent13 text-xs">LATINO</span>
+                        <span class="px-2 py-0.5 bg-accent14/20 border border-accent14/40 rounded-full text-accent14 text-xs">80'S → 2000'S</span>
                     </div>
                 </div>
-                
-                <div class="text-center md:text-right">
-                    <p class="text-gray mb-2">© 2026 DJ Arthur. Tous droits réservés.</p>
-                    <p class="text-gray text-sm">
-                        <a href="Mentionslegales.html" class="hover:text-accent transition-colors">Mentions légales</a> • 
-                        <a href="#" class="hover:text-accent transition-colors">Politique de confidentialité</a> • 
-                        <a href="googleb9adf715d80c55bc" class="hover:text-accent transition-colors">Certification</a> 
-                    </p>
+
+                <!-- Col 2 : Réseaux sociaux -->
+                <div class="flex flex-col gap-4">
+                    <p class="text-gray text-sm font-semibold tracking-wider uppercase">Suivez-moi</p>
+                    <div class="cards-container" style="gap:10px; justify-content:flex-start;">
+
+                        <!-- INSTAGRAM -->
+                        <a href="https://www.instagram.com/dj.art4m/" class="card card-sm card--instagram" data-color="225,48,108">
+                          <div class="spotlight"></div>
+                          <div class="card-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                          </div>
+                          <span class="card-name">Instagram</span>
+                        </a>
+
+                        <!-- TIKTOK -->
+                        <a href="https://www.tiktok.com/@dj.art4m" class="card card-sm card--tiktok" data-color="210,210,210">
+                          <div class="spotlight"></div>
+                          <div class="card-icon">
+                            <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.28 8.28 0 004.84 1.56V6.82a4.85 4.85 0 01-1.07-.13z"/></svg>
+                          </div>
+                          <span class="card-name">TikTok</span>
+                        </a>
+
+                        <!-- YOUTUBE -->
+                        <a href="https://www.youtube.com/@dj.art4m" class="card card-sm card--youtube" data-color="255,0,0">
+                          <div class="spotlight"></div>
+                          <div class="card-icon">
+                            <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                          </div>
+                          <span class="card-name">YouTube</span>
+                        </a>
+
+                        <!-- TWITCH -->
+                        <a href="https://www.twitch.tv/djart4m" class="card card-sm card--twitch" data-color="145,70,255">
+                          <div class="spotlight"></div>
+                          <div class="card-icon">
+                            <svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
+                          </div>
+                          <span class="card-name">Twitch</span>
+                        </a>
+
+                        <!-- SOUNDCLOUD -->
+                        <a href="https://soundcloud.com/djart4m" class="card card-sm card--soundcloud" data-color="255,85,0">
+                          <div class="spotlight"></div>
+                          <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M11.56 8.87V17h8.76c1 0 1.68-.69 1.68-1.61 0-.87-.64-1.58-1.52-1.63.08-.3.12-.62.12-.95 0-2.14-1.7-3.87-3.79-3.87-.56 0-1.1.13-1.58.36-.47-1.6-1.94-2.77-3.68-2.77-2.13 0-3.86 1.73-3.86 3.86 0 .19.02.37.04.55.21-.06.43-.09.66-.09 1.4 0 2.54 1 2.54 2.22 0-.01 0-.01 0 0V8.87zm-8.35 5.44c0 .87.71 1.57 1.57 1.57.87 0 1.57-.7 1.57-1.57V12.5c0-.87-.7-1.57-1.57-1.57-.86 0-1.57.7-1.57 1.57v1.81zm-3.21-.9c0 .67.55 1.22 1.22 1.22.67 0 1.22-.55 1.22-1.22v-.96c0-.68-.55-1.22-1.22-1.22-.67 0-1.22.54-1.22 1.22v.96z"/></svg>
+                          </div>
+                          <span class="card-name">SoundCloud</span>
+                        </a>
+
+                    </div>
                 </div>
+
             </div>
+
+            <!-- Barre copyright -->
+            <div class="border-t border-gray/15 pt-5 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-gray">
+                <p>© 2026 DJ Arthur. Tous droits réservés.</p>
+                <p class="flex gap-3 flex-wrap justify-center">
+                    <a href="Mentionslegales.html" class="hover:text-accent transition-colors">Mentions légales</a>
+                    <span class="opacity-30">•</span>
+                    <a href="#" class="hover:text-accent transition-colors">Confidentialité</a>
+                    <span class="opacity-30">•</span>
+                    <a href="googleb9adf715d80c55bc" class="hover:text-accent transition-colors">Certification</a>
+                </p>
+            </div>
+
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Define data at the beginning
         const karaokeSongs = [
             {
@@ -839,7 +1086,6 @@
         const screen = document.getElementById("karaokeScreen");
         const searchInput = document.getElementById("search");
         const karaokeBtn = document.getElementById("karaokeBtn");
-        const countdownEl = document.getElementById("countdown");
         const resetBtn = document.getElementById("resetBtn");
         const contactForm = document.getElementById("contactForm");
 
@@ -1093,17 +1339,14 @@
         // Load songs into select
         function loadSongs(filter = "") {
             select.innerHTML = '<option value="">-- Choisissez une chanson --</option>';
-            
-            karaokeSongs
-                .filter(s => 
-                    (s.titre + " " + s.artiste).toLowerCase().includes(filter.toLowerCase())
-                )
-                .forEach((song, i) => {
+            karaokeSongs.forEach((song, i) => {
+                if ((song.titre + " " + song.artiste).toLowerCase().includes(filter.toLowerCase())) {
                     const option = document.createElement("option");
                     option.value = i;
                     option.textContent = `${song.titre} – ${song.artiste}`;
-                    //select.appendChild(option);
-                });
+                    select.appendChild(option);
+                }
+            });
         }
 
         // Get interval from BPM
@@ -1113,25 +1356,7 @@
             return msPerBeat * beatsPerLine;
         }
 
-        // Start countdown
-        function startCountdown(callback) {
-            let count = 3;
-            countdownEl.classList.remove("hidden");
-            countdownEl.textContent = count;
-
-            const countdownTimer = setInterval(() => {
-                count--;
-                if (count > 0) {
-                    countdownEl.textContent = count;
-                } else {
-                    clearInterval(countdownTimer);
-                    countdownEl.classList.add("hidden");
-                    callback();
-                }
-            }, 1000);
-        }
-
-        // Start karaoke
+        // Start karaoke — no countdown, direct launch
         function startKaraoke(index) {
             clearInterval(timer);
 
@@ -1142,38 +1367,68 @@
                 const song = karaokeSongs[index];
                 lines = song.paroles.trim().split("\n");
 
+                // Add top padding so first line starts centered
+                const spacer = document.createElement("div");
+                spacer.style.height = (screen.clientHeight / 2) + "px";
+                screen.appendChild(spacer);
+
                 lines.forEach(line => {
                     const div = document.createElement("div");
-                    div.className = "karaoke-line mb-4";
-                    div.textContent = line;
+                    div.className = "karaoke-line";
+                    div.textContent = line || "♪";
                     screen.appendChild(div);
                 });
+
+                // Add bottom padding so last line can be centered
+                const spacerBottom = document.createElement("div");
+                spacerBottom.style.height = (screen.clientHeight / 2) + "px";
+                screen.appendChild(spacerBottom);
             }
 
             const song = karaokeSongs[index];
             const interval = getIntervalFromBPM(song.bpm);
 
+            // Highlight first line right away, then tick at each interval
+            nextLine();
             timer = setInterval(nextLine, interval);
         }
 
         // Show next line
         function nextLine() {
-            const allLines = document.querySelectorAll(".karaoke-line");
-            allLines.forEach(l => l.classList.remove("active"));
+            const allLines = screen.querySelectorAll(".karaoke-line");
+
+            allLines.forEach((l, i) => {
+                l.classList.remove("active");
+                // Lines already passed: very dim
+                if (i < currentIndex - 1) {
+                    l.style.opacity = "0.15";
+                    l.style.transform = "scale(0.93)";
+                    l.style.color = "";
+                    l.style.fontWeight = "";
+                    l.style.fontSize = "";
+                } else {
+                    // upcoming lines: slightly visible
+                    l.style.opacity = "0.4";
+                    l.style.transform = "scale(0.97)";
+                    l.style.color = "";
+                    l.style.fontWeight = "";
+                    l.style.fontSize = "";
+                }
+                l.style.transition = "all 0.5s ease";
+            });
 
             if (currentIndex < allLines.length) {
                 const currentLine = allLines[currentIndex];
                 currentLine.classList.add("active");
-                currentLine.classList.add("text-accent");
-                currentLine.classList.add("font-bold");
+                currentLine.style.color = "#3983F9";
+                currentLine.style.fontWeight = "700";
+                currentLine.style.fontSize = "1.25rem";
+                currentLine.style.opacity = "1";
+                currentLine.style.transform = "scale(1.06)";
 
-                // Auto scroll
-                const screenHeight = screen.clientHeight;
-                const lineTop = currentLine.offsetTop;
-                const lineHeight = currentLine.offsetHeight;
-
+                // Scroll so active line is exactly in the center of the screen
                 screen.scrollTo({
-                    top: lineTop - screenHeight / 2 + lineHeight / 2,
+                    top: currentLine.offsetTop - screen.clientHeight / 2 + currentLine.offsetHeight / 2,
                     behavior: "smooth"
                 });
 
@@ -1182,6 +1437,7 @@
                 clearInterval(timer);
                 karaokeBtn.innerHTML = '<i class="fas fa-play mr-2"></i>Play';
                 isPlaying = false;
+                isPaused = false;
             }
         }
 
@@ -1196,17 +1452,15 @@
             // Karaoke button
             karaokeBtn.addEventListener("click", () => {
                 if (select.value === "") {
-                    alert("Choisis une chanson");
+                    alert("Choisis une chanson d'abord !");
                     return;
                 }
 
                 if (!isPlaying) {
-                    startCountdown(() => {
-                        startKaraoke(select.value);
-                        karaokeBtn.innerHTML = '<i class="fas fa-pause mr-2"></i>Pause';
-                        isPlaying = true;
-                        isPaused = false;
-                    });
+                    startKaraoke(parseInt(select.value));
+                    karaokeBtn.innerHTML = '<i class="fas fa-pause mr-2"></i>Pause';
+                    isPlaying = true;
+                    isPaused = false;
                 } else {
                     clearInterval(timer);
                     karaokeBtn.innerHTML = '<i class="fas fa-play mr-2"></i>Play';
@@ -1258,7 +1512,304 @@
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
+        const RADIUS = 300;
+
+        let mouseX = -9999, mouseY = -9999;
+
+        // Suivi global de la souris
+        document.addEventListener('mousemove', e => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          updateSpotlights();
+          updateTilt(e);
+        });
+
+        // ── Spotlight + Tilt sur les .card du footer ──
+        function getFooterCards() {
+          return Array.from(document.querySelectorAll('.card'));
+        }
+
+        function updateSpotlights() {
+          getFooterCards().forEach(card => {
+            const spotlight = card.querySelector('.spotlight');
+            if (!spotlight) return;
+            const color = card.dataset.color;
+            const rect  = card.getBoundingClientRect();
+            const x = mouseX - rect.left;
+            const y = mouseY - rect.top;
+            const dist = Math.hypot(mouseX - (rect.left + rect.width/2), mouseY - (rect.top + rect.height/2));
+            if (dist < RADIUS + Math.max(rect.width, rect.height) / 2) {
+              const intensity = Math.max(0, 1 - dist / (RADIUS * 1.1));
+              const alpha1 = (0.30 * intensity).toFixed(3);
+              const alpha2 = (0.10 * intensity).toFixed(3);
+              spotlight.style.opacity = '1';
+              spotlight.style.background = `radial-gradient(circle ${RADIUS}px at ${x}px ${y}px, rgba(${color},${alpha1}) 0%, rgba(${color},${alpha2}) 35%, transparent 70%)`;
+            } else {
+              spotlight.style.opacity = '0';
+            }
+          });
+        }
+
+        function updateTilt(e) {
+          getFooterCards().forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const inside = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
+            if (inside) {
+              const rotX = (((e.clientY - rect.top)  / rect.height) - 0.5) * -12;
+              const rotY = (((e.clientX - rect.left) / rect.width)  - 0.5) *  12;
+              card.style.transition = 'border-color 0.4s ease, box-shadow 0.4s ease';
+              card.style.transform  = `translateY(-8px) scale(1.03) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+            } else {
+              card.style.transition = 'border-color 0.4s ease, box-shadow 0.4s ease, transform 0.5s cubic-bezier(.22,.68,0,1.2)';
+              card.style.transform  = '';
+            }
+          });
+        }
+
+        document.addEventListener('mouseleave', () => {
+          getFooterCards().forEach(card => {
+            const sp = card.querySelector('.spotlight');
+            if (sp) sp.style.opacity = '0';
+            card.style.transform = '';
+          });
+        });
+
 
     </script>
+
+
+    <script>
+    // ===== FILTRES GRILLE DÉMO =====
+    (function() {
+        var filterBtns = document.querySelectorAll('.demo-filter-btn');
+        var cards = document.querySelectorAll('.demo-card');
+
+        filterBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(function(b){ b.classList.remove('active-filter'); });
+                btn.classList.add('active-filter');
+
+                var filter = btn.getAttribute('data-filter');
+                cards.forEach(function(card) {
+                    if (filter === 'all') {
+                        card.style.display = '';
+                    } else {
+                        var tags = card.getAttribute('data-tags').split(',');
+                        card.style.display = tags.indexOf(filter) >= 0 ? '' : 'none';
+                    }
+                });
+            });
+        });
+    })();
+
+    // ===== CARROUSEL CHARTRETTES =====
+    (function() {
+        var track   = document.getElementById('carouselTrack');
+        var dotsBox = document.getElementById('carouselDots');
+        var prevBtn = document.getElementById('carouselPrev');
+        var nextBtn = document.getElementById('carouselNext');
+        var curEl   = document.getElementById('carouselCurrent');
+        var totalEl = document.getElementById('carouselTotal');
+
+        if (!track) return;
+
+        var slides  = Array.from(track.querySelectorAll('.carousel-slide'));
+        var current = 0;
+
+        function buildDots() {
+            if (!dotsBox) return;
+            dotsBox.innerHTML = '';
+            slides.forEach(function(_, i) {
+                var d = document.createElement('button');
+                d.style.cssText = 'width:' + (i===current?'20px':'8px') + ';height:8px;border-radius:999px;background:' + (i===current?'#ff453d':'rgba(160,160,160,0.4)') + ';border:none;cursor:pointer;transition:all .3s';
+                d.addEventListener('click', function(){ goTo(i); });
+                dotsBox.appendChild(d);
+            });
+        }
+
+        function goTo(idx) {
+            current = ((idx % slides.length) + slides.length) % slides.length;
+            track.style.transform = 'translateX(-' + (current * 100) + '%)';
+            if (curEl) curEl.textContent = current + 1;
+            buildDots();
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', function(){ goTo(current + 1); });
+
+        // Touch swipe
+        var tx = 0;
+        track.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
+        track.addEventListener('touchend',   function(e){ var d = tx - e.changedTouches[0].clientX; if(Math.abs(d)>40) goTo(current + (d>0?1:-1)); }, {passive:true});
+
+        // Init
+        if (totalEl) totalEl.textContent = slides.length;
+        goTo(0);
+    })();
+    </script>
+
+
+    <script>
+        const navElement = document.getElementById("desktopNav");
+
+const activeElement = document.createElement("div");
+activeElement.classList.add("active-element");
+
+const getOffsetLeft = (element) => {
+  const elementRect = element.getBoundingClientRect();
+
+  return (
+    elementRect.left -
+    navElement.getBoundingClientRect().left +
+    (elementRect.width - activeElement.offsetWidth) / 2
+  );
+};
+
+navElement.appendChild(activeElement);
+
+const activeButton = navElement.querySelector("ul li.active button");
+
+document.fonts.ready.then(() => {
+  gsap.set(activeElement, {
+    x: getOffsetLeft(activeButton),
+  });
+  gsap.to(activeElement, {
+    "--active-element-show": "1",
+    duration: 0.2,
+  });
+});
+
+navElement.querySelectorAll("ul li button").forEach((button, index) => {
+  button.addEventListener("click", () => {
+    const active = navElement.querySelector("ul li.active");
+    const oldIndex = [...active.parentElement.children].indexOf(active);
+
+    if (
+      index === oldIndex ||
+      navElement.classList.contains("before") ||
+      navElement.classList.contains("after")
+    ) {
+      return;
+    }
+
+    const x = getOffsetLeft(button);
+    const direction = index > oldIndex ? "after" : "before";
+    const spacing = Math.abs(x - getOffsetLeft(active));
+
+    navElement.classList.add(direction);
+    active.classList.remove("active");
+    button.parentElement.classList.add("active");
+
+    gsap.set(activeElement, {
+      rotateY: direction === "before" ? "180deg" : "0deg",
+    });
+
+    gsap.to(activeElement, {
+      keyframes: [
+        {
+          "--active-element-width": `${
+            spacing > navElement.offsetWidth - 60
+              ? navElement.offsetWidth - 60
+              : spacing
+          }px`,
+          duration: 0.3,
+          ease: "none",
+          onStart: () => {
+            createSVG(activeElement);
+
+            gsap.to(activeElement, {
+              "--active-element-opacity": 1,
+              duration: 0.1,
+            });
+          },
+        },
+        {
+          "--active-element-scale-x": "0",
+          "--active-element-scale-y": ".25",
+          "--active-element-width": "0px",
+          duration: 0.3,
+          onStart: () => {
+            gsap.to(activeElement, {
+              "--active-element-mask-position": "40%",
+              duration: 0.5,
+            });
+            gsap.to(activeElement, {
+              "--active-element-opacity": 0,
+              delay: 0.45,
+              duration: 0.25,
+            });
+          },
+          onComplete: () => {
+            activeElement.innerHTML = "";
+            navElement.classList.remove("before", "after");
+            activeElement.removeAttribute("style");
+            gsap.set(activeElement, {
+              x: getOffsetLeft(button),
+              "--active-element-show": "1",
+            });
+          },
+        },
+      ],
+    });
+
+    gsap.to(activeElement, {
+      x,
+      "--active-element-strike-x": "-50%",
+      duration: 0.6,
+      ease: "none",
+    });
+  });
+});
+
+const createSVG = (element) => {
+  element.innerHTML = `
+    <svg viewBox="0 0 116 5" preserveAspectRatio="none" class="beam">
+      <path d="M0.5 2.5L113 0.534929C114.099 0.515738 115 1.40113 115 2.5C115 3.59887 114.099 4.48426 113 4.46507L0.5 2.5Z" fill="url(#gradient-beam)"/>
+      <defs>
+        <linearGradient id="gradient-beam" x1="2" y1="2.5" x2="115" y2="2.5" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#6AAAFF"/>
+          <stop offset="1" stop-color="white"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="strike">
+      <svg viewBox="0 0 114 12" preserveAspectRatio="none">
+        <g fill="none" stroke="white" stroke-width="0.75" stroke-linecap="round">
+          <path d="M113.5 6.5L109.068 8.9621C109.023 8.98721 108.974 9.00516 108.923 9.01531L106.889 9.42219C106.661 9.46776 106.432 9.35034 106.336 9.1388L104.045 4.0986C104.015 4.03362 104 3.96307 104 3.8917V2.12268C104 1.6898 103.487 1.46145 103.166 1.75103L99.2887 5.24019C99.1188 5.39305 98.867 5.41132 98.6768 5.28457L95.0699 2.87996C94.7881 2.69205 94.4049 2.83291 94.3118 3.15862L92.6148 9.09827C92.5483 9.33084 92.3249 9.48249 92.0843 9.45843L87.7087 9.02087C87.5752 9.00752 87.4419 9.04839 87.3389 9.13428L84.9485 11.1263C84.7128 11.3227 84.3575 11.2625 84.1996 10.9994L81.7602 6.93359C81.617 6.69492 81.3064 6.61913 81.0694 6.76501L75.3165 10.3052C75.1286 10.4209 74.8871 10.3997 74.7223 10.2531L70.6678 6.64917C70.5611 6.55429 70.5 6.41829 70.5 6.27547V1.20711C70.5 1.0745 70.4473 0.947322 70.3536 0.853553L70.2185 0.718508C70.0846 0.584592 69.8865 0.537831 69.7068 0.59772L69.2675 0.744166C68.9149 0.861705 68.8092 1.30924 69.0721 1.57206L69.605 2.10499C69.8157 2.31571 69.7965 2.66281 69.5638 2.84897L67.5 4.5L65.2715 6.28282C65.1083 6.41338 64.8811 6.42866 64.7019 6.32113L60.3621 3.71725C60.153 3.59179 59.8839 3.63546 59.7252 3.8206L57.0401 6.95327C57.0135 6.9843 56.9908 7.01849 56.9725 7.05505L55.2533 10.4934C55.1188 10.7624 54.779 10.8526 54.5287 10.6858L50.7686 8.17907C50.6051 8.07006 50.3929 8.06694 50.2263 8.17109L46.7094 10.3691C46.5774 10.4516 46.4145 10.468 46.2688 10.4133L42.6586 9.05949C42.5558 9.02091 42.4684 8.94951 42.4102 8.85633L40.1248 5.1997C40.0458 5.07323 40.0273 4.91808 40.0745 4.77659L40.6374 3.08777C40.7755 2.67359 40.3536 2.29381 39.9562 2.47447L35.5 4.5L32.2657 5.88613C32.1013 5.95658 31.9118 5.93386 31.7687 5.82656L30.1904 4.64279C30.0699 4.55245 29.9152 4.5212 29.7691 4.55772L26.2009 5.44977C26.0723 5.48193 25.9617 5.56388 25.8934 5.67759L23.1949 10.1752C23.0796 10.3673 22.8507 10.4593 22.6346 10.4003L17.6887 9.05148C17.5674 9.01838 17.463 8.94076 17.3963 8.83409L15.3331 5.53299C15.1627 5.26032 14.7829 5.21707 14.5556 5.44443L12.1464 7.85355C12.0527 7.94732 11.9255 8 11.7929 8H8.15139C8.05268 8 7.95617 7.97078 7.87404 7.91603L3.74143 5.16095C3.59214 5.06142 3.40096 5.04952 3.24047 5.12976L0.5 6.5" />
+          <path d="M113.5 6.5L109.068 8.9621C109.023 8.98721 108.974 9.00516 108.923 9.01531L106.889 9.42219C106.661 9.46776 106.432 9.35034 106.336 9.1388L104.045 4.0986C104.015 4.03362 104 3.96307 104 3.8917V2.12268C104 1.6898 103.487 1.46145 103.166 1.75103L99.2887 5.24019C99.1188 5.39305 98.867 5.41132 98.6768 5.28457L95.0699 2.87996C94.7881 2.69205 94.4049 2.83291 94.3118 3.15862L92.6148 9.09827C92.5483 9.33084 92.3249 9.48249 92.0843 9.45843L87.7087 9.02087C87.5752 9.00752 87.4419 9.04839 87.3389 9.13428L84.9485 11.1263C84.7128 11.3227 84.3575 11.2625 84.1996 10.9994L81.7602 6.93359C81.617 6.69492 81.3064 6.61913 81.0694 6.76501L75.3165 10.3052C75.1286 10.4209 74.8871 10.3997 74.7223 10.2531L70.6678 6.64917C70.5611 6.55429 70.5 6.41829 70.5 6.27547V1.20711C70.5 1.0745 70.4473 0.947322 70.3536 0.853553L70.2185 0.718508C70.0846 0.584592 69.8865 0.537831 69.7068 0.59772L69.2675 0.744166C68.9149 0.861705 68.8092 1.30924 69.0721 1.57206L69.605 2.10499C69.8157 2.31571 69.7965 2.66281 69.5638 2.84897L67.5 4.5L65.2715 6.28282C65.1083 6.41338 64.8811 6.42866 64.7019 6.32113L60.3621 3.71725C60.153 3.59179 59.8839 3.63546 59.7252 3.8206L57.0401 6.95327C57.0135 6.9843 56.9908 7.01849 56.9725 7.05505L55.2533 10.4934C55.1188 10.7624 54.779 10.8526 54.5287 10.6858L50.7686 8.17907C50.6051 8.07006 50.3929 8.06694 50.2263 8.17109L46.7094 10.3691C46.5774 10.4516 46.4145 10.468 46.2688 10.4133L42.6586 9.05949C42.5558 9.02091 42.4684 8.94951 42.4102 8.85633L40.1248 5.1997C40.0458 5.07323 40.0273 4.91808 40.0745 4.77659L40.6374 3.08777C40.7755 2.67359 40.3536 2.29381 39.9562 2.47447L35.5 4.5L32.2657 5.88613C32.1013 5.95658 31.9118 5.93386 31.7687 5.82656L30.1904 4.64279C30.0699 4.55245 29.9152 4.5212 29.7691 4.55772L26.2009 5.44977C26.0723 5.48193 25.9617 5.56388 25.8934 5.67759L23.1949 10.1752C23.0796 10.3673 22.8507 10.4593 22.6346 10.4003L17.6887 9.05148C17.5674 9.01838 17.463 8.94076 17.3963 8.83409L15.3331 5.53299C15.1627 5.26032 14.7829 5.21707 14.5556 5.44443L12.1464 7.85355C12.0527 7.94732 11.9255 8 11.7929 8H8.15139C8.05268 8 7.95617 7.97078 7.87404 7.91603L3.74143 5.16095C3.59214 5.06142 3.40096 5.04952 3.24047 5.12976L0.5 6.5" />
+          <path d="M113.5 6.5L109.068 8.9621C109.023 8.98721 108.974 9.00516 108.923 9.01531L106.889 9.42219C106.661 9.46776 106.432 9.35034 106.336 9.1388L104.045 4.0986C104.015 4.03362 104 3.96307 104 3.8917V2.12268C104 1.6898 103.487 1.46145 103.166 1.75103L99.2887 5.24019C99.1188 5.39305 98.867 5.41132 98.6768 5.28457L95.0699 2.87996C94.7881 2.69205 94.4049 2.83291 94.3118 3.15862L92.6148 9.09827C92.5483 9.33084 92.3249 9.48249 92.0843 9.45843L87.7087 9.02087C87.5752 9.00752 87.4419 9.04839 87.3389 9.13428L84.9485 11.1263C84.7128 11.3227 84.3575 11.2625 84.1996 10.9994L81.7602 6.93359C81.617 6.69492 81.3064 6.61913 81.0694 6.76501L75.3165 10.3052C75.1286 10.4209 74.8871 10.3997 74.7223 10.2531L70.6678 6.64917C70.5611 6.55429 70.5 6.41829 70.5 6.27547V1.20711C70.5 1.0745 70.4473 0.947322 70.3536 0.853553L70.2185 0.718508C70.0846 0.584592 69.8865 0.537831 69.7068 0.59772L69.2675 0.744166C68.9149 0.861705 68.8092 1.30924 69.0721 1.57206L69.605 2.10499C69.8157 2.31571 69.7965 2.66281 69.5638 2.84897L67.5 4.5L65.2715 6.28282C65.1083 6.41338 64.8811 6.42866 64.7019 6.32113L60.3621 3.71725C60.153 3.59179 59.8839 3.63546 59.7252 3.8206L57.0401 6.95327C57.0135 6.9843 56.9908 7.01849 56.9725 7.05505L55.2533 10.4934C55.1188 10.7624 54.779 10.8526 54.5287 10.6858L50.7686 8.17907C50.6051 8.07006 50.3929 8.06694 50.2263 8.17109L46.7094 10.3691C46.5774 10.4516 46.4145 10.468 46.2688 10.4133L42.6586 9.05949C42.5558 9.02091 42.4684 8.94951 42.4102 8.85633L40.1248 5.1997C40.0458 5.07323 40.0273 4.91808 40.0745 4.77659L40.6374 3.08777C40.7755 2.67359 40.3536 2.29381 39.9562 2.47447L35.5 4.5L32.2657 5.88613C32.1013 5.95658 31.9118 5.93386 31.7687 5.82656L30.1904 4.64279C30.0699 4.55245 29.9152 4.5212 29.7691 4.55772L26.2009 5.44977C26.0723 5.48193 25.9617 5.56388 25.8934 5.67759L23.1949 10.1752C23.0796 10.3673 22.8507 10.4593 22.6346 10.4003L17.6887 9.05148C17.5674 9.01838 17.463 8.94076 17.3963 8.83409L15.3331 5.53299C15.1627 5.26032 14.7829 5.21707 14.5556 5.44443L12.1464 7.85355C12.0527 7.94732 11.9255 8 11.7929 8H8.15139C8.05268 8 7.95617 7.97078 7.87404 7.91603L3.74143 5.16095C3.59214 5.06142 3.40096 5.04952 3.24047 5.12976L0.5 6.5" />
+        </g>
+      </svg>
+      <svg viewBox="0 0 114 12" preserveAspectRatio="none">
+        <g fill="none" stroke="white" stroke-width="0.75" stroke-linecap="round">
+          <path d="M113.5 6.5L109.068 8.9621C109.023 8.98721 108.974 9.00516 108.923 9.01531L106.889 9.42219C106.661 9.46776 106.432 9.35034 106.336 9.1388L104.045 4.0986C104.015 4.03362 104 3.96307 104 3.8917V2.12268C104 1.6898 103.487 1.46145 103.166 1.75103L99.2887 5.24019C99.1188 5.39305 98.867 5.41132 98.6768 5.28457L95.0699 2.87996C94.7881 2.69205 94.4049 2.83291 94.3118 3.15862L92.6148 9.09827C92.5483 9.33084 92.3249 9.48249 92.0843 9.45843L87.7087 9.02087C87.5752 9.00752 87.4419 9.04839 87.3389 9.13428L84.9485 11.1263C84.7128 11.3227 84.3575 11.2625 84.1996 10.9994L81.7602 6.93359C81.617 6.69492 81.3064 6.61913 81.0694 6.76501L75.3165 10.3052C75.1286 10.4209 74.8871 10.3997 74.7223 10.2531L70.6678 6.64917C70.5611 6.55429 70.5 6.41829 70.5 6.27547V1.20711C70.5 1.0745 70.4473 0.947322 70.3536 0.853553L70.2185 0.718508C70.0846 0.584592 69.8865 0.537831 69.7068 0.59772L69.2675 0.744166C68.9149 0.861705 68.8092 1.30924 69.0721 1.57206L69.605 2.10499C69.8157 2.31571 69.7965 2.66281 69.5638 2.84897L67.5 4.5L65.2715 6.28282C65.1083 6.41338 64.8811 6.42866 64.7019 6.32113L60.3621 3.71725C60.153 3.59179 59.8839 3.63546 59.7252 3.8206L57.0401 6.95327C57.0135 6.9843 56.9908 7.01849 56.9725 7.05505L55.2533 10.4934C55.1188 10.7624 54.779 10.8526 54.5287 10.6858L50.7686 8.17907C50.6051 8.07006 50.3929 8.06694 50.2263 8.17109L46.7094 10.3691C46.5774 10.4516 46.4145 10.468 46.2688 10.4133L42.6586 9.05949C42.5558 9.02091 42.4684 8.94951 42.4102 8.85633L40.1248 5.1997C40.0458 5.07323 40.0273 4.91808 40.0745 4.77659L40.6374 3.08777C40.7755 2.67359 40.3536 2.29381 39.9562 2.47447L35.5 4.5L32.2657 5.88613C32.1013 5.95658 31.9118 5.93386 31.7687 5.82656L30.1904 4.64279C30.0699 4.55245 29.9152 4.5212 29.7691 4.55772L26.2009 5.44977C26.0723 5.48193 25.9617 5.56388 25.8934 5.67759L23.1949 10.1752C23.0796 10.3673 22.8507 10.4593 22.6346 10.4003L17.6887 9.05148C17.5674 9.01838 17.463 8.94076 17.3963 8.83409L15.3331 5.53299C15.1627 5.26032 14.7829 5.21707 14.5556 5.44443L12.1464 7.85355C12.0527 7.94732 11.9255 8 11.7929 8H8.15139C8.05268 8 7.95617 7.97078 7.87404 7.91603L3.74143 5.16095C3.59214 5.06142 3.40096 5.04952 3.24047 5.12976L0.5 6.5" />
+          <path d="M113.5 6.5L109.068 8.9621C109.023 8.98721 108.974 9.00516 108.923 9.01531L106.889 9.42219C106.661 9.46776 106.432 9.35034 106.336 9.1388L104.045 4.0986C104.015 4.03362 104 3.96307 104 3.8917V2.12268C104 1.6898 103.487 1.46145 103.166 1.75103L99.2887 5.24019C99.1188 5.39305 98.867 5.41132 98.6768 5.28457L95.0699 2.87996C94.7881 2.69205 94.4049 2.83291 94.3118 3.15862L92.6148 9.09827C92.5483 9.33084 92.3249 9.48249 92.0843 9.45843L87.7087 9.02087C87.5752 9.00752 87.4419 9.04839 87.3389 9.13428L84.9485 11.1263C84.7128 11.3227 84.3575 11.2625 84.1996 10.9994L81.7602 6.93359C81.617 6.69492 81.3064 6.61913 81.0694 6.76501L75.3165 10.3052C75.1286 10.4209 74.8871 10.3997 74.7223 10.2531L70.6678 6.64917C70.5611 6.55429 70.5 6.41829 70.5 6.27547V1.20711C70.5 1.0745 70.4473 0.947322 70.3536 0.853553L70.2185 0.718508C70.0846 0.584592 69.8865 0.537831 69.7068 0.59772L69.2675 0.744166C68.9149 0.861705 68.8092 1.30924 69.0721 1.57206L69.605 2.10499C69.8157 2.31571 69.7965 2.66281 69.5638 2.84897L67.5 4.5L65.2715 6.28282C65.1083 6.41338 64.8811 6.42866 64.7019 6.32113L60.3621 3.71725C60.153 3.59179 59.8839 3.63546 59.7252 3.8206L57.0401 6.95327C57.0135 6.9843 56.9908 7.01849 56.9725 7.05505L55.2533 10.4934C55.1188 10.7624 54.779 10.8526 54.5287 10.6858L50.7686 8.17907C50.6051 8.07006 50.3929 8.06694 50.2263 8.17109L46.7094 10.3691C46.5774 10.4516 46.4145 10.468 46.2688 10.4133L42.6586 9.05949C42.5558 9.02091 42.4684 8.94951 42.4102 8.85633L40.1248 5.1997C40.0458 5.07323 40.0273 4.91808 40.0745 4.77659L40.6374 3.08777C40.7755 2.67359 40.3536 2.29381 39.9562 2.47447L35.5 4.5L32.2657 5.88613C32.1013 5.95658 31.9118 5.93386 31.7687 5.82656L30.1904 4.64279C30.0699 4.55245 29.9152 4.5212 29.7691 4.55772L26.2009 5.44977C26.0723 5.48193 25.9617 5.56388 25.8934 5.67759L23.1949 10.1752C23.0796 10.3673 22.8507 10.4593 22.6346 10.4003L17.6887 9.05148C17.5674 9.01838 17.463 8.94076 17.3963 8.83409L15.3331 5.53299C15.1627 5.26032 14.7829 5.21707 14.5556 5.44443L12.1464 7.85355C12.0527 7.94732 11.9255 8 11.7929 8H8.15139C8.05268 8 7.95617 7.97078 7.87404 7.91603L3.74143 5.16095C3.59214 5.06142 3.40096 5.04952 3.24047 5.12976L0.5 6.5" />
+          <path d="M113.5 6.5L109.068 8.9621C109.023 8.98721 108.974 9.00516 108.923 9.01531L106.889 9.42219C106.661 9.46776 106.432 9.35034 106.336 9.1388L104.045 4.0986C104.015 4.03362 104 3.96307 104 3.8917V2.12268C104 1.6898 103.487 1.46145 103.166 1.75103L99.2887 5.24019C99.1188 5.39305 98.867 5.41132 98.6768 5.28457L95.0699 2.87996C94.7881 2.69205 94.4049 2.83291 94.3118 3.15862L92.6148 9.09827C92.5483 9.33084 92.3249 9.48249 92.0843 9.45843L87.7087 9.02087C87.5752 9.00752 87.4419 9.04839 87.3389 9.13428L84.9485 11.1263C84.7128 11.3227 84.3575 11.2625 84.1996 10.9994L81.7602 6.93359C81.617 6.69492 81.3064 6.61913 81.0694 6.76501L75.3165 10.3052C75.1286 10.4209 74.8871 10.3997 74.7223 10.2531L70.6678 6.64917C70.5611 6.55429 70.5 6.41829 70.5 6.27547V1.20711C70.5 1.0745 70.4473 0.947322 70.3536 0.853553L70.2185 0.718508C70.0846 0.584592 69.8865 0.537831 69.7068 0.59772L69.2675 0.744166C68.9149 0.861705 68.8092 1.30924 69.0721 1.57206L69.605 2.10499C69.8157 2.31571 69.7965 2.66281 69.5638 2.84897L67.5 4.5L65.2715 6.28282C65.1083 6.41338 64.8811 6.42866 64.7019 6.32113L60.3621 3.71725C60.153 3.59179 59.8839 3.63546 59.7252 3.8206L57.0401 6.95327C57.0135 6.9843 56.9908 7.01849 56.9725 7.05505L55.2533 10.4934C55.1188 10.7624 54.779 10.8526 54.5287 10.6858L50.7686 8.17907C50.6051 8.07006 50.3929 8.06694 50.2263 8.17109L46.7094 10.3691C46.5774 10.4516 46.4145 10.468 46.2688 10.4133L42.6586 9.05949C42.5558 9.02091 42.4684 8.94951 42.4102 8.85633L40.1248 5.1997C40.0458 5.07323 40.0273 4.91808 40.0745 4.77659L40.6374 3.08777C40.7755 2.67359 40.3536 2.29381 39.9562 2.47447L35.5 4.5L32.2657 5.88613C32.1013 5.95658 31.9118 5.93386 31.7687 5.82656L30.1904 4.64279C30.0699 4.55245 29.9152 4.5212 29.7691 4.55772L26.2009 5.44977C26.0723 5.48193 25.9617 5.56388 25.8934 5.67759L23.1949 10.1752C23.0796 10.3673 22.8507 10.4593 22.6346 10.4003L17.6887 9.05148C17.5674 9.01838 17.463 8.94076 17.3963 8.83409L15.3331 5.53299C15.1627 5.26032 14.7829 5.21707 14.5556 5.44443L12.1464 7.85355C12.0527 7.94732 11.9255 8 11.7929 8H8.15139C8.05268 8 7.95617 7.97078 7.87404 7.91603L3.74143 5.16095C3.59214 5.06142 3.40096 5.04952 3.24047 5.12976L0.5 6.5" />
+        </g>
+      </svg>
+    </div>
+  `;
+};
+
+// Sync active li when section changes via showSection
+const _origShowSection = window.showSection;
+window.showSection = function(id, event) {
+    _origShowSection && _origShowSection(id, event);
+    // Update active li
+    const lis = navElement.querySelectorAll('ul li');
+    lis.forEach(li => li.classList.remove('active'));
+    const target = navElement.querySelector('ul li[data-section="' + id + '"]');
+    if (target) {
+        target.classList.add('active');
+        const btn = target.querySelector('button');
+        if (btn) {
+            const x = getOffsetLeft(btn);
+            gsap.to(activeElement, { x, duration: 0.3, ease: 'power2.out' });
+        }
+    }
+};
+
+    </script>
+
 </body>
 </html>
