@@ -794,7 +794,7 @@
                 </p>
                 
                 <div class="max-w-4xl mx-auto">
-                    <div class="glass-effect rounded-2xl p-6 mb-8">
+                    <div class="rounded-2xl p-6 mb-8">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             <div>
                                 <label class="block text-gray mb-2">
@@ -821,7 +821,7 @@
                             </div>
                         </div>
                         
-                        <div class="flex flex-wrap gap-4 justify-center mb-8">
+                        <div class="flex flex-wrap gap-4 justify-center mb-6">
                             <button id="karaokeBtn" class="btn-gradient px-6 py-3 rounded-full font-semibold">
                                 <i class="fas fa-play mr-2"></i>Play
                             </button>
@@ -829,11 +829,41 @@
                                 <i class="fas fa-redo mr-2"></i>Réinitialiser
                             </button>
                         </div>
-                        
-                        <div id="countdown" class="hidden absolute inset-0 flex items-center justify-center text-8xl font-bold text-accent z-20 bg-primary/90 rounded-2xl">
-                            3
+
+                        <!-- Lecteur audio -->
+                        <div class="bg-primary/60 border border-accent/20 rounded-xl px-5 py-4 mb-6">
+                            <div class="flex items-center gap-4 flex-wrap">
+                                <i class="fas fa-music text-accent text-lg flex-shrink-0"></i>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-gray text-xs mb-1">Musique de fond — remplace le fichier MP3 dans le dossier <code class="text-accent">audio/</code></p>
+                                    <audio id="bgAudio" controls class="w-full h-9" style="accent-color:#3983F9;">
+                                        <source src="" type="audio/mpeg">
+                                    </audio>
+                                </div>
+                                <div class="flex items-center gap-2 flex-shrink-0">
+                                    <i class="fas fa-volume-up text-gray text-sm"></i>
+                                    <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.8"
+                                        class="w-20 accent-accent cursor-pointer"
+                                        style="accent-color:#3983F9;">
+                                </div>
+                            </div>
                         </div>
                         
+                        <div id="nowPlaying" class="hidden mb-3 text-center">
+                            <span class="text-gray text-sm">▶ En cours : </span>
+                            <span id="nowPlayingTitle" class="text-accent font-bold"></span>
+                            <span class="text-gray text-sm"> – </span>
+                            <span id="nowPlayingArtist" class="text-secondary text-sm"></span>
+                        </div>
+                        <div id="progressContainer" class="hidden mb-3">
+                            <div class="w-full bg-gray/20 rounded-full h-1.5">
+                                <div id="progressBar" class="bg-accent h-1.5 rounded-full transition-all duration-500" style="width:0%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray mt-1">
+                                <span id="progressCurrent">Ligne 0</span>
+                                <span id="progressTotal">0 lignes</span>
+                            </div>
+                        </div>
                         <div id="karaokeScreen" class="bg-primary/50 border border-accent/20 rounded-xl p-6 h-96 overflow-y-auto text-center text-xl leading-relaxed">
                             <p class="text-gray">Sélectionnez une chanson pour commencer le karaoké</p>
                         </div>
@@ -853,7 +883,7 @@
                 </p>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-                    <div class="glass-effect rounded-2xl p-8">
+                    <div class="glass-card rounded-2xl p-8">
                         <h3 class="text-2xl font-bold mb-6">Informations de contact</h3>
                         
                         <div class="space-y-6">
@@ -906,20 +936,6 @@
                                     </p>
                                 </div>
                             </div>
-                            
-                            <div class="flex items-start">
-                                <div class="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mr-4">
-                                    <i class="fas fa-phone text-accent"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold mb-1">Téléphone</h4>
-                                    <p class="text-gray">
-                                        <a href="tel:+33123456789" class="text-accent2 hover:text-accent transition-colors">
-                                            +33 07 49 10 67 10
-                                        </a>
-                                    </p>
-                                </div>
-                            </div>
                         </div>
                         
                         <div class="mt-10 pt-6 border-t border-gray/20">
@@ -932,7 +948,7 @@
                         </div>
                     </div>
                     
-                    <div class="glass-effect rounded-2xl p-8">
+                    <div class="glass-card rounded-2xl p-8">
                         <h3 class="text-2xl font-bold mb-6">Formulaire de contact</h3>
                         
                         <form id="contactForm" class="space-y-6">
@@ -1094,6 +1110,7 @@
                 "artiste": "GIMS",
                 "bpm": 96,
                 "offset": 0,
+                "audio": "audio/sapes-comme-jamais.mp3",
                 "paroles": "Sapés comme jamais\nSapés comme jamais\nOn va briller ce soir\nToute la night"
             },
             {
@@ -1101,6 +1118,7 @@
                 "artiste": "GIMS",
                 "bpm": 123,
                 "offset": 1,
+                "audio": "parisienne.mp3",
                 "paroles": "L.A M.A.N.O, rien à tter-gra, bande de haineux\n(Maximum Beats)\nAh-ah, t'inquiète (t'inquiète)\nOuais, t'inquiète (mmh-mmh, mmh)\nT'es la plus belle, ouais (la plus belle)\nLa plus belle de mon tél', uh-uh\nArtificielle (artificielle)\nMais qui tire les ficelles? (Ficelles)\nJ'suis comme en laisse\nJe sens que\nParfois, comme l'oseille, tu t'en vas\nCe soir là, tu m'as laissée sans voix\nMoi, j'veux une parisienne (parisienne) parisienne qui traverse au feu vert, qui s'en fout d'la Tour Eiffel\nUne parisienne (parisienne) parisienne qui traverse au feu vert, qui s'en fout d'la Tour Eiffel\nC'est la, c'est la Warano, R.A.T touch\nTu fais pas partie d'la chora'\nElle aime les mecs en ce-pla (gang, gang)\nAvec de l'aura, tu l'auras (gang, gang)\nChamps-Élysées, balade vers les Champs-Élysées (baw)\nBébé, les porcs m'ont localisé (baw)\nPrends le volant, j'suis alcoolisé (baw)\nElle active les lumières tami'\nElle a-, elle active les lumières tamisées\nA-avec moi quand c'était la misère (gang, gang)\nElle veut du sérieux, pas s'amuser (baw)\nMa parisienne, elle veut et moi aussi\nElle est tombée du ciel\nElle est canon comme pas possible\nMoi, j'veux une parisienne (parisienne) parisienne\nQui traverse au feu vert, qui s'en fout d'la Tour Eiffel\nUne parisienne (parisienne) parisienne\nQui traverse au feu vert, qui s'en fout d'la Tour Eiffel\nAvenue Montaigne (Avenue Montaigne)\nRien d'personnel mais\nTrop d'professionnels\nÇa m'lâche pas d'une semelle\nÇa va couper, j'ai l'excuse du tunnel (du tunnel)\nNumero uno, encore cette semaine\nEt parfois, comme l'oseille, tu t'en vas (oh)\nCe soir là, tu m'as laissé sans voix (oh)\nMoi, j'veux une parisienne (parisienne) parisienne\nQui traverse au feu vert, qui s'en fout d'la Tour Eiffel\nUne parisienne (parisienne) parisienne\nQui traverse au feu vert, qui s'en fout d'la Tour Eiffel"
             },
             {
@@ -1108,13 +1126,57 @@
                 "artiste": "CELINE DION",
                 "bpm": 80,
                 "offset": 1,
+                "audio": "audio/pour-que-tu-maimes-encore.mp3",
                 "paroles": "J´ai compris tous les mots, j´ai bien compris, merci\nRaisonnable et nouveau, c´est ainsi par ici\nQue les choses ont changé, que les fleurs ont fané\nQue le temps d´avant, c´était le temps d´avant\nQue si tout zappe et lasse, les amours aussi passent\n\nIl faut que tu saches\n\nJ´irai chercher ton cœur si tu l´emportes ailleurs\nMême si dans tes danses d´autres dansent tes heures\nJ´irai chercher ton âme dans les froids dans les flammes\nJe te jetterai des sorts pour que tu m´aimes encore\nPour que tu m'aimes encore\n\nFallait pas commencer\n\nM´attirer me toucher\nFallait pas tant donné\nMoi je sais pas jouer\nOn me dit qu´aujourd´hui\nOn me dit que les autres font ainsi\nJe ne suis pas les autres\nAvant que l´on s´attache\nAvant que l´on se gâche\n\nJe veux que tu saches\n\nJ´irai chercher ton cœur si tu l´emportes ailleurs\nMême si dans tes danses d´autres dansent tes heures\nJ´irai chercher ton âme dans les froids dans les flammes\nJe te jetterai des sorts pour que tu m´aimes encore\n\nJe trouverai des langages pour chanter tes louanges\nJe ferai nos bagages pour d´infinies vendanges\nLes formules magiques des marabouts d´Afrique\nJ´les dirai sans remords pour que tu m´aimes encore\n\nJe m´inventerai reine pour que tu me retiennes\nJe me ferai nouvelle pour que le feu reprenne\nJe deviendrai ces autres qui te donnent du plaisir\nVos jeux seront les nôtres, si tel est ton désir\n\nPlus brillante plus belle pour une autre étincelle\nJe me changerai en or pour que tu m´aimes encore.\nPour que tu m'aimes encore\nPour que tu m'aimes encore\nPour que tu m'aimes encore\nPour que tu m'aimes encore"
             },
             {
                 "titre": "Reine",
                 "artiste": "DADJU",
                 "bpm": 92,
+                "audio": "audio/reine-dadju.mp3",
                 "paroles": "Aujourd'hui, je suis fatigué\nJe t'ai regardé dormir\nEt si ma voix peut t'apaiser\nJe chanterai pour toi toute la nuit\nJe t'entends dire à tes copines\n\"Dadju, j'peux plus me passer de lui\"\nHey, tout va glisser sur ta peau\nC'est comme si je te passais de l'huile\nEt s'ils ne sont pas nous, c'est tant pis pour eux\nEt s'ils sont jaloux, c'est tant pis pour eux\nFais-le moi savoir quand c'est douloureux\nJe suis là s'il faut encaisser pour nous deux\nEt je le sais, je te fais confiance\nQuand tu me souris, tu fais pas semblant\nJ'ai pas besoin d'attendre plus longtemps\nJe sais qu'il est temps de partager mon sang\nEt t'élever au rang de reine\nAu rang de reine, au rang de reine\nJ'vais t'élever au rang de reine\nAu rang de reine, au rang de reine, oh, oh\nJe sais que l'amour c'est compliqué, mais avec toi, c'est plus facile\nContinue de rester toi-même et je ne regrette pas de t'avoir choisi\nJe l'ai promis à ton papa, je vais prendre soin de sa fille\nTu fais partie de ma famille et Dieu sait combien j'aime ma famille\nEt s'ils te demandent, c'est qu'ils sont curieux\nS'ils te redemandent, c'est qu'ils sont envieux\nFermes la porte à ceux qui font de leur mieux\nPour nous empêcher d'être deux quand on sera vieux\nEt je le sais, je te fais confiance\nQuand tu me souris, tu fais pas semblant\nJ'ai pas besoin d'attendre plus longtemps\nJe sais qu'il est temps de partager mon sang\nEt t'élever au rang de reine\nAu rang de reine, au rang de reine\nJ'vais t'élever au rang de reine\nAu rang de reine, au rang de reine\nAssez parlé, au bout d'un moment y a plus les mots\nÇa y est, j'ai délaissé mon cœur dans ta paume\nJ'te laisserai pas t'en aller, c'est mort\nJ'ai mis du temps à te trouver, mi amor\nCelui qui dit qu'on s'est trompé a tort\nOn se battra même contre les coups du sort\nAssez parlé, au bout d'un moment y a plus les mots\nÇa y est, j'ai délaissé mon cœur dans ta paume\nJ'te laisserai pas t'en aller, c'est mort\nJ'ai mis du temps à te trouver, mi amor\nCelui qui dit qu'on s'est trompé a tort\nOn se battra même contre les coups du sort\nEt je le sais, je te fais confiance\nQuand tu me souris, tu fais pas semblant\nJ'ai pas besoin d'attendre plus longtemps\nJe sais qu'il est temps de partager mon sang\nEt t'élever au rang de reine\nAu rang de reine, au rang de reine\nJ'vais t'élever au rang de reine\nAu rang de reine, au rang de reine\nAu rang de-, au rang de-\nJe vais t'élever au rang de reine\nAu rang de-, au rang de-\nLaisse-moi t'élever au rang de reine"
+            },
+            {
+                "titre": "Bella",
+                "artiste": "Maître Gims",
+                "bpm": 95,
+                "audio": "audio/bella-gims.mp3",
+                "paroles": "Bella, bella, bella\nBella, bella, bella\nJe veux te voir encore\nBella, bella, bella\nTu es ma seule\nMon amour, mon trésor\nJe t\'ai cherchée longtemps\nDans ma vie tu es entrée\nMaintenant c\'est évident\nJe suis fou de toi, ma beauté\nBella, bella, bella\nBella, bella, bella\nJe veux te voir encore\nBella, bella, bella\nQuand je te vois le soir\nMon cœur s\'emballe\nTu fais partie de moi\nMa belle, ma belle\nBella, bella, bella\nBella, bella, bella"
+            },
+            {
+                "titre": "Alors on danse",
+                "artiste": "Stromae",
+                "bpm": 128,
+                "audio": "audio/alors-on-danse.mp3",
+                "paroles": "Qui dit étude dit travail\nQui dit taf te dit les thunes\nQui dit argent dit dépenses\nQui dit crédit dit créance\nQui dit dette te dit huissier\nQui dit assis dans la merde\nQui dit amour dit les gosses\nDit toujours et dit divorce\nQui dit proches te dit deuils\nCar les problèmes ne viennent pas seuls\nQui dit crise te dit monde\nQui dit famine dit tiers-monde\nAlors on sort pour oublier tous ces problèmes\nAlors on danse, alors on danse\nAlors on danse, alors on danse\nEt tout disparaît, et tout disparaît\nAlors on danse, alors on danse\nAlors on danse, alors on danse\nEt tout disparaît, et tout disparaît\nAlors on chante, alors on chante\nAlors on chante, lalala\nEt tout disparaît, et tout disparaît"
+            },
+            {
+                "titre": "Formidable",
+                "artiste": "Stromae",
+                "bpm": 110,
+                "audio": "audio/formidable.mp3",
+                "paroles": "T\'étais formidable\nJ\'étais fort minable\nNous étions formidables\nT\'étais formidable\nJ\'étais fort minable\nNous étions formidables\nSois moi une heure\nJuste le temps d\'une peur\nQui dure toujours\nT\'étais formidable\nJ\'étais fort minable\nNous étions formidables\nEt merde, t\'as pas le droit de partir comme ça\nEt merde, t\'as pas le droit de partir comme ça\nEt merde, t\'as pas le droit de partir comme ça\nT\'étais formidable\nJ\'étais fort minable\nNous étions formidables"
+            },
+            {
+                "titre": "Ne me quitte pas",
+                "artiste": "Jacques Brel",
+                "bpm": 75,
+                "audio": "audio/ne-me-quitte-pas.mp3",
+                "paroles": "Ne me quitte pas\nIl faut oublier\nTout peut s\'oublier\nQui s\'enfuit déjà\nOublier le temps\nDes malentendus\nEt le temps perdu\nÀ savoir comment\nOublier ces heures\nQui tuaient parfois\nÀ coups de pourquoi\nLe cœur du bonheur\nNe me quitte pas\nNe me quitte pas\nNe me quitte pas\nNe me quitte pas\nMoi je t\'offrirai\nDes perles de pluie\nVenues de pays\nOù il ne pleut pas\nJe creuserai la terre\nJusqu\'après ma mort\nPour couvrir ton corps\nD\'or et de lumière\nNe me quitte pas\nNe me quitte pas\nNe me quitte pas\nNe me quitte pas"
+            },
+            {
+                "titre": "La Vie en Rose",
+                "artiste": "Édith Piaf",
+                "bpm": 78,
+                "audio": "audio/la-vie-en-rose.mp3",
+                "paroles": "Des yeux qui font baisser les miens\nUn rire qui se perd sur sa bouche\nVoilà le portrait sans retouches\nDe l\'homme auquel j\'appartiens\nQuand il me prend dans ses bras\nIl me parle tout bas\nJe vois la vie en rose\nIl me dit des mots d\'amour\nDes mots de tous les jours\nEt ça m\'fait quelque chose\nIl est entré dans mon cœur\nUne part de bonheur\nDont je connais la cause\nC\'est lui pour moi\nMoi pour lui dans la vie\nIl me l\'a dit, l\'a juré pour la vie\nEt dès que je l\'aperçois\nAlors je sens en moi\nMon cœur qui bat\nDes nuits d\'amour à plus finir\nUn grand bonheur qui prend sa place\nLes ennuis, les chagrins s\'effacent\nHeureux, heureux à en mourir"
+            },
+            {
+                "titre": "C\'est la vie",
+                "artiste": "Khaled",
+                "bpm": 110,
+                "audio": "audio/cest-la-vie.mp3",
+                "paroles": "C\'est la vie, c\'est la vie\nC\'est la vie, c\'est la vie\nC\'est la vie, ya rayah\nC\'est la vie\nJe t\'aime, je t\'adore\nComme l\'air que je respire\nJe t\'aime, je t\'adore\nTu me fais sourire\nC\'est la vie, c\'est la vie\nC\'est la vie, c\'est la vie\nOn est ensemble maintenant\nC\'est pour toujours\nC\'est la vie, c\'est la vie\nMa belle, mon amour\nC\'est la vie, c\'est la vie"
             }
         ];
 
@@ -1125,6 +1187,15 @@
         const karaokeBtn = document.getElementById("karaokeBtn");
         const resetBtn = document.getElementById("resetBtn");
         const contactForm = document.getElementById("contactForm");
+        const nowPlayingDiv = document.getElementById("nowPlaying");
+        const nowPlayingTitle = document.getElementById("nowPlayingTitle");
+        const nowPlayingArtist = document.getElementById("nowPlayingArtist");
+        const progressContainer = document.getElementById("progressContainer");
+        const progressBar = document.getElementById("progressBar");
+        const progressCurrent = document.getElementById("progressCurrent");
+        const progressTotal = document.getElementById("progressTotal");
+        const bgAudio = document.getElementById("bgAudio");
+        const volumeSlider = document.getElementById("volumeSlider");
 
         // Karaoke variables
         let isPlaying = false;
@@ -1461,9 +1532,17 @@
 
         // Get interval from BPM
         function getIntervalFromBPM(bpm) {
-            const beatsPerLine = 2;
             const msPerBeat = 60000 / bpm;
-            return msPerBeat * beatsPerLine;
+            // 1 ligne = 1 mesure de 4 temps
+            // On multiplie par un facteur selon le tempo pour garder ~2.5-4s par ligne
+            let measures;
+            if (bpm >= 120)      measures = 1.5;   // rapide : 2 mesures
+            else if (bpm >= 100) measures = 1.2; // medium-rapide
+            else if (bpm >= 80)  measures = 0.9;   // medium
+            else                 measures = 0.8;  // lent
+            const interval = msPerBeat * 4 * measures;
+            // Clamp entre 2000ms et 5000ms pour rester lisible
+            return Math.max(2000, Math.min(5000, interval));
         }
 
         // Start karaoke — no countdown, direct launch
@@ -1477,10 +1556,22 @@
                 const song = karaokeSongs[index];
                 lines = song.paroles.trim().split("\n");
 
-                // Add top padding so first line starts centered
-                const spacer = document.createElement("div");
-                spacer.style.height = (screen.clientHeight / 2) + "px";
-                screen.appendChild(spacer);
+                // Charger et lancer l'audio de fond
+                if (song.audio) {
+                    bgAudio.src = song.audio;
+                    bgAudio.volume = parseFloat(volumeSlider.value);
+                    bgAudio.currentTime = 0;
+                    bgAudio.play().catch(() => {}); // catch si autoplay bloqué
+                }
+
+                // Show now playing
+                nowPlayingDiv.classList.remove("hidden");
+                nowPlayingTitle.textContent = song.titre;
+                nowPlayingArtist.textContent = song.artiste;
+                progressContainer.classList.remove("hidden");
+                progressTotal.textContent = lines.length + " lignes";
+                progressBar.style.width = "0%";
+                progressCurrent.textContent = "Ligne 0";
 
                 lines.forEach(line => {
                     const div = document.createElement("div");
@@ -1488,11 +1579,6 @@
                     div.textContent = line || "♪";
                     screen.appendChild(div);
                 });
-
-                // Add bottom padding so last line can be centered
-                const spacerBottom = document.createElement("div");
-                spacerBottom.style.height = (screen.clientHeight / 2) + "px";
-                screen.appendChild(spacerBottom);
             }
 
             const song = karaokeSongs[index];
@@ -1504,12 +1590,20 @@
         }
 
         // Show next line
+        let userScrolling = false;
+        let userScrollTimer = null;
+
+        screen.addEventListener("scroll", () => {
+            userScrolling = true;
+            clearTimeout(userScrollTimer);
+            userScrollTimer = setTimeout(() => { userScrolling = false; }, 2000);
+        });
+
         function nextLine() {
             const allLines = screen.querySelectorAll(".karaoke-line");
 
             allLines.forEach((l, i) => {
                 l.classList.remove("active");
-                // Lines already passed: very dim
                 if (i < currentIndex - 1) {
                     l.style.opacity = "0.15";
                     l.style.transform = "scale(0.93)";
@@ -1517,7 +1611,6 @@
                     l.style.fontWeight = "";
                     l.style.fontSize = "";
                 } else {
-                    // upcoming lines: slightly visible
                     l.style.opacity = "0.4";
                     l.style.transform = "scale(0.97)";
                     l.style.color = "";
@@ -1536,16 +1629,34 @@
                 currentLine.style.opacity = "1";
                 currentLine.style.transform = "scale(1.06)";
 
-                // Scroll so active line is exactly in the center of the screen
-                screen.scrollTo({
-                    top: currentLine.offsetTop - screen.clientHeight / 2 + currentLine.offsetHeight / 2,
-                    behavior: "smooth"
-                });
+                // Use getBoundingClientRect for accurate position relative to viewport
+                if (!userScrolling) {
+                    const screenRect = screen.getBoundingClientRect();
+                    const lineRect = currentLine.getBoundingClientRect();
+
+                    // Position of line relative to the screen container
+                    const lineTopRelative = lineRect.top - screenRect.top;
+                    const lineBottomRelative = lineRect.bottom - screenRect.top;
+
+                    // Only scroll if line is outside the visible area of the box
+                    if (lineBottomRelative > screen.clientHeight || lineTopRelative < 0) {
+                        // Scroll so the active line sits near the top of the box
+                        screen.scrollTo({
+                            top: screen.scrollTop + lineTopRelative - 20,
+                            behavior: "smooth"
+                        });
+                    }
+                }
 
                 currentIndex++;
+                const pct = Math.round((currentIndex / allLines.length) * 100);
+                progressBar.style.width = pct + "%";
+                progressCurrent.textContent = "Ligne " + currentIndex;
             } else {
                 clearInterval(timer);
                 karaokeBtn.innerHTML = '<i class="fas fa-play mr-2"></i>Play';
+                progressBar.style.width = "100%";
+                progressCurrent.textContent = "✓ Terminé";
                 isPlaying = false;
                 isPaused = false;
             }
@@ -1573,6 +1684,7 @@
                     isPaused = false;
                 } else {
                     clearInterval(timer);
+                    bgAudio.pause();
                     karaokeBtn.innerHTML = '<i class="fas fa-play mr-2"></i>Play';
                     isPlaying = false;
                     isPaused = true;
@@ -1588,12 +1700,19 @@
 
                 karaokeBtn.innerHTML = '<i class="fas fa-play mr-2"></i>Play';
                 screen.scrollTo({ top: 0 });
+                bgAudio.pause();
+                bgAudio.currentTime = 0;
+                progressBar.style.width = "0%";
+                progressCurrent.textContent = "Ligne 0";
 
                 // Reset visual state
                 document.querySelectorAll(".karaoke-line").forEach(l => {
                     l.classList.remove("active");
-                    l.classList.remove("text-accent");
-                    l.classList.remove("font-bold");
+                    l.style.opacity = "";
+                    l.style.transform = "";
+                    l.style.color = "";
+                    l.style.fontWeight = "";
+                    l.style.fontSize = "";
                 });
             });
         }
@@ -1618,6 +1737,11 @@
         loadSongs();
         setupEventListeners();
         setupForm();
+
+        // Volume slider
+        volumeSlider.addEventListener("input", () => {
+            bgAudio.volume = parseFloat(volumeSlider.value);
+        });
 
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
