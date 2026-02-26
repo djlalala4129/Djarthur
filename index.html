@@ -159,136 +159,178 @@
         
         .mobile-menu.active { transform: translateX(0); }
         
+        /* ═══ WAVEFORM ═══════════════════════════════════════════ */
         .waveform-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 385px;
-            width: 385px;
+            height: 400px;
+            width: 400px;
             margin: 0 auto;
             position: relative;
-            cursor: pointer;
+            cursor: default;
         }
-
         @media (max-width: 768px) {
-            .waveform-container {
-                height: 220px;
-                width: 220px;
-            }
-            .waveform-center {
-                width: 160px !important;
-                height: 160px !important;
-            }
-            .waveform-center .logo-dj {
-                font-size: 24px !important;
-            }
-            .waveform-center .logo-arthur {
-                font-size: 20px !important;
-            }
-            /* Waveform en bas sur mobile */
-            #home .hero-inner {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
+            .waveform-container { height: 270px; width: 270px; }
+            .waveform-center    { width: 156px !important; height: 156px !important; }
+            .vinyl-dj   { font-size: 24px !important; letter-spacing: 4px !important; }
+            .vinyl-name { font-size: 12px !important; letter-spacing: 4px !important; }
+            #home .hero-inner    { display: flex; flex-direction: column; align-items: center; }
             #home .hero-waveform { order: 3; }
             #home .hero-scroll   { order: 2; }
         }
-        
-        .waveform-circle {
+
+        /* Deux anneaux contrarotatifs */
+        .wf-ring {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            animation: rotate-wave 16s linear infinite, beat-pulse 1.2s ease-in-out infinite;
+            inset: 0;
+            pointer-events: none;
         }
-        
-        @keyframes rotate-wave {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        @keyframes beat-pulse {
-            0%, 100% { 
-                transform: scale(1) rotate(var(--rotation, 0deg));
-            }
-            50% { 
-                transform: scale(1.03) rotate(var(--rotation, 0deg));
-            }
-        }
-        
-        .waveform-bar {
+        .wf-ring-inner { animation: wf-ccw 18s linear infinite; }
+        @keyframes wf-cw  { to { transform: rotate(360deg);  } }
+        @keyframes wf-ccw { to { transform: rotate(-360deg); } }
+
+        /* Barres */
+        .wf-bar {
             position: absolute;
             bottom: 50%;
             left: 50%;
-            width: 4px;
-            height: 90px;
-            background: linear-gradient(180deg, transparent 0%, #0760EE 46%, #FF00F5 82%, #FF00F5 100%);
-            border-radius: 2px;
+            border-radius: 999px;
             transform-origin: bottom center;
-            transition: height 0.3s ease-out, background 0.3s ease-out, box-shadow 0.3s ease-out, filter 0.3s ease-out;
-            animation: beat-bounce 1.2s ease-in-out infinite;
+            will-change: height, opacity;
+            transition: height .15s cubic-bezier(.25,.46,.45,.94),
+                        opacity .15s ease,
+                        filter .15s ease;
         }
-        
-        @keyframes beat-bounce {
-            0%, 100% { 
-                height: 90px;
-            }
-            50% { 
-                height: var(--extra-height, 110px);
-            }
-        }
-        
-        .waveform-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 280px;
-            height: 280px;
-            border: 3px solid #0760EE;
-            border-radius: 50%;
-            box-shadow: 
-                0 0 20px rgba(7, 96, 238, 0.6),
-                inset 0 0 20px rgba(7, 96, 238, 0.2);
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            cursor: pointer;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                        height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                        box-shadow 0.4s ease;
+        @keyframes wf-breathe {
+            0%, 100% { height: var(--hA); opacity: var(--oA); }
+            50%      { height: var(--hB); opacity: 1; }
         }
 
+        /* Orbes (anneau extérieur) */
+        .wf-orb {
+            position: absolute;
+            bottom: 50%; left: 50%;
+            border-radius: 50%;
+            transform-origin: bottom center;
+            animation: wf-orb-pulse var(--dur) ease-in-out var(--del) infinite;
+        }
+        @keyframes wf-orb-pulse {
+            0%, 100% { opacity: .12; transform: rotate(var(--r)) translateY(calc(-1 * var(--d))) scale(.55); }
+            50%      { opacity: 1;   transform: rotate(var(--r)) translateY(calc(-1 * var(--d))) scale(1.5);  }
+        }
+
+        /* Halo respirant */
+        .wf-halo {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .wf-halo-a {
+            width: 280px; height: 280px;
+            background: radial-gradient(circle, rgba(7,96,238,.22) 0%, transparent 70%);
+            animation: wf-halo-breathe 4s ease-in-out infinite;
+        }
+        .wf-halo-b {
+            width: 340px; height: 340px;
+            background: radial-gradient(circle, rgba(255,0,245,.10) 0%, transparent 70%);
+            animation: wf-halo-breathe 6s ease-in-out 2s infinite;
+        }
+        @keyframes wf-halo-breathe {
+            0%, 100% { transform: translate(-50%,-50%) scale(1);    opacity: .55; }
+            50%      { transform: translate(-50%,-50%) scale(1.16);  opacity: 1;  }
+        }
+        @media (max-width: 768px) {
+            .wf-halo-a { width: 170px; height: 170px; }
+            .wf-halo-b { width: 210px; height: 210px; }
+        }
+
+        /* Cercle central — vinyle */
+        .waveform-center {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 258px; height: 258px;
+            border-radius: 50%;
+            background: #050308;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            cursor: pointer; z-index: 5;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.06),
+                0 0 30px rgba(7,96,238,0.18),
+                0 0 60px rgba(7,96,238,0.07);
+            animation: wf-vinyl-spin 4s linear infinite;
+            transition: width .55s cubic-bezier(.34,1.4,.64,1),
+                        height .55s cubic-bezier(.34,1.4,.64,1),
+                        box-shadow .4s ease;
+        }
+        @keyframes wf-vinyl-spin {
+            from { transform: translate(-50%,-50%) rotate(0deg); }
+            to   { transform: translate(-50%,-50%) rotate(360deg); }
+        }
+        .waveform-center:hover,
         .waveform-center.center-hovered {
-            width: 430px;
-            height: 430px;
-            box-shadow: 0 0 60px rgba(7,96,238,0.9), inset 0 0 40px rgba(7,96,238,0.4);
+            animation-play-state: paused;
+            width: 278px; height: 278px;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.10),
+                0 0 40px rgba(200,60,255,0.35),
+                0 0 80px rgba(200,60,255,0.12);
         }
-        
-        .waveform-center .logo-dj {
+
+        /* SVG vinyle */
+        .vinyl-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+        }
+
+        /* Label central (contra-rotate pour rester lisible) */
+        .vinyl-label {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 1px;
+            animation: wf-vinyl-contra 4s linear infinite;
+            pointer-events: none;
+            z-index: 2;
+        }
+        @keyframes wf-vinyl-contra {
+            from { transform: translate(-50%,-50%) rotate(0deg); }
+            to   { transform: translate(-50%,-50%) rotate(-360deg); }
+        }
+        .waveform-center:hover .vinyl-label,
+        .waveform-center.center-hovered .vinyl-label {
+            animation-play-state: paused;
+        }
+        .vinyl-dj {
             font-family: 'Orbitron', sans-serif;
-            font-size: 42px;
-            font-weight: 900;
-            color: #F3F2F2;
+            font-size: 38px;
+            font-weight: 800;
+            color: rgba(255,255,255,0.92);
+            letter-spacing: 5px;
             line-height: 1;
-            margin-bottom: 6px;
+            display: block;
         }
-        
-        .waveform-center .logo-arthur {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 35px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #0760EE 0%, #FF00F5 50%, #FFE600 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .vinyl-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 17px;
+            font-weight: 400;
+            letter-spacing: 5px;
+            text-indent: 4px;
+            text-transform: uppercase;
+            color: rgba(180,140,255,0.7);
             line-height: 1;
+            display: block;
         }
-        
+
+
         .btn-neon {
             position: relative;
             background: rgba(0, 0, 0, 0.5);
@@ -634,8 +676,7 @@
                         class="w-full h-full object-cover object-bottom"
                         loading="lazy"
                     />
-                    <!-- Film noir global pour adoucir l'image de fond -->
-                    <div class="absolute inset-0" style="background: rgba(0,0,0,0.45);"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/60"></div>
                     <!-- Overlay léger uniquement en haut pour lisibilité du logo -->
                     <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.1) 40%, transparent 70%);"></div>
                     <!-- Transition nette vers le bloc suivant, seulement sur les derniers px -->
@@ -644,10 +685,47 @@
                 
                 <div class="relative z-10 flex flex-col items-center" style="padding-top: 96px;">
                     <div class="waveform-container" id="waveformContainer">
-                        <div class="waveform-circle" id="waveform"></div>
-                        <div class="waveform-center">
-                            <div class="logo-dj">DJ</div>
-                            <div class="logo-arthur">ARTHUR</div>
+                        <div class="wf-halo wf-halo-b"></div>
+                        <div class="wf-halo wf-halo-a"></div>
+                        <div class="wf-ring wf-ring-inner" id="wfRingInner"></div>
+                        <div class="waveform-center" id="waveformCenter">
+                            <!-- Vinyl SVG -->
+                            <svg class="vinyl-svg" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Sillons -->
+                                <circle cx="80" cy="80" r="76" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                                <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.8"/>
+                                <circle cx="80" cy="80" r="64" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.8"/>
+                                <circle cx="80" cy="80" r="58" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.8"/>
+                                <circle cx="80" cy="80" r="52" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.8"/>
+                                <circle cx="80" cy="80" r="46" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.8"/>
+                                <circle cx="80" cy="80" r="40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.7"/>
+                                <!-- Label vinyle -->
+                                <circle cx="80" cy="80" r="32" fill="url(#labelGrad)"/>
+                                <circle cx="80" cy="80" r="32" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+                                <!-- Trou central -->
+                                <circle cx="80" cy="80" r="4" fill="rgba(0,0,0,0.9)" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+                                <!-- Reflet sillon lumineux -->
+                                <circle cx="80" cy="80" r="55" fill="none" stroke="url(#grooveGlow)" stroke-width="1.5" opacity="0.4"/>
+                                <!-- Defs -->
+                                <defs>
+                                    <radialGradient id="labelGrad" cx="40%" cy="38%">
+                                        <stop offset="0%"   stop-color="#1a0a2e"/>
+                                        <stop offset="60%"  stop-color="#0d0618"/>
+                                        <stop offset="100%" stop-color="#070410"/>
+                                    </radialGradient>
+                                    <linearGradient id="grooveGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%"   stop-color="transparent"/>
+                                        <stop offset="40%"  stop-color="rgba(7,96,238,0.6)"/>
+                                        <stop offset="60%"  stop-color="rgba(200,60,255,0.5)"/>
+                                        <stop offset="100%" stop-color="transparent"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <!-- Texte sur le label -->
+                            <div class="vinyl-label">
+                                <span class="vinyl-dj">DJ</span>
+                                <span class="vinyl-name">Arthur</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1340,225 +1418,140 @@
             const activeLink = document.querySelector('.nav-link.active span');
             if (activeLink) activeLink.style.width = '100%';
             
-            // Create circular waveform
-            const waveform = document.getElementById('waveform');
+            // ══════════════════════════════════════════
+            //  WAVEFORM  — 2 rings, clean & sublime
+            // ══════════════════════════════════════════
             const container = document.getElementById('waveformContainer');
-            const center = document.querySelector('.waveform-center');
-            const numBars = 60; // Number of bars around the circle
-            
-            // Crée les barres — une seule vague propagée autour du cercle
-            const barTranslate = window.innerWidth <= 768 ? 68 : 115;
-            const mobile = window.innerWidth <= 768;
-            const baseH = mobile ? 50 : 90;
+            const ringInner = document.getElementById('wfRingInner');
+            const centerEl  = document.getElementById('waveformCenter');
 
-            for (let i = 0; i < numBars; i++) {
-                const bar = document.createElement('div');
-                bar.className = 'waveform-bar';
-                const angle = (i / numBars) * 360;
-                bar.style.transform = `rotate(${angle}deg) translateY(-${barTranslate}px)`;
-                bar.dataset.baseTransform = `rotate(${angle}deg) translateY(-${barTranslate}px)`;
-                bar.dataset.angle = angle;
-                bar.dataset.index = i;
-                // Tous les bars ont la même durée de base, décalage en fonction de l'angle = vague unique
-                const waveDuration = 2.2;
-                const delay = -(i / numBars) * waveDuration;
-                bar.style.animationDuration = `${waveDuration}s`;
-                bar.style.animationDelay = `${delay}s`;
-                bar.style.setProperty('--extra-height', `${baseH + 22}px`);
-                bar.style.height = baseH + 'px';
-                waveform.appendChild(bar);
+            const isMob = () => window.innerWidth <= 768;
+
+            // Hue progressif le long du cercle
+            function hue(angle, offset) { return (offset + angle * 0.75) % 360; }
+
+            // Profil organique : mélange de 3 harmoniques
+            function barH(i, n, base, amp) {
+                const t = (i / n) * Math.PI * 2;
+                const v = .5  * Math.abs(Math.sin(t * 3))
+                        + .3  * Math.abs(Math.sin(t * 7  + 1.1))
+                        + .2  * Math.abs(Math.sin(t * 13 + 2.3));
+                return base + amp * v;
             }
 
+            // ── Anneau intérieur : 64 barres ─────────────────────────
+            const N_IN = 64;
+            const barsIn = [];
+            for (let i = 0; i < N_IN; i++) {
+                const mob    = isMob();
+                const radius = mob ? 80  : 132;
+                const base   = mob ? 8   : 16;
+                const amp    = mob ? 16  : 38;
+                const angle  = (i / N_IN) * 360;
+                const h      = barH(i, N_IN, base, amp);
+                const h1 = hue(angle, 210), h2 = hue(angle, 255);
+                // Largeur variable — crête légèrement plus épaisse
+                const w = mob ? 1.8 : (1.4 + 1.2 * Math.abs(Math.sin((i/N_IN)*Math.PI*5)));
+
+                const bar = document.createElement('div');
+                bar.className = 'wf-bar';
+                bar.style.cssText = `
+                    width:${w}px;
+                    transform:rotate(${angle}deg) translateY(-${radius}px);
+                    background:linear-gradient(180deg,
+                        transparent 0%,
+                        hsla(${h1},100%,65%,.9) 40%,
+                        hsla(${h2},100%,62%,.7) 100%);
+                    box-shadow: 0 0 ${2+w*1.5}px hsla(${h1},100%,65%,.5);
+                    --hA:${h*.58}px; --hB:${h*1.42}px; --oA:.5;
+                    animation: wf-breathe ${3.5 + .5*Math.sin(i)}s ease-in-out ${-(i/N_IN)*3.5}s infinite;
+                `;
+                bar.style.height = h + 'px';
+                bar.dataset.angle  = angle;
+                bar.dataset.radius = radius;
+                bar.dataset.h1     = h1;
+                bar.dataset.ring   = 'in';
+                ringInner.appendChild(bar);
+                barsIn.push(bar);
+            }
+
+
+            // ── Resize ────────────────────────────────────────────────
+            const allBars = [...barsIn];
             window.addEventListener('resize', () => {
-                const t = window.innerWidth <= 768 ? 68 : 115;
-                document.querySelectorAll('.waveform-bar').forEach(bar => {
-                    bar.style.transform = `rotate(${bar.dataset.angle}deg) translateY(-${t}px)`;
-                    bar.dataset.baseTransform = `rotate(${bar.dataset.angle}deg) translateY(-${t}px)`;
+                const mob = isMob();
+                barsIn.forEach(b => {
+                    const r = mob ? 80 : 132;
+                    b.style.transform = `rotate(${b.dataset.angle}deg) translateY(-${r}px)`;
+                });
+                barsOut.forEach(b => {
+                    const r = mob ? 96 : 160;
+                    b.style.transform = `rotate(${b.dataset.angle}deg) translateY(-${r}px)`;
                 });
             });
 
-            
-            const bars = waveform.querySelectorAll('.waveform-bar');
 
-            // Vague aléatoire harmonisée — propagation continue sans écart
-            // Mouse move interaction with progressive gradient
-            container.addEventListener('mousemove', (e) => {
-                const rect = container.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-                
-                const mouseX = e.clientX;
-                const mouseY = e.clientY;
+            // ── Hover : éclat propre et localisé ─────────────────────
+            function getRot(el) {
+                const m = window.getComputedStyle(el).transform;
+                if (m === 'none') return 0;
+                const v = m.split('(')[1].split(')')[0].split(',');
+                return ((Math.atan2(+v[1],+v[0]) * 180/Math.PI) + 360) % 360;
+            }
 
-                // Si la souris est sur le cercle central (rayon 110px), on bloque l'effet hover
-                const distToCenter = Math.sqrt((mouseX - centerX) ** 2 + (mouseY - centerY) ** 2);
-                if (distToCenter < 120) {
-                    bars.forEach(bar => {
-                        bar.style.height = '';
-                        bar.style.background = '';
-                        bar.style.boxShadow = '';
-                        bar.style.filter = '';
-                        bar.dataset.mouseActive = 'false';
-                    });
-                    return;
-                }
-                
-                // Calculate angle of mouse relative to center
-                const deltaX = mouseX - centerX;
-                const deltaY = mouseY - centerY;
-                const mouseAngle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 90;
-                const normalizedAngle = (mouseAngle + 360) % 360;
-                
-                // Get current rotation of the waveform circle
-                const computedStyle = window.getComputedStyle(waveform);
-                const matrix = computedStyle.transform;
-                let currentRotation = 0;
-                
-                if (matrix !== 'none') {
-                    const values = matrix.split('(')[1].split(')')[0].split(',');
-                    const a = values[0];
-                    const b = values[1];
-                    currentRotation = Math.round(Math.atan2(b, a) * (180 / Math.PI));
-                    if (currentRotation < 0) currentRotation += 360;
-                }
-                
-                bars.forEach((bar, index) => {
-                    const barAngle = (index / numBars) * 360;
-                    const adjustedBarAngle = (barAngle + currentRotation) % 360;
-                    
-                    // Calculate angular difference
-                    let diff = Math.abs(normalizedAngle - adjustedBarAngle);
+            function applyHover(normAngle) {
+                const rotIn  = getRot(ringInner);
+                const rotOut = getRot(ringOuter);
+                allBars.forEach(bar => {
+                    const rot  = bar.dataset.ring === 'in' ? rotIn : rotOut;
+                    const bAng = (+bar.dataset.angle + rot) % 360;
+                    let diff   = Math.abs(normAngle - bAng);
                     if (diff > 180) diff = 360 - diff;
-                    
-                    // Progressive gradient effect within 80 degrees
-                    const maxRange = 80;
-                    if (diff < maxRange) {
-                        // Progressive proximity calculation with smooth ease-out curve
-                        const proximity = Math.pow(1 - (diff / maxRange), 2.5);
-                        
-                        // Get current computed height
-                        const computedHeight = parseFloat(window.getComputedStyle(bar).height) || 60;
-                        // Progressive size: height × 1.5 at center, × 1.0 at edge
-                        const sizeMultiplier = 1 + (proximity * 0.5);
-                        const height = computedHeight * sizeMultiplier;
-                        
-                        bar.style.height = height + 'px';
-                        bar.dataset.mouseActive = 'true';
-                        
-                        // Progressive color gradient from cyan/magenta to yellow/magenta
-                        // At center (proximity = 1): full yellow
-                        // At edge (proximity = 0): cyan/magenta
-                        const yellowAmount = proximity;
-                        const blueAmount = 1 - proximity;
-                        
-                        // Create gradient with color interpolation
-                        const topColor = `rgba(${Math.round(255 * yellowAmount + 7 * blueAmount)}, ${Math.round(230 * yellowAmount + 96 * blueAmount)}, ${Math.round(0 * yellowAmount + 238 * blueAmount)}, 1)`;
-                        const bottomColor = '#FF00F5'; // Magenta stays constant
-                        
-                        bar.style.background = `linear-gradient(180deg, transparent, ${topColor}, ${bottomColor})`;
-                        
-                        // Progressive glow effect
-                        const glowIntensity = proximity * 30;
-                        bar.style.boxShadow = `0 0 ${glowIntensity}px rgba(255, ${Math.round(230 * yellowAmount + 240 * blueAmount)}, ${Math.round(255 * blueAmount)}, ${proximity * 0.9})`;
-                        
-                        // Brightness filter for extra glow on closest bars
-                        bar.style.filter = `brightness(${1 + proximity * 0.3})`;
-                        
-                    } else {
-                        if (bar.dataset.mouseActive === 'true') {
-                            bar.style.height = '';
-                            bar.style.background = '';
-                            bar.style.boxShadow = '';
-                            bar.style.filter = '';
-                            bar.dataset.mouseActive = 'false';
-                        }
+                    const span = 60;
+                    if (diff < span) {
+                        const p   = Math.pow(1 - diff/span, 2);
+                        const hA  = parseFloat(bar.style.getPropertyValue('--hA')) || 10;
+                        const hB  = parseFloat(bar.style.getPropertyValue('--hB')) || 40;
+                        const mid = (hA + hB) / 2;
+                        bar.style.height  = (mid * (1 + p * 1.5)) + 'px';
+                        bar.style.opacity = String(.55 + p * .45);
+                        bar.style.filter  = `brightness(${1 + p * 1.3})`;
+                        bar.dataset.hov   = '1';
+                    } else if (bar.dataset.hov === '1') {
+                        bar.style.height = bar.style.opacity = bar.style.filter = '';
+                        bar.dataset.hov = '0';
                     }
                 });
-            });
-            
-            // Click sur le cercle central : agrandissement qui cache les ondes
-            // Mouse leave - return to normal
-            container.addEventListener('mouseleave', () => {
-                bars.forEach(bar => {
-                    bar.style.height = '';
-                    bar.style.background = '';
-                    bar.style.boxShadow = '';
-                    bar.style.filter = '';
-                    bar.dataset.mouseActive = 'false';
+            }
+
+            function resetHover() {
+                allBars.forEach(b => {
+                    b.style.height = b.style.opacity = b.style.filter = '';
+                    b.dataset.hov = '0';
                 });
+            }
+
+            container.addEventListener('mousemove', e => {
+                if (isMob()) return;
+                const rect = container.getBoundingClientRect();
+                const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+                if (Math.hypot(e.clientX-cx, e.clientY-cy) < 95) { resetHover(); return; }
+                const ang = (Math.atan2(e.clientY-cy, e.clientX-cx)*180/Math.PI + 90 + 360) % 360;
+                applyHover(ang);
             });
-            
-            // ── Animation automatique mobile (écran ≤ 768px) ──
-            // Réactif au redimensionnement en temps réel
-            (function startMobileWaveAnim() {
-                let virtualAngle = 0;
-                const speed = 1.2;
+            container.addEventListener('mouseleave', resetHover);
 
-                function isMobile() { return window.innerWidth <= 768; }
-
-                function resetBars() {
-                    bars.forEach(bar => {
-                        bar.style.height = '';
-                        bar.style.background = '';
-                        bar.style.boxShadow = '';
-                        bar.style.filter = '';
-                    });
+            // ── Mobile : vague automatique ────────────────────────────
+            (function() {
+                let va = 0, wasM = isMob();
+                function loop() {
+                    const mob = isMob();
+                    if (!mob && wasM) resetHover();
+                    wasM = mob;
+                    if (mob) { va = (va + 1.5) % 360; applyHover(va); }
+                    requestAnimationFrame(loop);
                 }
-
-                function applyVirtualMouse(angle) {
-                    const normalizedAngle = (angle + 360) % 360;
-                    const computedStyle = window.getComputedStyle(waveform);
-                    const matrix = computedStyle.transform;
-                    let currentRotation = 0;
-                    if (matrix !== 'none') {
-                        const values = matrix.split('(')[1].split(')')[0].split(',');
-                        const a = values[0];
-                        const b = values[1];
-                        currentRotation = Math.round(Math.atan2(b, a) * (180 / Math.PI));
-                        if (currentRotation < 0) currentRotation += 360;
-                    }
-                    bars.forEach((bar, index) => {
-                        const barAngle = (index / numBars) * 360;
-                        const adjustedBarAngle = (barAngle + currentRotation) % 360;
-                        let diff = Math.abs(normalizedAngle - adjustedBarAngle);
-                        if (diff > 180) diff = 360 - diff;
-                        const maxRange = 80;
-                        if (diff < maxRange) {
-                            const proximity = Math.pow(1 - (diff / maxRange), 2.5);
-                            const computedHeight = parseFloat(window.getComputedStyle(bar).height) || 60;
-                            bar.style.height = (computedHeight * (1 + proximity * 0.5)) + 'px';
-                            const yellowAmount = proximity;
-                            const blueAmount = 1 - proximity;
-                            const topColor = `rgba(${Math.round(255 * yellowAmount + 7 * blueAmount)}, ${Math.round(230 * yellowAmount + 96 * blueAmount)}, ${Math.round(0 * yellowAmount + 238 * blueAmount)}, 1)`;
-                            bar.style.background = `linear-gradient(180deg, transparent, ${topColor}, #FF00F5)`;
-                            bar.style.boxShadow = `0 0 ${proximity * 30}px rgba(255, ${Math.round(230 * yellowAmount + 240 * blueAmount)}, ${Math.round(255 * blueAmount)}, ${proximity * 0.9})`;
-                            bar.style.filter = `brightness(${1 + proximity * 0.3})`;
-                        } else {
-                            bar.style.height = '';
-                            bar.style.background = '';
-                            bar.style.boxShadow = '';
-                            bar.style.filter = '';
-                        }
-                    });
-                }
-
-                let wasMobile = isMobile();
-
-                function mobileLoop() {
-                    const mobile = isMobile();
-                    // Passage desktop → mobile : reset angle
-                    if (mobile && !wasMobile) { virtualAngle = 0; }
-                    // Passage mobile → desktop : nettoyer les barres
-                    if (!mobile && wasMobile) { resetBars(); }
-                    wasMobile = mobile;
-                    if (mobile) {
-                        virtualAngle = (virtualAngle + speed) % 360;
-                        applyVirtualMouse(virtualAngle);
-                    }
-                    requestAnimationFrame(mobileLoop);
-                }
-
-                requestAnimationFrame(mobileLoop);
+                requestAnimationFrame(loop);
             })();
 
         });
