@@ -163,15 +163,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 350px;
-            width: 350px;
+            height: 385px;
+            width: 385px;
             margin: 0 auto;
             position: relative;
             cursor: pointer;
         }
         
         .waveform-circle {
-            position: relative;
+            position: absolute;
             width: 100%;
             height: 100%;
             animation: rotate-wave 16s linear infinite, beat-pulse 1.2s ease-in-out infinite;
@@ -196,33 +196,20 @@
             bottom: 50%;
             left: 50%;
             width: 4px;
-            height: 60px;
-            background: linear-gradient(180deg, transparent, #0760EE, #FF00F5);
+            height: 90px;
+            background: linear-gradient(180deg, transparent 0%, #0760EE 46%, #FF00F5 82%, #FF00F5 100%);
             border-radius: 2px;
             transform-origin: bottom center;
-            transition: height 0.2s ease-out, background 0.3s ease-out, box-shadow 0.3s ease-out, filter 0.3s ease-out;
+            transition: height 0.3s ease-out, background 0.3s ease-out, box-shadow 0.3s ease-out, filter 0.3s ease-out;
             animation: beat-bounce 1.2s ease-in-out infinite;
         }
         
         @keyframes beat-bounce {
             0%, 100% { 
-                height: 60px;
+                height: 90px;
             }
             50% { 
-                height: 68px;
-            }
-        }
-        
-        .waveform-bar.wave-effect {
-            animation: wave-pulse 2s ease-in-out;
-        }
-        
-        @keyframes wave-pulse {
-            0%, 100% { 
-                height: 60px;
-            }
-            50% { 
-                height: 95px;
+                height: var(--extra-height, 110px);
             }
         }
         
@@ -231,8 +218,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 200px;
-            height: 200px;
+            width: 280px;
+            height: 280px;
             border: 3px solid #0760EE;
             border-radius: 50%;
             box-shadow: 
@@ -244,14 +231,22 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 10;
             padding: 10px;
-            transition: all 0.3s ease;
+            cursor: pointer;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 0.4s ease;
+        }
+
+        .waveform-center.center-hovered {
+            width: 430px;
+            height: 430px;
+            box-shadow: 0 0 60px rgba(7,96,238,0.9), inset 0 0 40px rgba(7,96,238,0.4);
         }
         
         .waveform-center .logo-dj {
             font-family: 'Orbitron', sans-serif;
-            font-size: 38px;
+            font-size: 42px;
             font-weight: 900;
             color: #F3F2F2;
             line-height: 1;
@@ -260,7 +255,7 @@
         
         .waveform-center .logo-arthur {
             font-family: 'Orbitron', sans-serif;
-            font-size: 32px;
+            font-size: 35px;
             font-weight: 900;
             background: linear-gradient(135deg, #0760EE 0%, #FF00F5 50%, #FFE600 100%);
             -webkit-background-clip: text;
@@ -561,6 +556,11 @@
                         <i class="fas fa-calendar-alt mr-2"></i>Contact
                         <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
                     </a>
+                    <a id="nav-live-desktop" onclick="showSection('live', event); return false;" class="nav-link text-secondary hover:text-red-400 transition-colors font-medium cursor-pointer relative flex items-center gap-2 hidden">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        Live
+                        <span class="absolute bottom-0 left-0 h-0.5 bg-red-500 transition-all duration-300"></span>
+                    </a>
                 </div>
                 <button id="mobileMenuBtn" class="md:hidden text-accent text-2xl">
                     <i class="fas fa-bars"></i>
@@ -587,27 +587,35 @@
             <a onclick="showSection('booking', event); closeMobileMenuFunc(); return false;" class="text-2xl font-heading text-gray hover:text-accent transition-colors">
                 <i class="fas fa-calendar-alt mr-3"></i>CONTACT
             </a>
+            <a id="nav-live-mobile" onclick="showSection('live', event); closeMobileMenuFunc(); return false;" class="text-2xl font-heading text-gray hover:text-red-400 transition-colors flex items-center gap-3 hidden">
+                <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>LIVE
+            </a>
         </div>
     </div>
     </div>
     </div>
 
     <!-- Main Content -->
-    <main class="pt-20">
+    <main>
         <!-- Home Section -->
-        <section id="home" class="section active min-h-screen flex items-top relative overflow-hidden animated-bg">
-            <div class="absolute inset-0 z-0">
-                <img 
-                    src="IMG4.webp" 
-                    alt="DJ Arthur en performance avec platines" 
-                    class="w-full h-full object-cover object-center sm:object-top"
-                    loading="lazy"
-                />
-                <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/60"></div>
-            </div>
-            
-            <div class="container mx-auto px-4 relative z-10 text-center">
-                <div class="flex justify-center mb-8">
+        <section id="home" class="section active">
+
+            <!-- PARTIE 1 : Logo seul, plein écran avec image de fond -->
+            <div class="relative flex items-start justify-center animated-bg" style="height: 100vh;">
+                <div class="absolute inset-0 z-0">
+                    <img 
+                        src="IMG4.webp" 
+                        alt="DJ Arthur en performance avec platines" 
+                        class="w-full h-full object-cover object-bottom"
+                        loading="lazy"
+                    />
+                    <!-- Overlay léger uniquement en haut pour lisibilité du logo -->
+                    <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.1) 40%, transparent 70%);"></div>
+                    <!-- Transition nette vers le bloc suivant, seulement sur les derniers px -->
+                    <div class="absolute bottom-0 left-0 right-0" style="height: 60px; background: linear-gradient(180deg, transparent 0%, #05091a 100%);"></div>
+                </div>
+                
+                <div class="relative z-10 flex flex-col items-center" style="padding-top: 96px;">
                     <div class="waveform-container" id="waveformContainer">
                         <div class="waveform-circle" id="waveform"></div>
                         <div class="waveform-center">
@@ -615,36 +623,106 @@
                             <div class="logo-arthur">ARTHUR</div>
                         </div>
                     </div>
-                </div>                
-                <p class="text-xl md:text-2xl text-gray mb-4 font-body font-medium animate-fade-in-up" style="animation-delay: 0.2s;">
-                  DJ Généraliste
-                </p>
-                
-                <div class="flex flex-wrap justify-center gap-3 mb-12 animate-fade-in-up" style="animation-delay: 0.4s;">
-                    <span class="px-4 py-2 bg-accent10/20 border border-accent10 rounded-full text-accent10 text-sm font-medium">ELECTRO</span>
-                    <span class="px-4 py-2 bg-accent11/20 border border-accent11 rounded-full text-accent11 text-sm font-medium">HOUSE</span>
-                    <span class="px-4 py-2 bg-accent12/20 border border-accent12 rounded-full text-accent12 text-sm font-medium">URBAIN</span>
-                    <span class="px-4 py-2 bg-accent13/20 border border-accent13 rounded-full text-accent13 text-sm font-medium">LATINO</span>
-                    <span class="px-4 py-2 bg-accent14/20 border border-accent14 rounded-full text-accent14 text-sm font-medium">80'S → 2000'S</span>
                 </div>
                 
-                <div class="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-fade-in-up" style="animation-delay: 0.6s;">
-                    <button onclick="showSection('demo', event); return false;" class="btn-gradient px-10 py-4 rounded-full font-bold text-lg relative z-10">
-                        <i class="fas fa-play mr-2"></i>ÉCOUTER LA DÉMO
-                    </button>
-                    <button onclick="showSection('booking', event); return false;" class="btn-neon px-10 py-4 rounded-full font-bold text-lg">
-                        <i class="fas fa-calendar-check mr-2"></i>RÉSERVER
-                    </button>
+                <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce-slow">
+                    <i class="fas fa-chevron-down text-accent text-3xl opacity-70"></i>
                 </div>
             </div>
-            
-            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce-slow hidden md:block">
-                <i class="fas fa-chevron-down text-accent text-3xl"></i>
+
+            <!-- BLOCS EN QUINCONCE -->
+            <div style="background: linear-gradient(180deg, #05091a 0%, #060d2a 35%, #071035 50%, #060d2a 65%, #05091a 100%);">
+
+                <!-- BLOC 1 : Présentation gauche — boutons droite -->
+                <div class="container mx-auto px-6 py-24">
+                    <div class="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
+                        <div class="flex-1 text-left">
+                            <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 gradient-text">DJ Arthur</h2>
+                            <p class="text-secondary text-lg leading-relaxed mb-4">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+                            </p>
+                            <p class="text-secondary/80 text-base leading-relaxed">
+                                Nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+                            </p>
+                        </div>
+                        <div class="flex flex-col gap-5 flex-shrink-0">
+                            <button onclick="showSection('demo', event); return false;" class="btn-gradient px-10 py-4 rounded-full font-bold text-lg relative z-10 whitespace-nowrap">
+                                <i class="fas fa-play mr-2"></i>ÉCOUTER LA DÉMO
+                            </button>
+                            <button onclick="showSection('booking', event); return false;" class="btn-neon px-10 py-4 rounded-full font-bold text-lg whitespace-nowrap">
+                                <i class="fas fa-calendar-check mr-2"></i>RÉSERVER
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Séparateur -->
+                <div style="height:1px; background: linear-gradient(90deg, transparent, rgba(7,96,238,0.3), transparent); margin: 0 5%;"></div>
+
+                <!-- BLOC 2 : Bouton + genres gauche — description démos droite -->
+                <div class="container mx-auto px-6 py-24">
+                    <div class="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
+                        <!-- Gauche : bouton + badges genres -->
+                        <div class="flex-shrink-0 flex flex-col items-center gap-6">
+                            <button onclick="showSection('demo', event); return false;" class="btn-neon px-10 py-4 rounded-full font-bold text-lg whitespace-nowrap">
+                                <i class="fas fa-headphones mr-2"></i>MES DÉMOS
+                            </button>
+                            <div class="flex flex-wrap justify-center gap-2 max-w-xs">
+                                <span class="px-3 py-1.5 bg-accent10/20 border border-accent10 rounded-full text-accent10 text-xs font-medium">ELECTRO</span>
+                                <span class="px-3 py-1.5 bg-accent11/20 border border-accent11 rounded-full text-accent11 text-xs font-medium">HOUSE</span>
+                                <span class="px-3 py-1.5 bg-accent12/20 border border-accent12 rounded-full text-accent12 text-xs font-medium">URBAIN</span>
+                                <span class="px-3 py-1.5 bg-accent13/20 border border-accent13 rounded-full text-accent13 text-xs font-medium">LATINO</span>
+                                <span class="px-3 py-1.5 bg-accent14/20 border border-accent14 rounded-full text-accent14 text-xs font-medium">80'S → 2000'S</span>
+                                <span class="px-3 py-1.5 bg-accent16/20 border border-accent16 rounded-full text-accent16 text-xs font-medium">AMBIANCE</span>
+                            </div>
+                        </div>
+                        <!-- Droite : description -->
+                        <div class="flex-1 text-left">
+                            <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 gradient-text">Mes Démos</h2>
+                            <p class="text-secondary text-lg leading-relaxed mb-4">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+                            </p>
+                            <p class="text-secondary/80 text-base leading-relaxed">
+                                Nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Séparateur -->
+                <div style="height:1px; background: linear-gradient(90deg, transparent, rgba(7,96,238,0.3), transparent); margin: 0 5%;"></div>
+
+                <!-- BLOC 3 : Description karaoké gauche — bouton droite -->
+                <div class="container mx-auto px-6 py-24">
+                    <div class="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
+                        <!-- Gauche : description -->
+                        <div class="flex-1 text-left">
+                            <h2 class="text-4xl md:text-5xl font-display font-bold mb-6" style="background: linear-gradient(135deg, #00F0FF 0%, #0760EE 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Karaoké</h2>
+                            <p class="text-secondary text-lg leading-relaxed mb-4">
+                                Animation karaoké professionnelle avec plus de 1000 titres disponibles. Une expérience unique et conviviale pour animer vos soirées.
+                            </p>
+                            <p class="text-secondary/80 text-base leading-relaxed">
+                                Parfait pour vos soirées d'entreprise, événements privés, anniversaires et mariages. Chantez vos titres préférés avec paroles synchronisées en temps réel.
+                            </p>
+                        </div>
+                        <!-- Droite : bouton -->
+                        <div class="flex-shrink-0 flex flex-col items-center gap-4">
+                            <div class="w-20 h-20 rounded-full flex items-center justify-center mb-2" style="background: linear-gradient(135deg, rgba(7,96,238,0.3), rgba(255,0,245,0.2)); border: 2px solid rgba(7,96,238,0.5); box-shadow: 0 0 30px rgba(7,96,238,0.3);">
+                                <i class="fas fa-microphone text-accent text-3xl"></i>
+                            </div>
+                            <button onclick="showSection('karaoke', event); return false;" class="btn-gradient px-10 py-4 rounded-full font-bold text-lg whitespace-nowrap">
+                                <i class="fas fa-microphone mr-2"></i>KARAOKÉ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
         </section>
 
         <!-- Demo Section -->
-        <section id="demo" class="section hidden min-h-screen py-20 bg-primary grid-bg">
+        <section id="demo" class="section hidden min-h-screen py-20 pt-24 bg-primary grid-bg">
             <div class="container mx-auto px-4">
                 <div class="text-center mb-16">
                     <h2 class="text-5xl md:text-6xl font-heading font-bold mb-4">
@@ -784,7 +862,7 @@
         </section>
 
 <!-- Karaoke Section -->
-        <section id="karaoke" class="section-transition hidden min-h-screen py-20 bg-primary">
+        <section id="karaoke" class="section-transition hidden min-h-screen py-20 pt-24 bg-primary">
             <div class="container mx-auto px-4">
                 <h2 class="text-4xl font-bold text-center mb-4">
                     <i class="fas fa-microphone text-accent mr-3"></i>Karaoké
@@ -872,7 +950,7 @@
         </section>
 
         <!-- Booking Section -->
-        <section id="booking" class="section-transition hidden min-h-screen py-20 bg-primary">
+        <section id="booking" class="section-transition hidden min-h-screen py-20 pt-24 bg-primary">
             <div class="container mx-auto px-4">
                 <h2 class="text-4xl font-bold text-center mb-4">
                     <i class="fas fa-calendar-alt text-accent mr-3"></i>Booking
@@ -881,8 +959,8 @@
                     Disponible pour bars, afterworks, mariages et soirées privées. Discutons de votre projet !
                 </p>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-                    <div class="glass-card rounded-2xl p-8">
+                <div class="flex justify-center max-w-6xl mx-auto">
+                    <div class="glass-card rounded-2xl p-8 w-full max-w-xl">
                         <h3 class="text-2xl font-bold mb-6">Informations de contact</h3>
                         
                         <div class="space-y-6">
@@ -911,28 +989,38 @@
                             </div>
                             
                             <div class="flex items-start">
-                                <div class="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mr-4">
-                                    <i class="fab fa-instagram text-accent"></i>
+                                <div class="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                    <i class="fas fa-share-alt text-accent"></i>
                                 </div>
-                                <div>
-                                    <h4 class="font-bold mb-1">Réseaux</h4>
-                                    <p class="text-gray">
-                                        <a href="https://www.instagram.com/dj.art4m/" target="_blank" class="social-icon">
-                                            <i class="fab fa-instagram text-2xl text-gray hover:text-accent transition-colors"></i>
+                                <div class="flex-1">
+                                    <h4 class="font-bold mb-4">Réseaux</h4>
+                                    <div class="flex flex-col gap-3">
+                                        <a href="https://www.instagram.com/dj.art4m/" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group" style="background: rgba(225,48,108,0.1); border: 1px solid rgba(225,48,108,0.3);">
+                                            <i class="fab fa-instagram text-xl" style="color:#E1306C;"></i>
+                                            <span class="font-medium text-secondary group-hover:text-white transition-colors">Instagram</span>
+                                            <span class="text-gray text-sm ml-auto">@dj.art4m</span>
                                         </a>
-                                        <a href="https://www.tiktok.com/@dj.art4m" target="_blank" class="social-icon">
-                                            <i class="fab fa-tiktok text-2xl text-gray hover:text-accent transition-colors"></i>
+                                        <a href="https://www.tiktok.com/@dj.art4m" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15);">
+                                            <i class="fab fa-tiktok text-xl text-white"></i>
+                                            <span class="font-medium text-secondary group-hover:text-white transition-colors">TikTok</span>
+                                            <span class="text-gray text-sm ml-auto">@dj.art4m</span>
                                         </a>
-                                        <a href="https://www.youtube.com/@dj.art4m" target="_blank" class="social-icon">
-                                            <i class="fab fa-youtube text-2xl text-gray hover:text-accent transition-colors"></i>
+                                        <a href="https://www.youtube.com/@dj.art4m" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group" style="background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.3);">
+                                            <i class="fab fa-youtube text-xl" style="color:#FF0000;"></i>
+                                            <span class="font-medium text-secondary group-hover:text-white transition-colors">YouTube</span>
+                                            <span class="text-gray text-sm ml-auto">@dj.art4m</span>
                                         </a>
-                                        <a href="https://www.twitch.tv/djart4m" target="_blank" class="social-icon">
-                                            <i class="fab fa-twitch text-2xl text-gray hover:text-accent transition-colors"></i>
+                                        <a href="https://www.twitch.tv/djart4m" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group" style="background: rgba(145,71,255,0.1); border: 1px solid rgba(145,71,255,0.3);">
+                                            <i class="fab fa-twitch text-xl" style="color:#9147FF;"></i>
+                                            <span class="font-medium text-secondary group-hover:text-white transition-colors">Twitch</span>
+                                            <span class="text-gray text-sm ml-auto">djart4m</span>
                                         </a>
-                                        <a href="https://soundcloud.com/djart4m" target="_blank" class="social-icon">
-                                            <i class="fab fa-soundcloud text-2xl text-gray hover:text-accent transition-colors"></i>
+                                        <a href="https://soundcloud.com/djart4m" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group" style="background: rgba(255,85,0,0.1); border: 1px solid rgba(255,85,0,0.3);">
+                                            <i class="fab fa-soundcloud text-xl" style="color:#FF5500;"></i>
+                                            <span class="font-medium text-secondary group-hover:text-white transition-colors">SoundCloud</span>
+                                            <span class="text-gray text-sm ml-auto">djart4m</span>
                                         </a>
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -947,70 +1035,59 @@
                         </div>
                     </div>
                     
-                    <div class="glass-card rounded-2xl p-8">
-                        <h3 class="text-2xl font-bold mb-6">Formulaire de contact</h3>
-                        
-                        <form id="contactForm" class="space-y-6">
-                            <div>
-                                <label class="block text-gray mb-2">Nom complet *</label>
-                                <input 
-                                    type="text" 
-                                    required 
-                                    class="w-full bg-primary border border-gray/30 rounded-lg px-4 py-3 text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
-                                    placeholder="Votre nom"
-                                >
-                            </div>
-                            
-                            <div>
-                                <label class="block text-gray mb-2">Email *</label>
-                                <input 
-                                    type="email" 
-                                    required 
-                                    class="w-full bg-primary border border-gray/30 rounded-lg px-4 py-3 text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
-                                    placeholder="votre@email.com"
-                                >
-                            </div>
-                            
-                            <div>
-                                <label class="block text-gray mb-2">Type d'événement *</label>
-                                <select 
-                                    class="w-full bg-primary border border-gray/30 rounded-lg px-4 py-3 text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
-                                >
-                                    <option value="">Sélectionnez un type</option>
-                                    <option value="bar">Bar / Club</option>
-                                    <option value="private">Soirée privée</option>
-                                    <option value="corporate">Événement</option>
-                                    <option value="other">Autre</option>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-gray mb-2">Date de l'événement</label>
-                                <input 
-                                    type="date" 
-                                    class="w-full bg-primary border border-gray/30 rounded-lg px-4 py-3 text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
-                                >
-                            </div>
-                            
-                            <div>
-                                <label class="block text-gray mb-2">Message *</label>
-                                <textarea 
-                                    rows="4" 
-                                    required 
-                                    class="w-full bg-primary border border-gray/30 rounded-lg px-4 py-3 text-secondary focus:outline-none focus:ring-2 focus:ring-accent"
-                                    placeholder="Décrivez votre événement, vos attentes, le style musical souhaité..."
-                                ></textarea>
-                            </div>
-                            
-                            <button type="submit" class="btn-primary w-full py-3 rounded-lg font-semibold text-lg">
-                                <i class="fas fa-paper-plane mr-2"></i>Envoyer la demande
-                            </button>
-                        </form>
-                    </div>
+
                 </div>
             </div>
         </section>
     </main>
+
+        <!-- Live Section -->
+        <section id="live" class="section-transition hidden min-h-screen py-20 pt-24 bg-primary">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center mb-4 flex items-center justify-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse inline-block"></span>
+                    En direct sur Twitch
+                </h2>
+                <p class="text-gray text-center mb-10 max-w-2xl mx-auto">
+                    DJ Arthur est actuellement en live — rejoins le stream !
+                </p>
+
+                <!-- Player + Chat côte à côte sur desktop -->
+                <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-4">
+
+                    <!-- Player Twitch -->
+                    <div class="flex-1 rounded-2xl overflow-hidden glass-card" style="min-height:420px; position:relative;">
+                        <iframe
+                            src="https://player.twitch.tv/?channel=djart4m&parent=localhost&parent=djarthur.fr&autoplay=true"
+                            allowfullscreen
+                            style="position:absolute;inset:0;width:100%;height:100%;border:none;">
+                        </iframe>
+                    </div>
+
+                    <!-- Chat Twitch -->
+                    <div class="lg:w-80 rounded-2xl overflow-hidden glass-card" style="min-height:420px;">
+                        <div class="flex items-center gap-2 px-4 py-3 border-b border-white/10">
+                            <i class="fas fa-comments text-accent"></i>
+                            <span class="font-bold text-sm">Chat Twitch</span>
+                        </div>
+                        <iframe
+                            src="https://www.twitch.tv/embed/djart4m/chat?parent=localhost&parent=djarthur.fr&darkpopout"
+                            style="width:100%;height:calc(100% - 44px);border:none;display:block;">
+                        </iframe>
+                    </div>
+
+                </div>
+
+                <!-- Lien direct -->
+                <div class="text-center mt-8">
+                    <a href="https://www.twitch.tv/djart4m" target="_blank"
+                       class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300"
+                       style="background:rgba(145,71,255,0.15);border:2px solid #9147FF;color:#9147FF;">
+                        <i class="fab fa-twitch"></i> Ouvrir sur Twitch
+                    </a>
+                </div>
+            </div>
+        </section>
 
     <!-- Footer -->
     <footer class="bg-primary border-t border-gray/20 pt-12 pb-6" style="font-family: 'Poppins', sans-serif;">
@@ -1242,55 +1319,96 @@
             const center = document.querySelector('.waveform-center');
             const numBars = 60; // Number of bars around the circle
             
-            // Create bars with staggered beat animation
+            // Create bars grouped in clusters of 3-8 with dynamic changing beat per group
+            const groups = [];
+            let gi = 0;
+            while (gi < numBars) {
+                const groupSize = 3 + Math.floor(Math.random() * 6);
+                groups.push({ start: gi, size: groupSize });
+                gi += groupSize;
+            }
+
+            // Assigne des propriétés initiales à chaque groupe
+            function randomGroupProps(neighborDurations = []) {
+                // Si des voisins existent, on contraint la durée proche d'eux (±25%)
+                let duration;
+                if (neighborDurations.length > 0) {
+                    const avgNeighbor = neighborDurations.reduce((a, b) => a + b, 0) / neighborDurations.length;
+                    const minD = Math.max(0.6, avgNeighbor * 0.75);
+                    const maxD = Math.min(2.2, avgNeighbor * 1.25);
+                    duration = minD + Math.random() * (maxD - minD);
+                } else {
+                    duration = 0.8 + Math.random() * 1.0;
+                }
+                return {
+                    duration,
+                    extraHeight: 8 + Math.random() * 25,
+                    delay: Math.random() * duration
+                };
+            }
+
+            const groupProps = groups.map(() => ({ duration: 0.8 + Math.random() * 1.0, extraHeight: 8 + Math.random() * 25, delay: Math.random() * 1.5 }));
+
+            // Lisse les durées initiales pour que les voisins soient cohérents
+            for (let pass = 0; pass < 3; pass++) {
+                groupProps.forEach((p, idx) => {
+                    const neighbors = [groupProps[idx - 1], groupProps[idx + 1]].filter(Boolean);
+                    if (neighbors.length) {
+                        const avg = neighbors.reduce((a, n) => a + n.duration, 0) / neighbors.length;
+                        p.duration = p.duration * 0.5 + avg * 0.5;
+                    }
+                });
+            }
+
+            // Crée les barres
             for (let i = 0; i < numBars; i++) {
                 const bar = document.createElement('div');
                 bar.className = 'waveform-bar';
                 
                 const angle = (i / numBars) * 360;
-                bar.style.transform = `rotate(${angle}deg) translateY(-95px)`;
-                bar.dataset.baseTransform = `rotate(${angle}deg) translateY(-95px)`;
+                bar.style.transform = `rotate(${angle}deg) translateY(-115px)`;
+                bar.dataset.baseTransform = `rotate(${angle}deg) translateY(-115px)`;
                 bar.dataset.index = i;
-                
-                // Stagger the beat animation
-                bar.style.animationDelay = `${(i / numBars) * 0.3}s`;
+                bar.dataset.group = groups.findIndex(g => i >= g.start && i < g.start + g.size);
                 
                 waveform.appendChild(bar);
             }
-            
-            const bars = waveform.querySelectorAll('.waveform-bar');
-            
-            // Random wave effects
-            function createRandomWave() {
-                const randomAngle = Math.random() * 360;
-                const waveWidth = 40 + Math.random() * 40; // Between 40 and 80 degrees
-                
-                bars.forEach((bar, index) => {
-                    const barAngle = (index / numBars) * 360;
-                    let diff = Math.abs(randomAngle - barAngle);
-                    if (diff > 180) diff = 360 - diff;
-                    
-                    if (diff < waveWidth / 2) {
-                        setTimeout(() => {
-                            bar.classList.add('wave-effect');
-                            setTimeout(() => {
-                                bar.classList.remove('wave-effect');
-                            }, 2000);
-                        }, (diff / (waveWidth / 2)) * 300);
-                    }
+
+            // Applique les propriétés courantes à toutes les barres d'un groupe
+            function applyGroupProps(groupIndex) {
+                const props = groupProps[groupIndex];
+                const group = groups[groupIndex];
+                document.querySelectorAll(`.waveform-bar[data-group="${groupIndex}"]`).forEach(bar => {
+                    bar.style.animationDuration = `${props.duration}s`;
+                    bar.style.animationDelay = `-${props.delay}s`;
+                    bar.style.setProperty('--extra-height', `${90 + props.extraHeight}px`);
                 });
             }
-            
-            // Start random waves
-            function startRandomWaves() {
-                createRandomWave();
-                const nextWave = 3000 + Math.random() * 4000; // Between 3-7 seconds
-                setTimeout(startRandomWaves, nextWave);
+
+            // Initialise tous les groupes
+            groups.forEach((_, idx) => applyGroupProps(idx));
+
+            // Fait évoluer chaque groupe indépendamment à intervalles aléatoires
+            function scheduleGroupChange(groupIndex) {
+                const interval = 2000 + Math.random() * 4000;
+                setTimeout(() => {
+                    // Récupère les durées des voisins immédiats
+                    const neighborDurations = [groupProps[groupIndex - 1], groupProps[groupIndex + 1]]
+                        .filter(Boolean).map(p => p.duration);
+                    groupProps[groupIndex] = randomGroupProps(neighborDurations);
+                    applyGroupProps(groupIndex);
+                    scheduleGroupChange(groupIndex);
+                }, interval);
             }
+
+            groups.forEach((_, idx) => {
+                // Décalage initial aléatoire pour que les groupes ne changent pas tous en même temps
+                setTimeout(() => scheduleGroupChange(idx), Math.random() * 3000);
+            });
             
-            // Initial delay before first wave
-            setTimeout(startRandomWaves, 2000);
-            
+            const bars = waveform.querySelectorAll('.waveform-bar');
+
+            // Vague aléatoire harmonisée — propagation continue sans écart
             // Mouse move interaction with progressive gradient
             container.addEventListener('mousemove', (e) => {
                 const rect = container.getBoundingClientRect();
@@ -1299,6 +1417,19 @@
                 
                 const mouseX = e.clientX;
                 const mouseY = e.clientY;
+
+                // Si la souris est sur le cercle central (rayon 110px), on bloque l'effet hover
+                const distToCenter = Math.sqrt((mouseX - centerX) ** 2 + (mouseY - centerY) ** 2);
+                if (distToCenter < 120) {
+                    bars.forEach(bar => {
+                        bar.style.height = '';
+                        bar.style.background = '';
+                        bar.style.boxShadow = '';
+                        bar.style.filter = '';
+                        bar.dataset.mouseActive = 'false';
+                    });
+                    return;
+                }
                 
                 // Calculate angle of mouse relative to center
                 const deltaX = mouseX - centerX;
@@ -1373,6 +1504,7 @@
                 });
             });
             
+            // Click sur le cercle central : agrandissement qui cache les ondes
             // Mouse leave - return to normal
             container.addEventListener('mouseleave', () => {
                 bars.forEach(bar => {
@@ -1457,51 +1589,6 @@
                 requestAnimationFrame(mobileLoop);
             })();
 
-            // Click interaction - create expanding wave
-            container.addEventListener('click', (e) => {
-                const rect = container.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-                
-                const clickX = e.clientX;
-                const clickY = e.clientY;
-                
-                // Calculate click angle
-                const deltaX = clickX - centerX;
-                const deltaY = clickY - centerY;
-                const clickAngle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 90;
-                const normalizedClickAngle = (clickAngle + 360) % 360;
-                
-                // Get current rotation
-                const computedStyle = window.getComputedStyle(waveform);
-                const matrix = computedStyle.transform;
-                let currentRotation = 0;
-                
-                if (matrix !== 'none') {
-                    const values = matrix.split('(')[1].split(')')[0].split(',');
-                    const a = values[0];
-                    const b = values[1];
-                    currentRotation = Math.round(Math.atan2(b, a) * (180 / Math.PI));
-                    if (currentRotation < 0) currentRotation += 360;
-                }
-                
-                // Create expanding wave from click point
-                bars.forEach((bar, index) => {
-                    const barAngle = (index / numBars) * 360;
-                    const adjustedBarAngle = (barAngle + currentRotation) % 360;
-                    
-                    let diff = Math.abs(normalizedClickAngle - adjustedBarAngle);
-                    if (diff > 180) diff = 360 - diff;
-                    
-                    // Delay based on distance from click point
-                    setTimeout(() => {
-                        bar.classList.add('wave-effect');
-                        setTimeout(() => {
-                            bar.classList.remove('wave-effect');
-                        }, 2000);
-                    }, diff * 5);
-                });
-            });
         });
         // Load songs into select
         function loadSongs(filter = "") {
@@ -1793,6 +1880,95 @@
             card.style.transform = '';
           });
         });
+
+        // ── Section LIVE — détection Twitch automatique ──
+        (function() {
+            const TWITCH_CLIENT_ID = '9p1hpvdcf0swj3tk70ww6i2bmklp47';
+            const TWITCH_USER      = 'djart4m';
+            const CHECK_INTERVAL   = 60000; // vérification toutes les 60s
+            let chatOpen = false;
+
+            const navDesktop   = document.getElementById('nav-live-desktop');
+            const navMobile    = document.getElementById('nav-live-mobile');
+            const liveSection  = document.getElementById('live');
+
+            // Récupère d'abord l'user_id Twitch, puis vérifie le stream
+            async function checkTwitchLive() {
+                try {
+                    // Étape 1 : obtenir l'user_id depuis le login
+                    const userRes = await fetch(
+                        `https://api.twitch.tv/helix/users?login=${TWITCH_USER}`,
+                        { headers: { 'Client-ID': TWITCH_CLIENT_ID } }
+                    );
+                    const userData = await userRes.json();
+                    if (!userData.data || !userData.data[0]) return setLiveState(false);
+                    const userId = userData.data[0].id;
+
+                    // Étape 2 : vérifier si le stream est actif
+                    const streamRes = await fetch(
+                        `https://api.twitch.tv/helix/streams?user_id=${userId}`,
+                        { headers: { 'Client-ID': TWITCH_CLIENT_ID } }
+                    );
+                    const streamData = await streamRes.json();
+                    const isLive = streamData.data && streamData.data.length > 0 && streamData.data[0].type === 'live';
+                    setLiveState(isLive);
+                } catch(e) {
+                    // En cas d'erreur réseau, on ne change pas l'état
+                    console.warn('Twitch API error:', e);
+                }
+            }
+
+            function setLiveState(isLive) {
+                if (isLive) {
+                    // Afficher le lien nav et la section
+                    navDesktop.classList.remove('hidden');
+                    navMobile.classList.remove('hidden');
+                    liveSection.dataset.liveActive = 'true';
+                } else {
+                    // Cacher le lien nav
+                    navDesktop.classList.add('hidden');
+                    navMobile.classList.add('hidden');
+                    liveSection.dataset.liveActive = 'false';
+                    // Si l'utilisateur est sur la section live et que le live s'arrête → rediriger
+                    if (liveSection.classList.contains('active')) {
+                        if (typeof showSection === 'function') showSection('home', null);
+                    }
+                }
+            }
+
+            window.toggleLiveChat = function() {
+                const wrapper = document.getElementById('live-chat-wrapper');
+                const chevron = document.getElementById('chat-chevron');
+                chatOpen = !chatOpen;
+                wrapper.classList.toggle('hidden', !chatOpen);
+                chevron.style.transform = chatOpen ? 'rotate(180deg)' : '';
+            };
+
+            // Lancement immédiat + vérification périodique
+            checkTwitchLive();
+            setInterval(checkTwitchLive, CHECK_INTERVAL);
+        })();
+        (function() {
+            const CENTER_TRIGGER_RADIUS = 38; // px — zone du vrai centre
+            const waveformCenter = document.querySelector('.waveform-center');
+            if (!waveformCenter) return;
+
+            document.addEventListener('mousemove', function(e) {
+                const rect = waveformCenter.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+                if (dist <= CENTER_TRIGGER_RADIUS) {
+                    waveformCenter.classList.add('center-hovered');
+                } else {
+                    waveformCenter.classList.remove('center-hovered');
+                }
+            });
+
+            document.addEventListener('mouseleave', function() {
+                waveformCenter.classList.remove('center-hovered');
+            });
+        })();
 
 
     </script>
