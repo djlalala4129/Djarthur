@@ -169,6 +169,31 @@
             position: relative;
             cursor: pointer;
         }
+
+        @media (max-width: 768px) {
+            .waveform-container {
+                height: 220px;
+                width: 220px;
+            }
+            .waveform-center {
+                width: 160px !important;
+                height: 160px !important;
+            }
+            .waveform-center .logo-dj {
+                font-size: 24px !important;
+            }
+            .waveform-center .logo-arthur {
+                font-size: 20px !important;
+            }
+            /* Waveform en bas sur mobile */
+            #home .hero-inner {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            #home .hero-waveform { order: 3; }
+            #home .hero-scroll   { order: 2; }
+        }
         
         .waveform-circle {
             position: absolute;
@@ -663,7 +688,7 @@
                 <div class="container mx-auto px-6 py-24">
                     <div class="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
                         <!-- Gauche : bouton + badges genres -->
-                        <div class="flex-shrink-0 flex flex-col items-center gap-6">
+                        <div class="flex-shrink-0 flex flex-col items-center gap-6 order-2 md:order-1">
                             <button onclick="showSection('demo', event); return false;" class="btn-neon px-10 py-4 rounded-full font-bold text-lg whitespace-nowrap">
                                 <i class="fas fa-headphones mr-2"></i>MES DÉMOS
                             </button>
@@ -677,7 +702,7 @@
                             </div>
                         </div>
                         <!-- Droite : description -->
-                        <div class="flex-1 text-left">
+                        <div class="flex-1 text-left order-1 md:order-2">
                             <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 gradient-text">Mes Démos</h2>
                             <p class="text-secondary text-lg leading-relaxed mb-4">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
@@ -1361,27 +1386,40 @@
             }
 
             // Crée les barres
+            const barTranslate = window.innerWidth <= 768 ? 68 : 115;
             for (let i = 0; i < numBars; i++) {
                 const bar = document.createElement('div');
                 bar.className = 'waveform-bar';
                 
                 const angle = (i / numBars) * 360;
-                bar.style.transform = `rotate(${angle}deg) translateY(-115px)`;
-                bar.dataset.baseTransform = `rotate(${angle}deg) translateY(-115px)`;
+                bar.style.transform = `rotate(${angle}deg) translateY(-${barTranslate}px)`;
+                bar.dataset.baseTransform = `rotate(${angle}deg) translateY(-${barTranslate}px)`;
+                bar.dataset.angle = angle;
                 bar.dataset.index = i;
                 bar.dataset.group = groups.findIndex(g => i >= g.start && i < g.start + g.size);
                 
                 waveform.appendChild(bar);
             }
 
+            window.addEventListener('resize', () => {
+                const t = window.innerWidth <= 768 ? 68 : 115;
+                document.querySelectorAll('.waveform-bar').forEach(bar => {
+                    bar.style.transform = `rotate(${bar.dataset.angle}deg) translateY(-${t}px)`;
+                    bar.dataset.baseTransform = `rotate(${bar.dataset.angle}deg) translateY(-${t}px)`;
+                });
+            });
+
             // Applique les propriétés courantes à toutes les barres d'un groupe
             function applyGroupProps(groupIndex) {
                 const props = groupProps[groupIndex];
                 const group = groups[groupIndex];
+                const mobile = window.innerWidth <= 768;
+                const baseH = mobile ? 50 : 90;
                 document.querySelectorAll(`.waveform-bar[data-group="${groupIndex}"]`).forEach(bar => {
                     bar.style.animationDuration = `${props.duration}s`;
                     bar.style.animationDelay = `-${props.delay}s`;
-                    bar.style.setProperty('--extra-height', `${90 + props.extraHeight}px`);
+                    bar.style.setProperty('--extra-height', `${baseH + props.extraHeight}px`);
+                    bar.style.height = baseH + 'px';
                 });
             }
 
@@ -1954,6 +1992,10 @@
             if (!waveformCenter) return;
 
             document.addEventListener('mousemove', function(e) {
+                if (window.innerWidth <= 768) {
+                    waveformCenter.classList.remove('center-hovered');
+                    return;
+                }
                 const rect = waveformCenter.getBoundingClientRect();
                 const cx = rect.left + rect.width / 2;
                 const cy = rect.top + rect.height / 2;
