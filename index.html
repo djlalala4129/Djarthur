@@ -1144,55 +1144,69 @@
                 </div>
             </div>
         </section>
-    </main>
 
         <!-- Live Section -->
-        <section id="live" class="section-transition hidden min-h-screen py-20 pt-24 bg-primary">
+        <section id="live" class="section hidden min-h-screen py-20 pt-24 bg-primary">
             <div class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-center mb-4 flex items-center justify-center gap-3">
-                    <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse inline-block"></span>
-                    En direct sur Twitch
-                </h2>
-                <p class="text-gray text-center mb-10 max-w-2xl mx-auto">
-                    DJ Arthur est actuellement en live — rejoins le stream !
-                </p>
+                <!-- Header avec badge LIVE -->
+                <div class="text-center mb-10">
+                    <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full mb-6" style="background:rgba(255,0,0,0.12);border:1px solid rgba(255,60,60,0.4);">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+                        <span class="text-red-400 font-bold text-sm tracking-widest uppercase">En direct</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold mb-4" style="background: linear-gradient(135deg, #9147FF 0%, #bf6fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        DJ Arthur est LIVE
+                    </h2>
+                    <p class="text-gray text-lg max-w-xl mx-auto">
+                        Rejoins le stream sur Twitch — écoute, regarde et discute en direct !
+                    </p>
+                </div>
 
                 <!-- Player + Chat côte à côte sur desktop -->
-                <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-4">
+                <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-4" style="height: clamp(420px, 60vh, 700px);">
 
                     <!-- Player Twitch -->
-                    <div class="flex-1 rounded-2xl overflow-hidden glass-card" style="min-height:420px; position:relative;">
+                    <div class="flex-1 rounded-2xl overflow-hidden glass-card" style="border-color: rgba(145,71,255,0.4); position:relative; min-height:320px;">
+                        <div class="absolute inset-0 flex items-center justify-center z-0" style="background:#0d0d0d;">
+                            <i class="fab fa-twitch text-6xl" style="color:rgba(145,71,255,0.2);"></i>
+                        </div>
                         <iframe
-                            src="https://player.twitch.tv/?channel=djart4m&parent=localhost&parent=djarthur.fr&autoplay=true"
+                            id="twitch-player-iframe"
+                            src="https://player.twitch.tv/?channel=djart4m&parent=localhost&parent=djarthur.fr&autoplay=true&muted=false"
                             allowfullscreen
-                            style="position:absolute;inset:0;width:100%;height:100%;border:none;">
+                            style="position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1;">
                         </iframe>
                     </div>
 
                     <!-- Chat Twitch -->
-                    <div class="lg:w-80 rounded-2xl overflow-hidden glass-card" style="min-height:420px;">
-                        <div class="flex items-center gap-2 px-4 py-3 border-b border-white/10">
-                            <i class="fas fa-comments text-accent"></i>
-                            <span class="font-bold text-sm">Chat Twitch</span>
+                    <div class="lg:w-80 rounded-2xl overflow-hidden glass-card flex flex-col" style="border-color: rgba(145,71,255,0.4); min-height:320px;">
+                        <div class="flex items-center gap-2 px-4 py-3 flex-shrink-0" style="background:rgba(145,71,255,0.1); border-bottom: 1px solid rgba(145,71,255,0.2);">
+                            <i class="fas fa-comments" style="color:#9147FF;"></i>
+                            <span class="font-bold text-sm text-secondary">Chat en direct</span>
+                            <span class="ml-auto w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
                         </div>
-                        <iframe
-                            src="https://www.twitch.tv/embed/djart4m/chat?parent=localhost&parent=djarthur.fr&darkpopout"
-                            style="width:100%;height:calc(100% - 44px);border:none;display:block;">
-                        </iframe>
+                        <div class="flex-1" style="min-height:0;">
+                            <iframe
+                                src="https://www.twitch.tv/embed/djart4m/chat?parent=localhost&parent=djarthur.fr&darkpopout"
+                                style="width:100%;height:100%;min-height:300px;border:none;display:block;">
+                            </iframe>
+                        </div>
                     </div>
 
                 </div>
 
-                <!-- Lien direct -->
+                <!-- Bouton Twitch -->
                 <div class="text-center mt-8">
                     <a href="https://www.twitch.tv/djart4m" target="_blank"
-                       class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300"
-                       style="background:rgba(145,71,255,0.15);border:2px solid #9147FF;color:#9147FF;">
-                        <i class="fab fa-twitch"></i> Ouvrir sur Twitch
+                       class="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105"
+                       style="background:rgba(145,71,255,0.2);border:2px solid #9147FF;color:#bf6fff;box-shadow:0 0 30px rgba(145,71,255,0.2);">
+                        <i class="fab fa-twitch text-xl"></i> Ouvrir sur Twitch
                     </a>
                 </div>
             </div>
         </section>
+
+    </main>
 
     <!-- Footer -->
     <footer class="bg-primary border-t border-gray/20 pt-12 pb-6" style="font-family: 'Poppins', sans-serif;">
@@ -1846,72 +1860,101 @@
           });
         });
 
-        // ── Section LIVE — détection Twitch automatique ──
+        // ── Section LIVE — détection via Twitch Embed API ──
         (function() {
-            const TWITCH_CLIENT_ID = '9p1hpvdcf0swj3tk70ww6i2bmklp47';
-            const TWITCH_USER      = 'djart4m';
-            const CHECK_INTERVAL   = 60000; // vérification toutes les 60s
-            let chatOpen = false;
+            const TWITCH_USER    = 'djart4m';
+            const CHECK_INTERVAL = 90000; // re-vérif toutes les 90s
+            let player           = null;
+            let playerReady      = false;
+            let currentLiveState = null; // null = inconnu
 
-            const navDesktop   = document.getElementById('nav-live-desktop');
-            const navMobile    = document.getElementById('nav-live-mobile');
-            const liveSection  = document.getElementById('live');
-
-            // Récupère d'abord l'user_id Twitch, puis vérifie le stream
-            async function checkTwitchLive() {
-                try {
-                    // Étape 1 : obtenir l'user_id depuis le login
-                    const userRes = await fetch(
-                        `https://api.twitch.tv/helix/users?login=${TWITCH_USER}`,
-                        { headers: { 'Client-ID': TWITCH_CLIENT_ID } }
-                    );
-                    const userData = await userRes.json();
-                    if (!userData.data || !userData.data[0]) return setLiveState(false);
-                    const userId = userData.data[0].id;
-
-                    // Étape 2 : vérifier si le stream est actif
-                    const streamRes = await fetch(
-                        `https://api.twitch.tv/helix/streams?user_id=${userId}`,
-                        { headers: { 'Client-ID': TWITCH_CLIENT_ID } }
-                    );
-                    const streamData = await streamRes.json();
-                    const isLive = streamData.data && streamData.data.length > 0 && streamData.data[0].type === 'live';
-                    setLiveState(isLive);
-                } catch(e) {
-                    // En cas d'erreur réseau, on ne change pas l'état
-                    console.warn('Twitch API error:', e);
-                }
-            }
+            const navDesktop  = document.getElementById('nav-live-desktop');
+            const navMobile   = document.getElementById('nav-live-mobile');
+            const liveSection = document.getElementById('live');
 
             function setLiveState(isLive) {
+                if (isLive === currentLiveState) return; // pas de changement
+                currentLiveState = isLive;
+
                 if (isLive) {
-                    // Afficher le lien nav et la section
                     navDesktop.classList.remove('hidden');
                     navMobile.classList.remove('hidden');
                     liveSection.dataset.liveActive = 'true';
                 } else {
-                    // Cacher le lien nav
                     navDesktop.classList.add('hidden');
                     navMobile.classList.add('hidden');
                     liveSection.dataset.liveActive = 'false';
-                    // Si l'utilisateur est sur la section live et que le live s'arrête → rediriger
+                    // Si l'utilisateur est sur la section live → rediriger
                     if (liveSection.classList.contains('active')) {
                         if (typeof showSection === 'function') showSection('home', null);
                     }
                 }
             }
 
-            window.toggleLiveChat = function() {
-                const wrapper = document.getElementById('live-chat-wrapper');
-                const chevron = document.getElementById('chat-chevron');
-                chatOpen = !chatOpen;
-                wrapper.classList.toggle('hidden', !chatOpen);
-                chevron.style.transform = chatOpen ? 'rotate(180deg)' : '';
-            };
+            // Vérification via un iframe caché Twitch (channel page status)
+            // On utilise l'API Twitch embed pour détecter l'état
+            function checkViaEmbed() {
+                if (player && playerReady) {
+                    try {
+                        // Si le player n'est pas en offline, le stream est live
+                        const offline = player.getQualities().length === 0 || 
+                                        player.getChannelName() === '';
+                        // On détecte via isPaused + channel — si le stream est offline
+                        // l'embed affiche une page offline, pas un flux
+                        // La méthode la plus fiable : écouter l'event OFFLINE
+                    } catch(e) {}
+                }
+            }
 
-            // Lancement immédiat + vérification périodique
-            checkTwitchLive();
-            setInterval(checkTwitchLive, CHECK_INTERVAL);
+            // Initialiser le Twitch Embed Player (SDK officiel)
+            function initTwitchPlayer() {
+                if (!window.Twitch || !window.Twitch.Embed) return;
+
+                // Conteneur invisible pour la détection
+                let detectDiv = document.getElementById('twitch-detect');
+                if (!detectDiv) {
+                    detectDiv = document.createElement('div');
+                    detectDiv.id = 'twitch-detect';
+                    detectDiv.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;';
+                    document.body.appendChild(detectDiv);
+                }
+
+                player = new window.Twitch.Embed('twitch-detect', {
+                    width:  1,
+                    height: 1,
+                    channel: TWITCH_USER,
+                    autoplay: false,
+                    muted: true,
+                    layout: 'video',
+                });
+
+                player.addEventListener(window.Twitch.Embed.ONLINE,  () => setLiveState(true));
+                player.addEventListener(window.Twitch.Embed.OFFLINE, () => setLiveState(false));
+                player.addEventListener(window.Twitch.Embed.READY,   () => {
+                    playerReady = true;
+                    // ONLINE/OFFLINE se déclenche automatiquement après READY
+                });
+            }
+
+            // Charger le SDK Twitch puis initialiser
+            function loadTwitchSDK() {
+                if (window.Twitch && window.Twitch.Embed) {
+                    initTwitchPlayer();
+                    return;
+                }
+                const script = document.createElement('script');
+                script.src = 'https://embed.twitch.tv/embed/v1.js';
+                script.onload = initTwitchPlayer;
+                script.onerror = () => console.warn('Twitch SDK unavailable');
+                document.head.appendChild(script);
+            }
+
+            // Lancement
+            loadTwitchSDK();
+            // Re-init périodique (au cas où les events ne se déclenchent pas)
+            setInterval(() => {
+                if (!playerReady) loadTwitchSDK();
+            }, CHECK_INTERVAL);
         })();
         (function() {
             const CENTER_TRIGGER_RADIUS = 38; // px — zone du vrai centre
