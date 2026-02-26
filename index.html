@@ -634,6 +634,8 @@
                         class="w-full h-full object-cover object-bottom"
                         loading="lazy"
                     />
+                    <!-- Film noir global pour adoucir l'image de fond -->
+                    <div class="absolute inset-0" style="background: rgba(0,0,0,0.45);"></div>
                     <!-- Overlay léger uniquement en haut pour lisibilité du logo -->
                     <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.1) 40%, transparent 70%);"></div>
                     <!-- Transition nette vers le bloc suivant, seulement sur les derniers px -->
@@ -1344,60 +1346,26 @@
             const center = document.querySelector('.waveform-center');
             const numBars = 60; // Number of bars around the circle
             
-            // Create bars grouped in clusters of 3-8 with dynamic changing beat per group
-            const groups = [];
-            let gi = 0;
-            while (gi < numBars) {
-                const groupSize = 3 + Math.floor(Math.random() * 6);
-                groups.push({ start: gi, size: groupSize });
-                gi += groupSize;
-            }
-
-            // Assigne des propriétés initiales à chaque groupe
-            function randomGroupProps(neighborDurations = []) {
-                // Si des voisins existent, on contraint la durée proche d'eux (±25%)
-                let duration;
-                if (neighborDurations.length > 0) {
-                    const avgNeighbor = neighborDurations.reduce((a, b) => a + b, 0) / neighborDurations.length;
-                    const minD = Math.max(0.6, avgNeighbor * 0.75);
-                    const maxD = Math.min(2.2, avgNeighbor * 1.25);
-                    duration = minD + Math.random() * (maxD - minD);
-                } else {
-                    duration = 0.8 + Math.random() * 1.0;
-                }
-                return {
-                    duration,
-                    extraHeight: 8 + Math.random() * 25,
-                    delay: Math.random() * duration
-                };
-            }
-
-            const groupProps = groups.map(() => ({ duration: 0.8 + Math.random() * 1.0, extraHeight: 8 + Math.random() * 25, delay: Math.random() * 1.5 }));
-
-            // Lisse les durées initiales pour que les voisins soient cohérents
-            for (let pass = 0; pass < 3; pass++) {
-                groupProps.forEach((p, idx) => {
-                    const neighbors = [groupProps[idx - 1], groupProps[idx + 1]].filter(Boolean);
-                    if (neighbors.length) {
-                        const avg = neighbors.reduce((a, n) => a + n.duration, 0) / neighbors.length;
-                        p.duration = p.duration * 0.5 + avg * 0.5;
-                    }
-                });
-            }
-
-            // Crée les barres
+            // Crée les barres — une seule vague propagée autour du cercle
             const barTranslate = window.innerWidth <= 768 ? 68 : 115;
+            const mobile = window.innerWidth <= 768;
+            const baseH = mobile ? 50 : 90;
+
             for (let i = 0; i < numBars; i++) {
                 const bar = document.createElement('div');
                 bar.className = 'waveform-bar';
-                
                 const angle = (i / numBars) * 360;
                 bar.style.transform = `rotate(${angle}deg) translateY(-${barTranslate}px)`;
                 bar.dataset.baseTransform = `rotate(${angle}deg) translateY(-${barTranslate}px)`;
                 bar.dataset.angle = angle;
                 bar.dataset.index = i;
-                bar.dataset.group = groups.findIndex(g => i >= g.start && i < g.start + g.size);
-                
+                // Tous les bars ont la même durée de base, décalage en fonction de l'angle = vague unique
+                const waveDuration = 2.2;
+                const delay = -(i / numBars) * waveDuration;
+                bar.style.animationDuration = `${waveDuration}s`;
+                bar.style.animationDelay = `${delay}s`;
+                bar.style.setProperty('--extra-height', `${baseH + 22}px`);
+                bar.style.height = baseH + 'px';
                 waveform.appendChild(bar);
             }
 
@@ -1409,40 +1377,6 @@
                 });
             });
 
-            // Applique les propriétés courantes à toutes les barres d'un groupe
-            function applyGroupProps(groupIndex) {
-                const props = groupProps[groupIndex];
-                const group = groups[groupIndex];
-                const mobile = window.innerWidth <= 768;
-                const baseH = mobile ? 50 : 90;
-                document.querySelectorAll(`.waveform-bar[data-group="${groupIndex}"]`).forEach(bar => {
-                    bar.style.animationDuration = `${props.duration}s`;
-                    bar.style.animationDelay = `-${props.delay}s`;
-                    bar.style.setProperty('--extra-height', `${baseH + props.extraHeight}px`);
-                    bar.style.height = baseH + 'px';
-                });
-            }
-
-            // Initialise tous les groupes
-            groups.forEach((_, idx) => applyGroupProps(idx));
-
-            // Fait évoluer chaque groupe indépendamment à intervalles aléatoires
-            function scheduleGroupChange(groupIndex) {
-                const interval = 2000 + Math.random() * 4000;
-                setTimeout(() => {
-                    // Récupère les durées des voisins immédiats
-                    const neighborDurations = [groupProps[groupIndex - 1], groupProps[groupIndex + 1]]
-                        .filter(Boolean).map(p => p.duration);
-                    groupProps[groupIndex] = randomGroupProps(neighborDurations);
-                    applyGroupProps(groupIndex);
-                    scheduleGroupChange(groupIndex);
-                }, interval);
-            }
-
-            groups.forEach((_, idx) => {
-                // Décalage initial aléatoire pour que les groupes ne changent pas tous en même temps
-                setTimeout(() => scheduleGroupChange(idx), Math.random() * 3000);
-            });
             
             const bars = waveform.querySelectorAll('.waveform-bar');
 
