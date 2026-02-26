@@ -1165,17 +1165,9 @@
                 <!-- Player + Chat côte à côte sur desktop -->
                 <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-4" style="height: clamp(420px, 60vh, 700px);">
 
-                    <!-- Player Twitch -->
+                    <!-- Player Twitch (SDK Embed) -->
                     <div class="flex-1 rounded-2xl overflow-hidden glass-card" style="border-color: rgba(145,71,255,0.4); position:relative; min-height:320px;">
-                        <div class="absolute inset-0 flex items-center justify-center z-0" style="background:#0d0d0d;">
-                            <i class="fab fa-twitch text-6xl" style="color:rgba(145,71,255,0.2);"></i>
-                        </div>
-                        <iframe
-                            id="twitch-player-iframe"
-                            src="https://player.twitch.tv/?channel=djart4m&parent=localhost&parent=djarthur.pages.dev&autoplay=true&muted=false"
-                            allowfullscreen
-                            style="position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1;">
-                        </iframe>
+                        <div id="twitch-embed-player" style="position:absolute;inset:0;width:100%;height:100%;"></div>
                     </div>
 
                     <!-- Chat Twitch -->
@@ -1187,7 +1179,7 @@
                         </div>
                         <div class="flex-1" style="min-height:0;">
                             <iframe
-                                src="https://www.twitch.tv/embed/djart4m/chat?parent=localhost&parent=djarthur.pages.dev&darkpopout"
+                                src="https://www.twitch.tv/embed/djart4m/chat?parent=localhost&parent=djarthur.fr&darkpopout"
                                 style="width:100%;height:100%;min-height:300px;border:none;display:block;">
                             </iframe>
                         </div>
@@ -1860,101 +1852,60 @@
           });
         });
 
-        // ── Section LIVE — détection via Twitch Embed API ──
+        // ── Section LIVE — Twitch Embed SDK (un seul player, détection intégrée) ──
         (function() {
-            const TWITCH_USER    = 'djart4m';
-            const CHECK_INTERVAL = 90000; // re-vérif toutes les 90s
-            let player           = null;
-            let playerReady      = false;
-            let currentLiveState = null; // null = inconnu
-
+            const TWITCH_USER = 'djart4m';
             const navDesktop  = document.getElementById('nav-live-desktop');
             const navMobile   = document.getElementById('nav-live-mobile');
             const liveSection = document.getElementById('live');
+            let embedPlayer   = null;
+            let sdkLoaded     = false;
 
             function setLiveState(isLive) {
-                if (isLive === currentLiveState) return; // pas de changement
-                currentLiveState = isLive;
-
                 if (isLive) {
                     navDesktop.classList.remove('hidden');
                     navMobile.classList.remove('hidden');
-                    liveSection.dataset.liveActive = 'true';
                 } else {
                     navDesktop.classList.add('hidden');
                     navMobile.classList.add('hidden');
-                    liveSection.dataset.liveActive = 'false';
-                    // Si l'utilisateur est sur la section live → rediriger
                     if (liveSection.classList.contains('active')) {
                         if (typeof showSection === 'function') showSection('home', null);
                     }
                 }
             }
 
-            // Vérification via un iframe caché Twitch (channel page status)
-            // On utilise l'API Twitch embed pour détecter l'état
-            function checkViaEmbed() {
-                if (player && playerReady) {
-                    try {
-                        // Si le player n'est pas en offline, le stream est live
-                        const offline = player.getQualities().length === 0 || 
-                                        player.getChannelName() === '';
-                        // On détecte via isPaused + channel — si le stream est offline
-                        // l'embed affiche une page offline, pas un flux
-                        // La méthode la plus fiable : écouter l'event OFFLINE
-                    } catch(e) {}
-                }
-            }
-
-            // Initialiser le Twitch Embed Player (SDK officiel)
-            function initTwitchPlayer() {
+            function initEmbed() {
                 if (!window.Twitch || !window.Twitch.Embed) return;
+                if (sdkLoaded) return;
+                sdkLoaded = true;
 
-                // Conteneur invisible pour la détection
-                let detectDiv = document.getElementById('twitch-detect');
-                if (!detectDiv) {
-                    detectDiv = document.createElement('div');
-                    detectDiv.id = 'twitch-detect';
-                    detectDiv.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;';
-                    document.body.appendChild(detectDiv);
-                }
-
-                player = new window.Twitch.Embed('twitch-detect', {
-                    width:  1,
-                    height: 1,
-                    channel: TWITCH_USER,
-                    autoplay: false,
-                    muted: true,
-                    layout: 'video',
+                // Le SDK crée lui-même l'iframe dans le div cible
+                embedPlayer = new window.Twitch.Embed('twitch-embed-player', {
+                    width:     '100%',
+                    height:    '100%',
+                    channel:    TWITCH_USER,
+                    autoplay:   true,
+                    muted:      false,
+                    theme:      'dark',
+                    // Domaines autorisés (ajouter le vôtre si différent)
+                    parent:    ['localhost', 'djarthur.fr'],
                 });
 
-                player.addEventListener(window.Twitch.Embed.ONLINE,  () => setLiveState(true));
-                player.addEventListener(window.Twitch.Embed.OFFLINE, () => setLiveState(false));
-                player.addEventListener(window.Twitch.Embed.READY,   () => {
-                    playerReady = true;
-                    // ONLINE/OFFLINE se déclenche automatiquement après READY
+                // Events natifs du SDK — fiables et sans polling
+                embedPlayer.addEventListener(window.Twitch.Embed.ONLINE,  function() {
+                    setLiveState(true);
+                });
+                embedPlayer.addEventListener(window.Twitch.Embed.OFFLINE, function() {
+                    setLiveState(false);
                 });
             }
 
-            // Charger le SDK Twitch puis initialiser
-            function loadTwitchSDK() {
-                if (window.Twitch && window.Twitch.Embed) {
-                    initTwitchPlayer();
-                    return;
-                }
-                const script = document.createElement('script');
-                script.src = 'https://embed.twitch.tv/embed/v1.js';
-                script.onload = initTwitchPlayer;
-                script.onerror = () => console.warn('Twitch SDK unavailable');
-                document.head.appendChild(script);
-            }
-
-            // Lancement
-            loadTwitchSDK();
-            // Re-init périodique (au cas où les events ne se déclenchent pas)
-            setInterval(() => {
-                if (!playerReady) loadTwitchSDK();
-            }, CHECK_INTERVAL);
+            // Charger le SDK Twitch officiel
+            var script = document.createElement('script');
+            script.src = 'https://embed.twitch.tv/embed/v1.js';
+            script.onload  = initEmbed;
+            script.onerror = function() { console.warn('Twitch SDK non disponible'); };
+            document.head.appendChild(script);
         })();
         (function() {
             const CENTER_TRIGGER_RADIUS = 38; // px — zone du vrai centre
