@@ -619,6 +619,10 @@
                         <i class="fas fa-microphone mr-2"></i>Karaoké
                         <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
                     </a>
+                    <a onclick="showSection('setup', event); return false;" class="nav-link text-secondary hover:text-accent transition-colors font-medium cursor-pointer relative">
+                        <i class="fas fa-sliders-h mr-2"></i>Setup
+                        <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
+                    </a>
                     <a onclick="showSection('booking', event); return false;" class="nav-link text-secondary hover:text-accent transition-colors font-medium cursor-pointer relative">
                         <i class="fas fa-calendar-alt mr-2"></i>Contact
                         <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
@@ -636,26 +640,37 @@
         </div>
     </nav>
 
-    <!-- Mobile Menu -->
-    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-full h-full bg-dark/95 backdrop-blur-xl z-40 md:hidden">
-        <div class="flex flex-col items-center justify-center h-full gap-8">
-            <button id="closeMobileMenu" class="absolute top-6 right-6 text-accent text-3xl">
-                <i class="fas fa-times"></i>
-            </button>
-            <a onclick="showSection('home', event); closeMobileMenuFunc(); return false;" class="text-2xl font-heading text-gray hover:text-accent transition-colors">
-                <i class="fas fa-home mr-3"></i>ACCUEIL
+    <!-- Mobile Menu — panel latéral droit -->
+    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 h-full z-40 md:hidden flex flex-col" style="width:72px; background:rgba(8,10,20,0.97); backdrop-filter:blur(20px); border-left:1px solid rgba(7,96,238,0.25); box-shadow:-8px 0 32px rgba(0,0,0,0.6);">
+        <!-- Bouton fermeture (croix) en haut -->
+        <button id="closeMobileMenu" class="flex items-center justify-center text-accent text-xl mt-5 mb-8" style="height:44px;">
+            <i class="fas fa-times"></i>
+        </button>
+        <!-- Liens verticaux centrés -->
+        <div class="flex flex-col items-center gap-7 flex-1 justify-center pb-16">
+            <a onclick="showSection('home', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-accent transition-colors cursor-pointer group">
+                <i class="fas fa-home text-xl group-hover:text-accent transition-colors"></i>
+                <span class="text-gray group-hover:text-accent transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Accueil</span>
             </a>
-            <a onclick="showSection('demo', event); closeMobileMenuFunc(); return false;" class="text-2xl font-heading text-gray hover:text-accent transition-colors">
-                <i class="fas fa-music mr-3"></i>DÉMO
+            <a onclick="showSection('demo', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-accent transition-colors cursor-pointer group">
+                <i class="fas fa-music text-xl group-hover:text-accent transition-colors"></i>
+                <span class="text-gray group-hover:text-accent transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Démo</span>
             </a>
-            <a onclick="showSection('karaoke', event); closeMobileMenuFunc(); return false;" class="text-2xl font-heading text-gray hover:text-accent transition-colors">
-                <i class="fas fa-microphone mr-3"></i>KARAOKÉ
+            <a onclick="showSection('karaoke', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-accent transition-colors cursor-pointer group">
+                <i class="fas fa-microphone text-xl group-hover:text-accent transition-colors"></i>
+                <span class="text-gray group-hover:text-accent transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Karaoké</span>
             </a>
-            <a onclick="showSection('booking', event); closeMobileMenuFunc(); return false;" class="text-2xl font-heading text-gray hover:text-accent transition-colors">
-                <i class="fas fa-calendar-alt mr-3"></i>CONTACT
+            <a onclick="showSection('setup', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-accent transition-colors cursor-pointer group">
+                <i class="fas fa-sliders-h text-xl group-hover:text-accent transition-colors"></i>
+                <span class="text-gray group-hover:text-accent transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Setup</span>
             </a>
-            <a id="nav-live-mobile" onclick="showSection('live', event); closeMobileMenuFunc(); return false;" class="text-2xl font-heading text-gray hover:text-red-400 transition-colors flex items-center gap-3 hidden">
-                <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>LIVE
+            <a onclick="showSection('booking', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-accent transition-colors cursor-pointer group">
+                <i class="fas fa-calendar-alt text-xl group-hover:text-accent transition-colors"></i>
+                <span class="text-gray group-hover:text-accent transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Contact</span>
+            </a>
+            <a id="nav-live-mobile" onclick="showSection('live', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-red-400 transition-colors cursor-pointer group hidden">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+                <span class="text-gray group-hover:text-red-400 transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Live</span>
             </a>
         </div>
     </div>
@@ -1054,6 +1069,200 @@
             </div>
         </section>
 
+        <!-- Setup Section -->
+        <section id="setup" class="section-transition hidden min-h-screen py-20 pt-24 bg-primary">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center mb-4 font-display">
+                    <i class="fas fa-sliders-h text-accent mr-3"></i>Setup
+                </h2>
+                <p class="text-gray text-center mb-12 max-w-2xl mx-auto">
+                    Mon contrôleur principal : le <span class="text-accent font-semibold">Pioneer DDJ-FLX10</span>. Survole les zones pour découvrir les éléments clés de mon setup.
+                </p>
+
+                <div class="max-w-5xl mx-auto">
+                    <!-- Diagramme interactif avec vraie photo -->
+                    <div class="relative glass-card rounded-2xl p-6 md:p-10 overflow-hidden">
+                        <div class="relative w-full select-none" id="ddj-container" style="max-width:900px;margin:0 auto;">
+
+                            <!-- Photo réelle du DDJ-FLX10 -->
+                            <img src="ddj-flx10.webp" alt="Pioneer DDJ-FLX10" class="w-full h-auto rounded-xl block" id="ddj-img" draggable="false" style="filter: brightness(0.92) contrast(1.05);">
+
+                            <!-- Zones interactives (positionnées en % sur l'image) -->
+
+                            <!-- JOG GAUCHE — cercle parfait mesuré sur image 1320x1320 -->
+                            <div class="ddj-zone-img absolute cursor-pointer jog-zone" id="jog-left"
+                                data-zone="jog"
+                                data-title="🎛 Jog Wheel (Deck 1)"
+                                data-desc="Plateau tactile capacitif pour le scratch, le bend et le nudge. Prise douce = correction micro tempo. Prise ferme = scratch précis en temps réel."
+                                style="left:7.5%;top:35%;width:26.5%;height:26.5%;border-radius:50%;"></div>
+
+                            <!-- JOG DROIT — cercle parfait mesuré sur image 1320x1320 -->
+                            <div class="ddj-zone-img absolute cursor-pointer jog-zone" id="jog-right"
+                                data-zone="jog"
+                                data-title="🎛 Jog Wheel (Deck 2)"
+                                data-desc="Plateau tactile capacitif pour le scratch, le bend et le nudge. Prise douce = correction micro tempo. Prise ferme = scratch précis en temps réel."
+                                style="left:66%;top:35%;width:26.5%;height:26.5%;border-radius:50%;"></div>
+
+                            <!-- PADS GAUCHE — resserrés, remontés -->
+                            <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
+                                data-zone="pads"
+                                data-title="🎹 Performance Pads (Deck 1)"
+                                data-desc="8 pads rétroéclairés RGB. Hot Cues, Roll, Slicer, Sampler... Déclenchement de loops, effets de coupure et phrases musicales en live avec précision."
+                                style="left:12%;top:62%;width:16%;height:11%;"></div>
+
+                            <!-- PADS DROIT — resserrés, remontés -->
+                            <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
+                                data-zone="pads"
+                                data-title="🎹 Performance Pads (Deck 2)"
+                                data-desc="8 pads rétroéclairés RGB. Hot Cues, Roll, Slicer, Sampler... Déclenchement de loops, effets de coupure et phrases musicales en live avec précision."
+                                style="left:72%;top:62%;width:16%;height:11%;"></div>
+
+                            <!-- EQ — resserré sur tous les côtés -->
+                            <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
+                                data-zone="eq"
+                                data-title="🎛 EQ 3 Bandes"
+                                data-desc="Égaliseur 3 bandes par canal (HI / MID / LOW). Coupe ou booste les fréquences pour sculpter le son et réaliser des EQ drops, kills de basses, et transitions propres."
+                                style="left:39%;top:26%;width:19%;height:22%;"></div>
+
+                            <!-- FADERS — resserré sur les côtés et en bas -->
+                            <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
+                                data-zone="fader"
+                                data-title="🎚 Faders"
+                                data-desc="Channel faders gauche/droite pour le volume des decks. Crossfader central Magvel Fader pour les transitions fluides entre pistes. Courbe de crossfader réglable."
+                                style="left:40%;top:53%;width:18%;height:22%;"></div>
+
+                            <!-- FX Beat — commence là où finit le bas des EQ (top 26% + height 22% = 48%) -->
+                            <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
+                                data-zone="fx"
+                                data-title="✨ Beat FX"
+                                data-desc="Section Beat FX : bouton de sélection d'effet (bleu), knobs de paramétrage, et boutons ON/OFF colorés (vert, bleu, rouge) pour chaque canal. Effets synchronisés au BPM : reverb, delay, flanger, echo."
+                                style="left:59%;top:48%;width:8%;height:27%;"></div>
+
+                            <!-- Tooltip : positionné au-dessus de la zone via JS -->
+                            <div id="ddj-tooltip" class="absolute pointer-events-none opacity-0 z-30 transition-opacity duration-200" style="top:0;left:0;">
+                                <div style="background:rgba(10,14,30,0.96);border:1.5px solid rgba(7,96,238,0.6);border-radius:14px;padding:14px 18px;min-width:220px;max-width:280px;box-shadow:0 8px 32px rgba(7,96,238,0.25);">
+                                    <div id="ddj-tooltip-title" style="color:#3983F9;font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.85rem;margin-bottom:6px;"></div>
+                                    <div id="ddj-tooltip-desc" style="color:rgba(243,242,242,0.8);font-size:0.8rem;line-height:1.5;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Légende cliquable -->
+                        <div class="flex flex-wrap justify-center gap-3 mt-8">
+                            <button class="ddj-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone="jog">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium">Jog Wheel</span>
+                            </button>
+                            <button class="ddj-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone="pads">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium">Pads</span>
+                            </button>
+                            <button class="ddj-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone="eq">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium">EQ</span>
+                            </button>
+                            <button class="ddj-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone="fader">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium">Faders</span>
+                            </button>
+                            <button class="ddj-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone="fx">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium">Beat FX</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ═══ FACE ARRIÈRE ═══ -->
+                <div class="max-w-5xl mx-auto mt-16">
+                    <h3 class="text-2xl font-display font-bold text-center mb-3">
+                        <i class="fas fa-plug text-accent mr-2"></i>Connectique arrière
+                    </h3>
+                    <p class="text-gray text-center mb-8 text-sm max-w-xl mx-auto">Survole chaque port pour découvrir à quoi il sert.</p>
+
+                    <div class="relative glass-card rounded-2xl p-6 md:p-10 overflow-hidden">
+                        <div class="relative w-full select-none" id="ddj-rear-container" style="max-width:900px;margin:0 auto;">
+
+                            <img src="pc-cgi_rear.webp" alt="Pioneer DDJ-FLX10 face arrière" class="w-full h-auto rounded-xl block" id="ddj-rear-img" draggable="false" style="filter: brightness(0.95) contrast(1.05);">
+
+                            <!-- Master XLR + RCA groupés -->
+                            <div class="ddj-rear-zone absolute cursor-pointer rounded-lg"
+                                data-title="🔊 Master Out — XLR & RCA"
+                                data-desc="Sortie master principale : XLR balancé (×2) + RCA (cinch). Connecté directement à la sono ou à l'ampli de la salle. Signal XLR professionnel, résistant aux interférences sur longue distance."
+                                style="left:17%;top:42%;width:14%;height:16%;"></div>
+
+                            <!-- Booth Jack -->
+                            <div class="ddj-rear-zone absolute cursor-pointer rounded-lg"
+                                data-title="🎧 Booth Out — Jack 6.35mm"
+                                data-desc="Sortie Booth en jack 6.35mm balancé (×2). Dédiée au retour de scène pour le DJ (enceinte de monitoring). Volume indépendant du master."
+                                style="left:31%;top:42%;width:6%;height:16%;"></div>
+
+                            <!-- Inputs RCA CH1-CH4 -->
+                            <div class="ddj-rear-zone absolute cursor-pointer rounded-lg"
+                                data-title="🎸 Entrées Ligne — RCA (CH1–CH4)"
+                                data-desc="4 entrées ligne RCA (Line/Phono) pour brancher guitare, basse, clavier ou platine vinyle. Compatibles phono avec préampli intégré pour les platines vinyles."
+                                style="left:39%;top:42%;width:22%;height:16%;"></div>
+
+                            <!-- DMX -->
+                            <div class="ddj-rear-zone absolute cursor-pointer rounded-lg"
+                                data-title="💡 Sortie DMX"
+                                data-desc="Sortie DMX 512 pour le contrôle des éclairages de scène (jeux de lumières, lasers, stroboscopes). Synchronisés au BPM pour des shows lumières automatiques."
+                                style="left:61%;top:42%;width:3.5%;height:16%;"></div>
+
+                            <!-- USB A+B -->
+                            <div class="ddj-rear-zone absolute cursor-pointer rounded-lg"
+                                data-title="💻 Ports USB-C (A & B)"
+                                data-desc="2 ports USB-C pour connecter simultanément 2 ordinateurs. Idéal pour le back-to-back ou le handover entre DJs sans interruption. Interface audio intégrée."
+                                style="left:65%;top:42%;width:7%;height:16%;"></div>
+
+                            <!-- Micro 2 Jack + Micro 1 XLR groupés -->
+                            <div class="ddj-rear-zone absolute cursor-pointer rounded-lg"
+                                data-title="🎤 Entrées Micro — Jack & XLR"
+                                data-desc="Micro 1 : entrée XLR balancé principale pour micro de scène professionnel. Micro 2 : entrée jack 6.35mm pour un second micro (animateur, chanteur). EQ et volumes indépendants."
+                                style="left:74%;top:42%;width:11%;height:16%;"></div>
+
+                            <!-- Tooltip arrière : positionné au-dessus de la zone via JS -->
+                            <div id="ddj-rear-tooltip" class="absolute pointer-events-none opacity-0 z-30 transition-opacity duration-200" style="top:0;left:0;">
+                                <div style="background:rgba(10,14,30,0.96);border:1.5px solid rgba(7,96,238,0.6);border-radius:14px;padding:14px 18px;min-width:230px;max-width:290px;box-shadow:0 8px 32px rgba(7,96,238,0.25);">
+                                    <div id="ddj-rear-tooltip-title" style="color:#3983F9;font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.8rem;margin-bottom:6px;"></div>
+                                    <div id="ddj-rear-tooltip-desc" style="color:rgba(243,242,242,0.8);font-size:0.78rem;line-height:1.5;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Légende ports arrière -->
+                        <div class="flex flex-wrap justify-center gap-3 mt-8">
+                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="🔊 Master Out — XLR & RCA">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium"><i class="fas fa-volume-up mr-1"></i>Master XLR & RCA</span>
+                            </button>
+                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="🎧 Booth Out — Jack 6.35mm">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium"><i class="fas fa-headphones mr-1"></i>Booth Jack</span>
+                            </button>
+                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="🎸 Entrées Ligne — RCA (CH1–CH4)">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium"><i class="fas fa-guitar mr-1"></i>Entrées RCA ×4</span>
+                            </button>
+                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="💡 Sortie DMX">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium"><i class="fas fa-lightbulb mr-1"></i>DMX</span>
+                            </button>
+                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="💻 Ports USB-C (A & B)">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium"><i class="fas fa-laptop mr-1"></i>USB-C ×2</span>
+                            </button>
+                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="🎤 Entrées Micro — Jack & XLR">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium"><i class="fas fa-microphone mr-1"></i>Micro Jack & XLR</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Booking Section -->
         <section id="booking" class="section-transition hidden min-h-screen py-20 pt-24 bg-primary">
             <div class="container mx-auto px-4">
@@ -1381,10 +1590,21 @@
         // Mobile Menu
         function closeMobileMenuFunc() {
             document.getElementById('mobileMenu').classList.remove('active');
+            const btn = document.getElementById('mobileMenuBtn');
+            btn.querySelector('i').className = 'fas fa-bars';
         }
 
         document.getElementById('mobileMenuBtn').addEventListener('click', () => {
-            document.getElementById('mobileMenu').classList.add('active');
+            const menu = document.getElementById('mobileMenu');
+            const btn = document.getElementById('mobileMenuBtn');
+            const isOpen = menu.classList.contains('active');
+            if (isOpen) {
+                menu.classList.remove('active');
+                btn.querySelector('i').className = 'fas fa-bars';
+            } else {
+                menu.classList.add('active');
+                btn.querySelector('i').className = 'fas fa-times';
+            }
         });
 
         document.getElementById('closeMobileMenu').addEventListener('click', closeMobileMenuFunc);
@@ -1781,6 +2001,298 @@
         loadSongs();
         setupEventListeners();
         setupForm();
+
+        // ═══ DDJ-FLX10 Interactive Zones (image overlay) ═══
+        const ddjZoneData = {
+            'jog': {
+                title: '🎛 Jog Wheel',
+                desc: 'Plateau tactile capacitif pour le scratch, le bend et le nudge. Prise douce = correction micro tempo. Prise ferme = scratch précis en temps réel.'
+            },
+            'pads': {
+                title: '🎹 Performance Pads',
+                desc: '8 pads rétroéclairés RGB par deck. Hot Cues, Roll, Slicer, Sampler — déclenchement de loops, effets de coupure et phrases musicales en live.'
+            },
+            'eq': {
+                title: '🎛 EQ 3 Bandes',
+                desc: 'Égaliseur HI / MID / LOW par canal. Coupe ou booste les fréquences pour sculpter le son : EQ drops, kills de basses, transitions nettes.'
+            },
+            'fader': {
+                title: '🎚 Faders',
+                desc: 'Channel faders gauche/droite pour le volume des decks. Crossfader central Magvel Fader pour les transitions fluides entre pistes. Courbe de crossfader réglable.'
+            },
+            'fx': {
+                title: '✨ Beat FX',
+                desc: 'Section Beat FX synchronisée au BPM. Reverb, delay, flanger, echo, filtre. Boutons ON/OFF colorés (vert/bleu/rouge) pour activer les effets canal par canal.'
+            }
+        };
+
+        // ── Utilitaire : positionne le tooltip AU-DESSUS de la zone survolée ──
+        function placeTooltipAbove(tooltip, zone, container) {
+            // On attend que le tooltip soit rendu pour connaître sa hauteur
+            tooltip.style.visibility = 'hidden';
+            tooltip.style.opacity = '1';
+            requestAnimationFrame(function() {
+                const zoneRect = zone.getBoundingClientRect();
+                const contRect = container.getBoundingClientRect();
+                const tipW = tooltip.offsetWidth;
+                const tipH = tooltip.offsetHeight;
+
+                // Centre horizontal de la zone dans le container
+                let left = (zoneRect.left + zoneRect.width / 2) - contRect.left;
+                // Au-dessus du bord supérieur de la zone, avec 10px de marge
+                let top = (zoneRect.top - contRect.top) - tipH - 10;
+
+                // Garder dans le container horizontalement
+                left = Math.max(tipW / 2 + 4, Math.min(left, contRect.width - tipW / 2 - 4));
+                // Si ça sort par le haut, afficher en dessous de la zone
+                if (top < 4) {
+                    top = (zoneRect.bottom - contRect.top) + 10;
+                }
+
+                tooltip.style.left = left + 'px';
+                tooltip.style.top = top + 'px';
+                tooltip.style.transform = 'translateX(-50%)';
+                tooltip.style.visibility = 'visible';
+            });
+        }
+
+        function initDDJ() {
+            const tooltip = document.getElementById('ddj-tooltip');
+            const tooltipTitle = document.getElementById('ddj-tooltip-title');
+            const tooltipDesc = document.getElementById('ddj-tooltip-desc');
+            const container = document.getElementById('ddj-container');
+            if (!tooltip || !container) return;
+
+            const zones = document.querySelectorAll('.ddj-zone-img');
+            let activeZoneKey = null;
+
+            function highlightZones(key) {
+                zones.forEach(z => {
+                    if (z.dataset.zone === key) {
+                        z.style.background = 'rgba(7,96,238,0.2)';
+                        z.style.borderColor = 'rgba(7,96,238,0.9)';
+                        z.style.boxShadow = '0 0 30px rgba(7,96,238,0.5), inset 0 0 20px rgba(7,96,238,0.1)';
+                    } else {
+                        z.style.background = 'rgba(7,96,238,0)';
+                        z.style.borderColor = 'rgba(7,96,238,0)';
+                        z.style.boxShadow = 'none';
+                    }
+                });
+            }
+
+            function clearHighlight() {
+                zones.forEach(z => {
+                    z.style.background = 'rgba(7,96,238,0)';
+                    z.style.borderColor = 'rgba(7,96,238,0)';
+                    z.style.boxShadow = 'none';
+                });
+                tooltip.style.opacity = '0';
+                tooltip.style.visibility = 'hidden';
+            }
+
+            function updateLegendBtns(key) {
+                document.querySelectorAll('.ddj-legend-btn').forEach(b => {
+                    const dot = b.querySelector('div');
+                    const label = b.querySelector('span');
+                    if (b.dataset.zone === key) {
+                        b.style.borderColor = 'rgba(7,96,238,0.9)';
+                        if (dot) dot.style.transform = 'scale(1.4)';
+                        if (label) label.style.color = '#3983F9';
+                    } else {
+                        b.style.borderColor = '';
+                        if (dot) dot.style.transform = '';
+                        if (label) label.style.color = '';
+                    }
+                });
+            }
+
+            zones.forEach(zone => {
+                zone.style.background = 'rgba(7,96,238,0)';
+                zone.style.border = '2px solid rgba(7,96,238,0)';
+                zone.style.transition = 'background 0.2s, border-color 0.2s, box-shadow 0.2s';
+
+                zone.addEventListener('mouseenter', function() {
+                    if (activeZoneKey) return; // ne pas perturber la sélection active
+                    this.style.background = 'rgba(7,96,238,0.15)';
+                    this.style.borderColor = 'rgba(7,96,238,0.7)';
+                    this.style.boxShadow = '0 0 20px rgba(7,96,238,0.3), inset 0 0 20px rgba(7,96,238,0.1)';
+                    const data = ddjZoneData[this.dataset.zone];
+                    if (data) {
+                        tooltipTitle.textContent = data.title;
+                        tooltipDesc.textContent = data.desc;
+                        placeTooltipAbove(tooltip, this, container);
+                    }
+                });
+
+                zone.addEventListener('mouseleave', function() {
+                    if (activeZoneKey) return;
+                    this.style.background = 'rgba(7,96,238,0)';
+                    this.style.borderColor = 'rgba(7,96,238,0)';
+                    this.style.boxShadow = 'none';
+                    tooltip.style.opacity = '0';
+                    tooltip.style.visibility = 'hidden';
+                });
+
+                zone.addEventListener('click', function() {
+                    const key = this.dataset.zone;
+                    if (activeZoneKey === key) {
+                        activeZoneKey = null;
+                        clearHighlight();
+                        updateLegendBtns(null);
+                    } else {
+                        activeZoneKey = key;
+                        highlightZones(key);
+                        updateLegendBtns(key);
+                        const data = ddjZoneData[key];
+                        if (data) {
+                            tooltipTitle.textContent = data.title;
+                            tooltipDesc.textContent = data.desc;
+                            placeTooltipAbove(tooltip, this, container);
+                        }
+                    }
+                });
+            });
+
+            // Legend buttons — clic persistant, toggle sur le même bouton
+            document.querySelectorAll('.ddj-legend-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const key = this.dataset.zone;
+                    if (activeZoneKey === key) {
+                        // Désactiver
+                        activeZoneKey = null;
+                        clearHighlight();
+                        updateLegendBtns(null);
+                    } else {
+                        // Activer la nouvelle zone
+                        activeZoneKey = key;
+                        highlightZones(key);
+                        updateLegendBtns(key);
+                        const data = ddjZoneData[key];
+                        if (data) {
+                            tooltipTitle.textContent = data.title;
+                            tooltipDesc.textContent = data.desc;
+                            const firstZone = [...zones].find(z => z.dataset.zone === key);
+                            if (firstZone) placeTooltipAbove(tooltip, firstZone, container);
+                        }
+                    }
+                });
+            });
+        }
+
+        window.highlightZone = function(key) {};  // kept for compat
+
+        // ═══ DDJ-FLX10 Rear Panel Zones ═══
+        function initDDJRear() {
+            const tooltip = document.getElementById('ddj-rear-tooltip');
+            const tooltipTitle = document.getElementById('ddj-rear-tooltip-title');
+            const tooltipDesc = document.getElementById('ddj-rear-tooltip-desc');
+            const container = document.getElementById('ddj-rear-container');
+            if (!tooltip || !container) return;
+
+            const zones = container.querySelectorAll('.ddj-rear-zone');
+            let activeZone = null;
+
+            function activateZone(zone) {
+                // Désactiver l'ancienne
+                if (activeZone && activeZone !== zone) {
+                    activeZone.style.background = 'rgba(7,96,238,0)';
+                    activeZone.style.borderColor = 'rgba(7,96,238,0)';
+                    activeZone.style.boxShadow = 'none';
+                }
+                activeZone = zone;
+                zone.style.background = 'rgba(7,96,238,0.22)';
+                zone.style.borderColor = 'rgba(7,96,238,0.95)';
+                zone.style.boxShadow = '0 0 28px rgba(7,96,238,0.5), inset 0 0 16px rgba(7,96,238,0.15)';
+                tooltipTitle.textContent = zone.dataset.title;
+                tooltipDesc.textContent = zone.dataset.desc;
+                placeTooltipAbove(tooltip, zone, container);
+            }
+
+            function deactivate() {
+                if (activeZone) {
+                    activeZone.style.background = 'rgba(7,96,238,0)';
+                    activeZone.style.borderColor = 'rgba(7,96,238,0)';
+                    activeZone.style.boxShadow = 'none';
+                    activeZone = null;
+                }
+                tooltip.style.opacity = '0';
+                tooltip.style.visibility = 'hidden';
+            }
+
+            function updateLegendBtns(title) {
+                document.querySelectorAll('.ddj-rear-legend-btn').forEach(b => {
+                    const dot = b.querySelector('div');
+                    const label = b.querySelector('span');
+                    if (b.dataset.zoneTitle === title) {
+                        b.style.borderColor = 'rgba(7,96,238,0.9)';
+                        if (dot) dot.style.transform = 'scale(1.4)';
+                        if (label) label.style.color = '#3983F9';
+                    } else {
+                        b.style.borderColor = '';
+                        if (dot) dot.style.transform = '';
+                        if (label) label.style.color = '';
+                    }
+                });
+            }
+
+            zones.forEach(zone => {
+                zone.style.background = 'rgba(7,96,238,0)';
+                zone.style.border = '2px solid rgba(7,96,238,0)';
+                zone.style.transition = 'background 0.2s, border-color 0.2s, box-shadow 0.2s';
+
+                zone.addEventListener('mouseenter', function() {
+                    if (activeZone) return;
+                    this.style.background = 'rgba(7,96,238,0.18)';
+                    this.style.borderColor = 'rgba(7,96,238,0.75)';
+                    this.style.boxShadow = '0 0 18px rgba(7,96,238,0.35), inset 0 0 12px rgba(7,96,238,0.12)';
+                    tooltipTitle.textContent = this.dataset.title;
+                    tooltipDesc.textContent = this.dataset.desc;
+                    placeTooltipAbove(tooltip, this, container);
+                });
+
+                zone.addEventListener('mouseleave', function() {
+                    if (activeZone) return;
+                    this.style.background = 'rgba(7,96,238,0)';
+                    this.style.borderColor = 'rgba(7,96,238,0)';
+                    this.style.boxShadow = 'none';
+                    tooltip.style.opacity = '0';
+                    tooltip.style.visibility = 'hidden';
+                });
+
+                zone.addEventListener('click', function() {
+                    if (activeZone === this) {
+                        deactivate();
+                        updateLegendBtns(null);
+                    } else {
+                        activateZone(this);
+                        updateLegendBtns(this.dataset.title);
+                    }
+                });
+            });
+
+            // Boutons légende arrière
+            document.querySelectorAll('.ddj-rear-legend-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const title = this.dataset.zoneTitle;
+                    const matchZone = [...zones].find(z => z.dataset.title === title);
+                    if (!matchZone) return;
+                    if (activeZone === matchZone) {
+                        deactivate();
+                        updateLegendBtns(null);
+                    } else {
+                        activateZone(matchZone);
+                        updateLegendBtns(title);
+                    }
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initDDJ();
+            initDDJRear();
+        });
+        initDDJ();
+        initDDJRear();
 
         // Volume slider
         volumeSlider.addEventListener("input", () => {
