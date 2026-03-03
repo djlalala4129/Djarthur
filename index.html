@@ -67,13 +67,13 @@
             scroll-behavior: smooth;
             overflow-x: hidden;
             background: #0A0A0A;
+            scrollbar-width: none;
         }
         
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #1A1A1A; }
+        ::-webkit-scrollbar { width: 0px; display: none; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #0760EE 0%, #FF00F5 100%);
-            border-radius: 10px;
+            background: transparent;
         }
         
         .gradient-text {
@@ -109,6 +109,27 @@
         .glass-card:hover {
             border-color: rgba(7, 96, 238, 0.6);
             box-shadow: 0 20px 60px rgba(7, 96, 238, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* ═══ DEMO FILTER BUTTONS – ACTIVE STATE ═══════════════════ */
+        .demo-filter-btn {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .demo-filter-btn.active-filter {
+            background-color: currentColor !important;
+            border-color: currentColor !important;
+            box-shadow: 0 0 10px currentColor, 0 0 22px currentColor;
+            transform: translateY(-2px) scale(1.07) !important;
+        }
+        /* Inner span carries the label — turns dark when button is filled */
+        .demo-filter-btn .btn-label {
+            position: relative;
+            z-index: 1;
+            transition: color 0.25s ease;
+        }
+        .demo-filter-btn.active-filter .btn-label {
+            color: #0A0A0A !important;
+            font-weight: 700;
         }
 
         /* Spotlight footer .card (inchangé) */
@@ -277,8 +298,8 @@
             width: 278px; height: 278px;
             box-shadow:
                 0 0 0 1px rgba(255,255,255,0.10),
-                0 0 40px rgba(200,60,255,0.35),
-                0 0 80px rgba(200,60,255,0.12);
+                0 0 40px rgba(80,40,255,0.25),
+                0 0 80px rgba(7,96,238,0.12);
         }
 
         /* SVG vinyle */
@@ -333,30 +354,27 @@
 
         .btn-neon {
             position: relative;
-            background: rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #0a2a5e 0%, #03142e 100%);
             border: 2px solid #0760EE;
-            color: #0760EE;
-            overflow: hidden;
-            transition: all 0.4s ease;
+            color: #ffffff;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
-        
-        .btn-neon::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, #0760EE, transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .btn-neon:hover::before { left: 100%; }
-        
+
         .btn-neon:hover {
-            background: #0760EE;
-            color: #0A0A0A;
-            box-shadow: 0 0 30px rgba(7, 96, 238, 0.6);
+            animation: btn-neon-jello 0.9s both;
+        }
+
+        @keyframes btn-neon-jello {
+            0%   { transform: scale3d(1, 1, 1); }
+            30%  { transform: scale3d(1.25, 0.75, 1); }
+            40%  { transform: scale3d(0.75, 1.25, 1); }
+            50%  { transform: scale3d(1.15, 0.85, 1); }
+            65%  { transform: scale3d(0.95, 1.05, 1); }
+            75%  { transform: scale3d(1.05, 0.95, 1); }
+            100% { transform: scale3d(1, 1, 1); }
         }
         
         .btn-gradient {
@@ -372,6 +390,33 @@
         
         .btn-gradient:hover::after { width: 300px; height: 300px; }
         .btn-gradient:hover { transform: scale(1.05); box-shadow: 0 10px 40px rgba(7,96,238, 0.4); }
+
+        .btn-outline {
+            position: relative;
+            background: #0A0A0A;
+            border: 2px solid #0a2a5e;
+            color: #ffffff;
+            font-weight: 700;
+            overflow: hidden;
+            transition: color 0.4s ease;
+            z-index: 0;
+        }
+
+        .btn-outline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0760EE 0%, #03142e 100%);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .btn-outline:hover::before {
+            left: 0;
+        }
         
         .testimonial-card {
             background: linear-gradient(135deg, rgba(7, 96, 238, 0.1) 0%, rgba(238, 96, 7 0.1) 100%);
@@ -759,18 +804,15 @@
                         <div class="flex-1 text-left">
                             <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 gradient-text">DJ Arthur</h2>
                             <p class="text-secondary text-lg leading-relaxed mb-4">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+                                DJ Arthur, 16 ans, passionné de musique depuis toujours. Je mixe depuis 2022, soit 4 ans de pratique et de sets qui n'ont cessé d'évoluer.
                             </p>
                             <p class="text-secondary/80 text-base leading-relaxed">
-                                Nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+                                Autodidacte et curieux, j'ai construit mon style en explorant tous les genres, des classiques aux tendances actuelles. Chaque performance est une nouvelle occasion de créer une ambiance unique et mémorable.
                             </p>
                         </div>
                         <div class="flex flex-col gap-5 flex-shrink-0">
-                            <button onclick="showSection('demo', event); return false;" class="btn-gradient px-10 py-4 rounded-full font-bold text-lg relative z-10 whitespace-nowrap">
-                                <i class="fas fa-play mr-2"></i>ÉCOUTER LA DÉMO
-                            </button>
-                            <button onclick="showSection('booking', event); return false;" class="btn-neon px-10 py-4 rounded-full font-bold text-lg whitespace-nowrap">
-                                <i class="fas fa-calendar-check mr-2"></i>RÉSERVER
+                            <button onclick="showSection('booking', event); return false;" class="btn-gradient px-10 py-4 rounded-full font-bold text-lg relative z-10 whitespace-nowrap">
+                                <i class="fas fa-envelope mr-2"></i>CONTACT
                             </button>
                         </div>
                     </div>
@@ -798,12 +840,12 @@
                         </div>
                         <!-- Droite : description -->
                         <div class="flex-1 text-left order-1 md:order-2">
-                            <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 gradient-text">Mes Démos</h2>
+                            <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 gradient-text">Style</h2>
                             <p class="text-secondary text-lg leading-relaxed mb-4">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+                                Plus de 3 500 titres dans ma bibliothèque, organisée et préparée sur Rekordbox, mon outil principal. J'utilise également Serato occasionnellement selon les configurations.
                             </p>
                             <p class="text-secondary/80 text-base leading-relaxed">
-                                Nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                DJ généraliste dans l'âme, je mixe tous les genres sans frontières : Electro, House, Urbain, Latino, 80's jusqu'aux hits d'aujourd'hui. Peu importe l'ambiance, j'ai ce qu'il faut.
                             </p>
                         </div>
                     </div>
@@ -819,10 +861,10 @@
                         <div class="flex-1 text-left">
                             <h2 class="text-4xl md:text-5xl font-display font-bold mb-6" style="background: linear-gradient(135deg, #00F0FF 0%, #0760EE 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Karaoké</h2>
                             <p class="text-secondary text-lg leading-relaxed mb-4">
-                                Animation karaoké professionnelle avec plus de 1000 titres disponibles. Une expérience unique et conviviale pour animer vos soirées.
+                                Ce karaoké, je l'ai développé moi-même de A à Z. Il est encore en cours d'amélioration et continuera d'évoluer avec de nouvelles fonctionnalités, plus de titres, meilleure expérience.
                             </p>
                             <p class="text-secondary/80 text-base leading-relaxed">
-                                Parfait pour vos soirées d'entreprise, événements privés, anniversaires et mariages. Chantez vos titres préférés avec paroles synchronisées en temps réel.
+                                C'est un projet personnel que je fais grandir à mon rythme. N'hésitez pas à l'essayer et à me faire des retours — chaque suggestion m'aide à le rendre meilleur.
                             </p>
                         </div>
                         <!-- Droite : bouton -->
@@ -853,21 +895,49 @@
                     </p>
                 </div>
 
-                <!-- Filtres par tags -->
-                <div class="flex flex-wrap justify-center gap-3 mb-10">
-                    <button data-filter="all"      class="demo-filter-btn active-filter px-5 py-2 rounded-full text-sm font-semibold border border-accent/50 text-accent bg-accent/10 transition-all duration-300">Tous</button>
-                    <button data-filter="electro"  class="demo-filter-btn px-5 py-2 rounded-full text-sm font-semibold border border-accent10/40 text-accent10 bg-transparent hover:bg-accent10/10 transition-all duration-300">Electro</button>
-                    <button data-filter="house"    class="demo-filter-btn px-5 py-2 rounded-full text-sm font-semibold border border-accent11/40 text-accent11 bg-transparent hover:bg-accent11/10 transition-all duration-300">House</button>
-                    <button data-filter="ambiance" class="demo-filter-btn px-5 py-2 rounded-full text-sm font-semibold border border-accent16/40 text-accent16 bg-transparent hover:bg-accent16/10 transition-all duration-300">Ambiance</button>
-                    <button data-filter="live"     class="demo-filter-btn px-5 py-2 rounded-full text-sm font-semibold border border-accent15/40 text-accent15 bg-transparent hover:bg-accent15/10 transition-all duration-300">Live</button>
-                    <button data-filter="urbain"   class="demo-filter-btn px-5 py-2 rounded-full text-sm font-semibold border border-accent12/40 text-accent12 bg-transparent hover:bg-accent12/10 transition-all duration-300">Urbain</button>
+                <!-- Filtres par tags – 3 séries -->
+                <div class="flex flex-col items-center gap-4 mb-10">
+
+                    <!-- Série 1 : Style musical -->
+                    <div class="flex flex-wrap justify-center items-center gap-2">
+                        <span class="text-gray text-xs font-semibold uppercase tracking-widest mr-1 opacity-60">Style</span>
+                        <button data-filter="all"      data-group="style" class="demo-filter-btn active-filter px-4 py-1.5 rounded-full text-xs font-semibold border border-accent/50 text-accent bg-accent/10 transition-all duration-300"><span class="btn-label">Tous</span></button>
+                        <button data-filter="electro"  data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent10/40 text-accent10 bg-transparent hover:bg-accent10/10 transition-all duration-300"><span class="btn-label">Electro</span></button>
+                        <button data-filter="house"    data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent11/40 text-accent11 bg-transparent hover:bg-accent11/10 transition-all duration-300"><span class="btn-label">House</span></button>
+                        <button data-filter="urbain"   data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent12/40 text-accent12 bg-transparent hover:bg-accent12/10 transition-all duration-300"><span class="btn-label">Urbain</span></button>
+                        <button data-filter="ambiance" data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent16/40 text-accent16 bg-transparent hover:bg-accent16/10 transition-all duration-300"><span class="btn-label">Ambiance</span></button>
+                        <button data-filter="live"     data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent15/40 text-accent15 bg-transparent hover:bg-accent15/10 transition-all duration-300"><span class="btn-label">Live</span></button>
+                    </div>
+
+                    <!-- Séparateur -->
+                    <div class="w-48 border-t border-white/10"></div>
+
+                    <!-- Série 2 : Contexte -->
+                    <div class="flex flex-wrap justify-center items-center gap-2">
+                        <span class="text-gray text-xs font-semibold uppercase tracking-widest mr-1 opacity-60">Contexte</span>
+                        <button data-filter="deplacement" data-group="contexte" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent13/40 text-accent13 bg-transparent hover:bg-accent13/10 transition-all duration-300"><span class="btn-label">En déplacement</span></button>
+                        <button data-filter="maison"      data-group="contexte" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent14/40 text-accent14 bg-transparent hover:bg-accent14/10 transition-all duration-300"><span class="btn-label">À la maison</span></button>
+                    </div>
+
+                    <!-- Séparateur -->
+                    <div class="w-48 border-t border-white/10"></div>
+
+                    <!-- Série 3 : Format -->
+                    <div class="flex flex-wrap justify-center items-center gap-2">
+                        <span class="text-gray text-xs font-semibold uppercase tracking-widest mr-1 opacity-60">Format</span>
+                        <button data-filter="video" data-group="format" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent2/40 text-accent2 bg-transparent hover:bg-accent2/10 transition-all duration-300"><span class="btn-label">Vidéo</span></button>
+                        <button data-filter="audio" data-group="format" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent/40 text-accent bg-transparent hover:bg-accent/10 transition-all duration-300"><span class="btn-label">Audio</span></button>
+                        <button data-filter="short" data-group="format" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent3/40 text-accent3 bg-transparent hover:bg-accent3/10 transition-all duration-300"><span class="btn-label">Short</span></button>
+                        <button data-filter="long"  data-group="format" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent3/40 text-accent3 bg-transparent hover:bg-accent3/10 transition-all duration-300"><span class="btn-label">Long</span></button>
+                    </div>
+
                 </div>
 
                 <!-- GRILLE 3 COLONNES -->
-                <div id="demoGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto items-start">
+                <div id="demoGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto" style="grid-auto-rows: 1fr;">
 
                     <!-- ── CELLULE 1 : Carrousel Fête de la Musique – Chartrettes ── -->
-                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="live,ambiance">
+                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="live,ambiance,deplacement,video,short">
                         <div class="flex items-center gap-3">
                             <div class="w-11 h-11 bg-gradient-to-br from-accent2 to-accent3 rounded-full flex items-center justify-center flex-shrink-0">
                                 <i class="fas fa-video text-primary"></i>
@@ -878,39 +948,44 @@
                             </div>
                             <span class="px-2 py-1 bg-accent16/20 border border-accent16/40 text-accent16 rounded-full text-xs font-semibold whitespace-nowrap">2 clips</span>
                         </div>
-                        <div class="relative">
+                        <div class="relative flex-1">
                             <button id="carouselPrev" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-20 w-8 h-8 rounded-full bg-dark border border-accent2/40 text-accent2 flex items-center justify-center hover:bg-accent2/20 transition-all duration-200 shadow-lg text-xs">
                                 <i class="fas fa-chevron-left"></i>
                             </button>
                             <button id="carouselNext" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-20 w-8 h-8 rounded-full bg-dark border border-accent2/40 text-accent2 flex items-center justify-center hover:bg-accent2/20 transition-all duration-200 shadow-lg text-xs">
                                 <i class="fas fa-chevron-right"></i>
                             </button>
-                            <div class="overflow-hidden rounded-2xl">
-                                <div id="carouselTrack" class="flex transition-transform duration-500 ease-in-out">
-                                    <div class="carousel-slide min-w-full">
-                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden">
+                            <div class="overflow-hidden rounded-2xl h-full">
+                                <div id="carouselTrack" class="flex transition-transform duration-500 ease-in-out h-full">
+                                    <div class="carousel-slide min-w-full h-full">
+                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden h-full">
                                             <iframe 
                                                 src="https://drive.google.com/file/d/1DdfEXZ7PBg2Rh5dXPQEzEMxoTB_8HJS3/preview" 
                                                 width="100%" 
-                                                height="480" 
+                                                height="100%"
+                                                style="min-height:480px"
                                                 allow="autoplay">
                                             </iframe>
                                         </div>
                                     </div>
-                                    <div class="carousel-slide min-w-full">
-                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden">
+                                    <div class="carousel-slide min-w-full h-full">
+                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden h-full">
                                             <iframe 
                                                 src="https://drive.google.com/file/d/1yJB0l0vP4iAugKB2HTm-TNH1-JqNyDYy/preview" 
                                                 width="100%" 
-                                                height="480" 
+                                                height="100%"
+                                                style="min-height:480px"
                                                 allow="autoplay">
                                             </iframe>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div id="carouselDots" class="flex justify-center gap-2 mt-3"></div>
-                            <p class="text-center text-gray text-xs mt-1"><span id="carouselCurrent">1</span> / <span id="carouselTotal">2</span></p>
+                            <!-- Dots en overlay en bas de l'iframe -->
+                            <div class="absolute bottom-3 left-0 right-0 flex flex-col items-center gap-1.5 pointer-events-none z-10">
+                                <div id="carouselDots" class="flex justify-center gap-2"></div>
+                                <p class="text-white text-xs font-semibold px-2.5 py-0.5 rounded-full" style="background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);"><span id="carouselCurrent">1</span> / <span id="carouselTotal">2</span></p>
+                            </div>
                         </div>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-accent15/20 text-accent15 rounded-full text-xs">Live</span>
@@ -919,21 +994,22 @@
                     </div>
 
                     <!-- ── CELLULE 2 : Vidéo Dammarie-les-Lys ── -->
-                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="live,electro">
+                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="live,electro,deplacement,video,short">
                         <div class="flex items-center gap-3">
                             <div class="w-11 h-11 bg-gradient-to-br from-accent to-accent3 rounded-full flex items-center justify-center flex-shrink-0">
                                 <i class="fas fa-video text-primary"></i>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <h3 class="font-heading font-bold text-accent truncate">Fête de la Musique</h3>
+                                <h3 class="font-heading font-bold text-accent truncate">Concert Évasion Live</h3>
                                 <p class="text-gray text-xs">Juin 2025 · EPB Dammarie-les-Lys</p>
                             </div>
                         </div>
-                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden">
+                        <div class="relative flex-1 bg-dark/50 rounded-2xl overflow-hidden" style="min-height:480px">
                             <iframe 
                                 src="https://drive.google.com/file/d/1O8wRL9dO74uqnz-qVPIavO-KZLuuLiqr/preview" 
                                 width="100%" 
-                                height="480" 
+                                height="100%"
+                                style="position:absolute;inset:0;height:100%"
                                 allow="autoplay">
                             </iframe>
                         </div>
@@ -943,8 +1019,35 @@
                         </div>
                     </div>
 
-                    <!-- ── CELLULE 3 : Mix Audio ── -->
-                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4 md:col-span-2 xl:col-span-1" data-tags="electro,house,urbain">
+                    <!-- ── CELLULE 3 : Set Ambiance pour une vidéo ── -->
+                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="ambiance,maison,video,long">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 bg-gradient-to-br from-accent16 to-accent2 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-video text-primary"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-heading font-bold text-accent16 truncate">Set Ambiance</h3>
+                                <p class="text-gray text-xs">Février 2026 · 55 min</p>
+                            </div>
+                        </div>
+                        <div class="relative flex-1 bg-dark/50 rounded-2xl overflow-hidden" style="min-height:480px">
+                            <iframe 
+                                src="https://drive.google.com/file/d/VOTRE_ID_FICHIER/preview" 
+                                width="100%" 
+                                height="100%"
+                                style="position:absolute;inset:0;height:100%"
+                                allow="autoplay">
+                            </iframe>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-accent16/20 text-accent16 rounded-full text-xs">Ambiance</span>
+                            <span class="px-3 py-1 bg-accent2/20 text-accent2 rounded-full text-xs">Vidéo</span>
+                            <span class="px-3 py-1 bg-accent3/20 text-accent3 rounded-full text-xs">Long</span>
+                        </div>
+                    </div>
+
+                    <!-- ── CELLULE 4 : Mix Audio ── -->
+                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="electro,house,urbain,maison,audio,short">
                         <div class="flex items-center gap-3">
                             <div class="w-11 h-11 bg-gradient-to-br from-accent to-accent2 rounded-full flex items-center justify-center flex-shrink-0 vinyl-spin">
                                 <i class="fas fa-music text-primary"></i>
@@ -954,11 +1057,12 @@
                                 <p class="text-gray text-xs">Août 2025 · 15 min</p>
                             </div>
                         </div>
-                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden">
+                        <div class="relative flex-1 bg-dark/50 rounded-2xl overflow-hidden" style="min-height:480px">
                             <iframe 
                                 src="https://drive.google.com/file/d/1b7K6LKFXTWl17rLx00tlagHCJPclsTJP/preview" 
                                 width="100%" 
-                                height="480" 
+                                height="100%"
+                                style="position:absolute;inset:0;height:100%"
                                 allow="autoplay">
                             </iframe>
                         </div>
@@ -974,8 +1078,8 @@
                 <!-- CTA -->
                 <div class="text-center mt-16">
                     <p class="text-gray mb-6 text-lg">Besoin d'entendre plus de démos ?</p>
-                    <button onclick="showSection('booking', event); return false;" class="btn-gradient px-8 py-4 rounded-full font-bold text-lg">
-                        <i class="fas fa-envelope mr-2"></i>DEMANDER PLUS DE DÉMOS
+                    <button onclick="showSection('booking', event); return false;" class="btn-neon px-8 py-4 rounded-full font-bold text-lg">
+                        <i class="fas fa-headphones mr-2"></i>PLUS DE DÉMOS
                     </button>
                 </div>
             </div>
@@ -1023,7 +1127,7 @@
                             <button id="karaokeBtn" class="btn-gradient px-6 py-3 rounded-full font-semibold">
                                 <i class="fas fa-play mr-2"></i>Play
                             </button>
-                            <button id="resetBtn" class="btn-neon px-6 py-3 rounded-full font-semibold">
+                            <button id="resetBtn" class="btn-outline px-6 py-3 rounded-full font-semibold">
                                 <i class="fas fa-redo mr-2"></i>Réinitialiser
                             </button>
                         </div>
@@ -2464,20 +2568,51 @@
         var filterBtns = document.querySelectorAll('.demo-filter-btn');
         var cards = document.querySelectorAll('.demo-card');
 
+        // Active filters per group: { style: 'all', contexte: null, format: null }
+        var activeFilters = { style: 'all', contexte: null, format: null };
+
+        function applyFilters() {
+            cards.forEach(function(card) {
+                var tags = card.getAttribute('data-tags').split(',');
+                var show = true;
+
+                // Style group: 'all' means no restriction
+                if (activeFilters.style && activeFilters.style !== 'all') {
+                    if (tags.indexOf(activeFilters.style) < 0) show = false;
+                }
+                // Contexte group: null means no restriction
+                if (activeFilters.contexte) {
+                    if (tags.indexOf(activeFilters.contexte) < 0) show = false;
+                }
+                // Format group: null means no restriction
+                if (activeFilters.format) {
+                    if (tags.indexOf(activeFilters.format) < 0) show = false;
+                }
+
+                card.style.display = show ? '' : 'none';
+            });
+        }
+
         filterBtns.forEach(function(btn) {
             btn.addEventListener('click', function() {
-                filterBtns.forEach(function(b){ b.classList.remove('active-filter'); });
-                btn.classList.add('active-filter');
-
+                var group  = btn.getAttribute('data-group');
                 var filter = btn.getAttribute('data-filter');
-                cards.forEach(function(card) {
-                    if (filter === 'all') {
-                        card.style.display = '';
-                    } else {
-                        var tags = card.getAttribute('data-tags').split(',');
-                        card.style.display = tags.indexOf(filter) >= 0 ? '' : 'none';
-                    }
-                });
+
+                // Toggle: click active non-all button → deactivate
+                if (group !== 'style' && activeFilters[group] === filter) {
+                    activeFilters[group] = null;
+                    btn.classList.remove('active-filter');
+                } else {
+                    // Deactivate all buttons in same group
+                    document.querySelectorAll('.demo-filter-btn[data-group="' + group + '"]').forEach(function(b) {
+                        b.classList.remove('active-filter');
+                    });
+                    activeFilters[group] = filter;
+                    btn.classList.add('active-filter');
+                    // If style = 'all', reset contexte & format highlights but keep selections
+                }
+
+                applyFilters();
             });
         });
     })();
