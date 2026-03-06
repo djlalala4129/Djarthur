@@ -18,9 +18,6 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
     
-    <!-- TikTok Embed -->
-    <script async src="https://www.tiktok.com/embed.js"></script>
-    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -973,15 +970,15 @@
                         </div>
                     </div>
 
-                    <!-- ── CARROUSEL SHORTS : 3 TikToks ── -->
+                    <!-- ── CARROUSEL SHORTS : 3 vidéos portrait 9:16 ── -->
                     <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="ambiance,electro,urbain,house,live,deplacement,maison,video,short">
                         <div class="flex items-center gap-3">
                             <div class="w-11 h-11 bg-gradient-to-br from-accent3 to-accent flex items-center justify-center flex-shrink-0 rounded-full">
-                                <i class="fab fa-tiktok text-primary text-sm"></i>
+                                <i class="fas fa-film text-primary text-sm"></i>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <h3 class="font-heading font-bold text-accent3 truncate">Shorts & Lives</h3>
-                                <p class="text-gray text-xs">3 vidéos · TikTok</p>
+                                <p class="text-gray text-xs">3 vidéos · Format portrait</p>
                             </div>
                             <span class="px-2 py-1 bg-accent3/20 border border-accent3/40 text-accent3 rounded-full text-xs font-semibold whitespace-nowrap">3 clips</span>
                         </div>
@@ -994,20 +991,38 @@
                             </button>
                             <div class="overflow-hidden rounded-2xl h-full">
                                 <div id="shortsTrack" class="flex transition-transform duration-500 ease-in-out h-full">
-                                    <div class="shorts-slide min-w-full h-full flex justify-center bg-dark/50 rounded-2xl overflow-y-auto" style="min-height:480px">
-                                        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@dj.art4m/video/7613149128960380182" data-video-id="7613149128960380182" style="max-width:325px;min-width:325px;">
-                                            <section></section>
-                                        </blockquote>
+                                    <div class="shorts-slide min-w-full h-full">
+                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden h-full">
+                                            <iframe
+                                                src="https://drive.google.com/file/d/1CIy4vTuesY-x3gEVbV7FpHFPtkQI0t2d/preview"
+                                                width="100%"
+                                                height="100%"
+                                                style="min-height:480px"
+                                                allow="autoplay">
+                                            </iframe>
+                                        </div>
                                     </div>
-                                    <div class="shorts-slide min-w-full h-full flex justify-center bg-dark/50 rounded-2xl overflow-y-auto" style="min-height:480px">
-                                        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@dj.art4m/video/7613163461819780374" data-video-id="7613163461819780374" style="max-width:325px;min-width:325px;">
-                                            <section></section>
-                                        </blockquote>
+                                    <div class="shorts-slide min-w-full h-full">
+                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden h-full">
+                                            <iframe
+                                                src="https://drive.google.com/file/d/1P4TzCbreG_Wsx7Ykann2X-DnqcKikjoi/preview"
+                                                width="100%"
+                                                height="100%"
+                                                style="min-height:480px"
+                                                allow="autoplay">
+                                            </iframe>
+                                        </div>
                                     </div>
-                                    <div class="shorts-slide min-w-full h-full flex justify-center bg-dark/50 rounded-2xl overflow-y-auto" style="min-height:480px">
-                                        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@dj.art4m/video/7613165184261115139" data-video-id="7613165184261115139" style="max-width:325px;min-width:325px;">
-                                            <section></section>
-                                        </blockquote>
+                                    <div class="shorts-slide min-w-full h-full">
+                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden h-full">
+                                            <iframe
+                                                src="https://drive.google.com/file/d/16nCh0jKxaaX7v20WBm29jEIG7YxOZ6l5/preview"
+                                                width="100%"
+                                                height="100%"
+                                                style="min-height:480px"
+                                                allow="autoplay">
+                                            </iframe>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2713,18 +2728,18 @@
         });
     })();
 
-    // ===== CARROUSEL CHARTRETTES =====
-    (function() {
-        var track   = document.getElementById('carouselTrack');
-        var dotsBox = document.getElementById('carouselDots');
-        var prevBtn = document.getElementById('carouselPrev');
-        var nextBtn = document.getElementById('carouselNext');
-        var curEl   = document.getElementById('carouselCurrent');
-        var totalEl = document.getElementById('carouselTotal');
+    // ===== FONCTION GÉNÉRIQUE CARROUSEL =====
+    function initCarousel(cfg) {
+        var track   = document.getElementById(cfg.trackId);
+        var dotsBox = document.getElementById(cfg.dotsId);
+        var prevBtn = document.getElementById(cfg.prevId);
+        var nextBtn = document.getElementById(cfg.nextId);
+        var curEl   = document.getElementById(cfg.curId);
+        var totalEl = document.getElementById(cfg.totalId);
 
         if (!track) return;
 
-        var slides  = Array.from(track.querySelectorAll('.carousel-slide'));
+        var slides  = Array.from(track.querySelectorAll('.' + cfg.slideClass));
         var current = 0;
 
         function buildDots() {
@@ -2732,7 +2747,7 @@
             dotsBox.innerHTML = '';
             slides.forEach(function(_, i) {
                 var d = document.createElement('button');
-                d.style.cssText = 'width:' + (i===current?'20px':'8px') + ';height:8px;border-radius:999px;background:' + (i===current?'#ff453d':'rgba(160,160,160,0.4)') + ';border:none;cursor:pointer;transition:all .3s';
+                d.style.cssText = 'width:' + (i===current?'20px':'8px') + ';height:8px;border-radius:999px;background:' + (i===current? cfg.color :'rgba(160,160,160,0.4)') + ';border:none;cursor:pointer;transition:all .3s;pointer-events:all;';
                 d.addEventListener('click', function(){ goTo(i); });
                 dotsBox.appendChild(d);
             });
@@ -2748,15 +2763,30 @@
         if (prevBtn) prevBtn.addEventListener('click', function(){ goTo(current - 1); });
         if (nextBtn) nextBtn.addEventListener('click', function(){ goTo(current + 1); });
 
-        // Touch swipe
         var tx = 0;
         track.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
         track.addEventListener('touchend',   function(e){ var d = tx - e.changedTouches[0].clientX; if(Math.abs(d)>40) goTo(current + (d>0?1:-1)); }, {passive:true});
 
-        // Init
         if (totalEl) totalEl.textContent = slides.length;
         goTo(0);
-    })();
+    }
+
+    // ===== CARROUSEL CHARTRETTES =====
+    initCarousel({
+        trackId: 'carouselTrack', dotsId: 'carouselDots',
+        prevId: 'carouselPrev',   nextId: 'carouselNext',
+        curId: 'carouselCurrent', totalId: 'carouselTotal',
+        slideClass: 'carousel-slide', color: '#ff453d'
+    });
+
+    // ===== CARROUSEL SHORTS =====
+    initCarousel({
+        trackId: 'shortsTrack', dotsId: 'shortsDots',
+        prevId: 'shortsPrevBtn', nextId: 'shortsNextBtn',
+        curId: 'shortsCurrent', totalId: 'shortsTotal',
+        slideClass: 'shorts-slide', color: '#E3F939'
+    });
+
     </script>
 
 
@@ -2902,50 +2932,6 @@ const createSVG = (element) => {
   `;
 };
 
-    // ===== CARROUSEL SHORTS =====
-    (function() {
-        var track   = document.getElementById('shortsTrack');
-        var dotsBox = document.getElementById('shortsDots');
-        var prevBtn = document.getElementById('shortsPrevBtn');
-        var nextBtn = document.getElementById('shortsNextBtn');
-        var curEl   = document.getElementById('shortsCurrent');
-        var totalEl = document.getElementById('shortsTotal');
-
-        if (!track) return;
-
-        var slides  = Array.from(track.querySelectorAll('.shorts-slide'));
-        var current = 0;
-
-        function buildDots() {
-            if (!dotsBox) return;
-            dotsBox.innerHTML = '';
-            slides.forEach(function(_, i) {
-                var d = document.createElement('button');
-                d.style.cssText = 'width:' + (i===current?'20px':'8px') + ';height:8px;border-radius:999px;background:' + (i===current?'#E3F939':'rgba(160,160,160,0.4)') + ';border:none;cursor:pointer;transition:all .3s';
-                d.addEventListener('click', function(){ goTo(i); });
-                dotsBox.appendChild(d);
-            });
-        }
-
-        function goTo(idx) {
-            current = ((idx % slides.length) + slides.length) % slides.length;
-            track.style.transform = 'translateX(-' + (current * 100) + '%)';
-            if (curEl) curEl.textContent = current + 1;
-            buildDots();
-        }
-
-        if (prevBtn) prevBtn.addEventListener('click', function(){ goTo(current - 1); });
-        if (nextBtn) nextBtn.addEventListener('click', function(){ goTo(current + 1); });
-
-        // Touch swipe
-        var tx = 0;
-        track.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
-        track.addEventListener('touchend',   function(e){ var d = tx - e.changedTouches[0].clientX; if(Math.abs(d)>40) goTo(current + (d>0?1:-1)); }, {passive:true});
-
-        // Init
-        if (totalEl) totalEl.textContent = slides.length;
-        goTo(0);
-    })();
 
 // Sync active li when section changes via showSection
 const _origShowSection = window.showSection;
