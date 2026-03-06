@@ -18,6 +18,9 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
     
+    <!-- TikTok Embed -->
+    <script async src="https://www.tiktok.com/embed.js"></script>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -906,7 +909,8 @@
                         <button data-filter="house"    data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent11/40 text-accent11 bg-transparent hover:bg-accent11/10 transition-all duration-300"><span class="btn-label">House</span></button>
                         <button data-filter="urbain"   data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent12/40 text-accent12 bg-transparent hover:bg-accent12/10 transition-all duration-300"><span class="btn-label">Urbain</span></button>
                         <button data-filter="ambiance" data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent16/40 text-accent16 bg-transparent hover:bg-accent16/10 transition-all duration-300"><span class="btn-label">Ambiance</span></button>
-                        <button data-filter="live"     data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent15/40 text-accent15 bg-transparent hover:bg-accent15/10 transition-all duration-300"><span class="btn-label">Live</span></button>
+                        <button data-filter="latino"   data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent13/40 text-accent13 bg-transparent hover:bg-accent13/10 transition-all duration-300"><span class="btn-label">Latino</span></button>
+                        <button data-filter="annees"   data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent14/40 text-accent14 bg-transparent hover:bg-accent14/10 transition-all duration-300"><span class="btn-label">80's → 2020's</span></button>
                     </div>
 
                     <!-- Séparateur -->
@@ -917,6 +921,7 @@
                         <span class="text-gray text-xs font-semibold uppercase tracking-widest mr-1 opacity-60">Contexte</span>
                         <button data-filter="deplacement" data-group="contexte" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent13/40 text-accent13 bg-transparent hover:bg-accent13/10 transition-all duration-300"><span class="btn-label">En déplacement</span></button>
                         <button data-filter="maison"      data-group="contexte" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent14/40 text-accent14 bg-transparent hover:bg-accent14/10 transition-all duration-300"><span class="btn-label">À la maison</span></button>
+
                     </div>
 
                     <!-- Séparateur -->
@@ -935,6 +940,90 @@
 
                 <!-- GRILLE 3 COLONNES -->
                 <div id="demoGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto" style="grid-auto-rows: 1fr;">
+
+                    <!-- ── SET FESTIF : Audio ── -->
+                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="ambiance,electro,urbain,house,deplacement,maison,audio,long">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 bg-gradient-to-br from-accent13 to-accent15 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-star text-primary text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-heading font-bold truncate" style="color:#ffb43d;">Set Festif</h3>
+                                <p class="text-gray text-xs">Ambiance fête · Audio</p>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap" style="background:rgba(255,180,61,0.15);border:1px solid rgba(255,180,61,0.4);color:#ffb43d;">Audio</span>
+                        </div>
+
+                        <!-- Lecteur iframe Google Drive -->
+                        <div class="relative flex-1 bg-dark/50 rounded-2xl overflow-hidden" style="min-height:480px">
+                            <iframe
+                                src="https://drive.google.com/file/d/1r7npNg_tZVzw3MdfpsCgcn6ZPV5DYl_E/preview"
+                                width="100%"
+                                height="100%"
+                                style="position:absolute;inset:0;height:100%;border:none;"
+                                allow="autoplay">
+                            </iframe>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-full text-xs" style="background:rgba(255,180,61,0.2);color:#ffb43d;">Latino</span>
+                            <span class="px-3 py-1 bg-accent16/20 text-accent16 rounded-full text-xs">Ambiance</span>
+                            <span class="px-3 py-1 bg-accent11/20 text-accent11 rounded-full text-xs">House</span>
+                            <span class="px-3 py-1 bg-accent/20 text-accent rounded-full text-xs">Audio</span>
+                        </div>
+                    </div>
+
+                    <!-- ── CARROUSEL SHORTS : 3 TikToks ── -->
+                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="ambiance,electro,urbain,house,live,deplacement,maison,video,short">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 bg-gradient-to-br from-accent3 to-accent flex items-center justify-center flex-shrink-0 rounded-full">
+                                <i class="fab fa-tiktok text-primary text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-heading font-bold text-accent3 truncate">Shorts & Lives</h3>
+                                <p class="text-gray text-xs">3 vidéos · TikTok</p>
+                            </div>
+                            <span class="px-2 py-1 bg-accent3/20 border border-accent3/40 text-accent3 rounded-full text-xs font-semibold whitespace-nowrap">3 clips</span>
+                        </div>
+                        <div class="relative flex-1">
+                            <button id="shortsPrevBtn" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-20 w-8 h-8 rounded-full bg-dark border border-accent3/40 text-accent3 flex items-center justify-center hover:bg-accent3/20 transition-all duration-200 shadow-lg text-xs">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button id="shortsNextBtn" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-20 w-8 h-8 rounded-full bg-dark border border-accent3/40 text-accent3 flex items-center justify-center hover:bg-accent3/20 transition-all duration-200 shadow-lg text-xs">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <div class="overflow-hidden rounded-2xl h-full">
+                                <div id="shortsTrack" class="flex transition-transform duration-500 ease-in-out h-full">
+                                    <div class="shorts-slide min-w-full h-full flex justify-center bg-dark/50 rounded-2xl overflow-y-auto" style="min-height:480px">
+                                        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@dj.art4m/video/7613149128960380182" data-video-id="7613149128960380182" style="max-width:325px;min-width:325px;">
+                                            <section></section>
+                                        </blockquote>
+                                    </div>
+                                    <div class="shorts-slide min-w-full h-full flex justify-center bg-dark/50 rounded-2xl overflow-y-auto" style="min-height:480px">
+                                        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@dj.art4m/video/7613163461819780374" data-video-id="7613163461819780374" style="max-width:325px;min-width:325px;">
+                                            <section></section>
+                                        </blockquote>
+                                    </div>
+                                    <div class="shorts-slide min-w-full h-full flex justify-center bg-dark/50 rounded-2xl overflow-y-auto" style="min-height:480px">
+                                        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@dj.art4m/video/7613165184261115139" data-video-id="7613165184261115139" style="max-width:325px;min-width:325px;">
+                                            <section></section>
+                                        </blockquote>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Dots en overlay en bas -->
+                            <div class="absolute bottom-3 left-0 right-0 flex flex-col items-center gap-1.5 pointer-events-none z-10">
+                                <div id="shortsDots" class="flex justify-center gap-2"></div>
+                                <p class="text-white text-xs font-semibold px-2.5 py-0.5 rounded-full" style="background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);"><span id="shortsCurrent">1</span> / <span id="shortsTotal">3</span></p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-accent3/20 text-accent3 rounded-full text-xs">Short</span>
+                            <span class="px-3 py-1 bg-accent/20 text-accent rounded-full text-xs">Vidéo</span>
+                            <span class="px-3 py-1 bg-accent16/20 text-accent16 rounded-full text-xs">Ambiance</span>
+                            <span class="px-3 py-1 bg-accent15/20 text-accent15 rounded-full text-xs">Live</span>
+                        </div>
+                    </div>
 
                     <!-- ── CELLULE 4 : Set Ambiance── -->
                     <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="ambiance,electro,urbain,house,live,maison,video,long">
@@ -964,31 +1053,35 @@
                         </div>
                     </div>
 
-                    <!-- ── CELLULE 3 : Mix Audio ── -->
+                    <!-- ── CELLULE 3 : Mix Dynamique Audio ── -->
                     <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="electro,house,urbain,maison,audio,short">
                         <div class="flex items-center gap-3">
-                            <div class="w-11 h-11 bg-gradient-to-br from-accent to-accent2 rounded-full flex items-center justify-center flex-shrink-0 vinyl-spin">
+                            <div class="w-11 h-11 bg-gradient-to-br from-accent to-accent2 rounded-full flex items-center justify-center flex-shrink-0">
                                 <i class="fas fa-music text-primary"></i>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <h3 class="font-heading font-bold text-accent truncate">Mix Dynamique</h3>
                                 <p class="text-gray text-xs">Août 2025 · 15 min</p>
                             </div>
+                            <span class="px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap" style="background:rgba(57,131,249,0.15);border:1px solid rgba(57,131,249,0.4);color:#3983F9;">Audio</span>
                         </div>
+
+                        <!-- Lecteur iframe Google Drive -->
                         <div class="relative flex-1 bg-dark/50 rounded-2xl overflow-hidden" style="min-height:480px">
-                            <iframe 
-                                src="https://drive.google.com/file/d/1b7K6LKFXTWl17rLx00tlagHCJPclsTJP/preview" 
-                                width="100%" 
+                            <iframe
+                                src="https://drive.google.com/file/d/1b7K6LKFXTWl17rLx00tlagHCJPclsTJP/preview"
+                                width="100%"
                                 height="100%"
-                                style="position:absolute;inset:0;height:100%"
+                                style="position:absolute;inset:0;height:100%;border:none;"
                                 allow="autoplay">
                             </iframe>
                         </div>
+
                         <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-accent10/20 text-accent10 rounded-full text-xs">Electro</span>
                             <span class="px-3 py-1 bg-accent12/20 text-accent12 rounded-full text-xs">Urbain</span>
                             <span class="px-3 py-1 bg-accent11/20 text-accent11 rounded-full text-xs">House</span>
-                            <span class="px-3 py-1 bg-accent2/20 text-accent2 rounded-full text-xs">Audio</span>
+                            <span class="px-3 py-1 bg-accent/20 text-accent rounded-full text-xs">Audio</span>
                         </div>
                     </div>
 
@@ -1471,10 +1564,10 @@
                         <span class="text-red-400 font-bold text-sm tracking-widest uppercase">En direct</span>
                     </div>
                     <h2 class="text-4xl md:text-5xl font-display font-bold mb-4" style="background: linear-gradient(135deg, #9147FF 0%, #bf6fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                        DJ Arthur est LIVE
+                        DJ Arthur est en LIVE
                     </h2>
                     <p class="text-gray text-lg max-w-xl mx-auto">
-                        Rejoins le stream sur Twitch — écoute, regarde et discute en direct !
+                        Pas besoin de rejoindre le stream sur Twitch. écoute, regarde et discute en direct sur mon site !
                     </p>
                 </div>
 
@@ -2808,6 +2901,51 @@ const createSVG = (element) => {
     </div>
   `;
 };
+
+    // ===== CARROUSEL SHORTS =====
+    (function() {
+        var track   = document.getElementById('shortsTrack');
+        var dotsBox = document.getElementById('shortsDots');
+        var prevBtn = document.getElementById('shortsPrevBtn');
+        var nextBtn = document.getElementById('shortsNextBtn');
+        var curEl   = document.getElementById('shortsCurrent');
+        var totalEl = document.getElementById('shortsTotal');
+
+        if (!track) return;
+
+        var slides  = Array.from(track.querySelectorAll('.shorts-slide'));
+        var current = 0;
+
+        function buildDots() {
+            if (!dotsBox) return;
+            dotsBox.innerHTML = '';
+            slides.forEach(function(_, i) {
+                var d = document.createElement('button');
+                d.style.cssText = 'width:' + (i===current?'20px':'8px') + ';height:8px;border-radius:999px;background:' + (i===current?'#E3F939':'rgba(160,160,160,0.4)') + ';border:none;cursor:pointer;transition:all .3s';
+                d.addEventListener('click', function(){ goTo(i); });
+                dotsBox.appendChild(d);
+            });
+        }
+
+        function goTo(idx) {
+            current = ((idx % slides.length) + slides.length) % slides.length;
+            track.style.transform = 'translateX(-' + (current * 100) + '%)';
+            if (curEl) curEl.textContent = current + 1;
+            buildDots();
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', function(){ goTo(current + 1); });
+
+        // Touch swipe
+        var tx = 0;
+        track.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
+        track.addEventListener('touchend',   function(e){ var d = tx - e.changedTouches[0].clientX; if(Math.abs(d)>40) goTo(current + (d>0?1:-1)); }, {passive:true});
+
+        // Init
+        if (totalEl) totalEl.textContent = slides.length;
+        goTo(0);
+    })();
 
 // Sync active li when section changes via showSection
 const _origShowSection = window.showSection;
