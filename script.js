@@ -1285,3 +1285,26 @@ if (btn) {
 }
 }
 };
+
+// ─── 15. SECTION EVENT — lecture vidéo de fond + masquer navbar ──
+(function () {
+    const _prev = window.showSection;
+    window.showSection = function (id, ev) {
+        _prev && _prev(id, ev);
+        const nav = document.querySelector('nav');
+        const vid = document.getElementById('eventBgVideo');
+        // setTimeout pour s'assurer que tous les wrappers ont fini
+        setTimeout(function () {
+            if (id === 'event') {
+                if (nav) nav.style.setProperty('display', 'none', 'important');
+            } else {
+                if (nav) nav.style.removeProperty('display');
+            }
+        }, 0);
+        if (id === 'event') {
+            if (vid) vid.play().catch(() => {});
+        } else {
+            if (vid) vid.pause();
+        }
+    };
+})();

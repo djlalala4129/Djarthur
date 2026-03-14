@@ -278,6 +278,37 @@
                 <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce-slow">
                     <i class="fas fa-chevron-down text-accent text-3xl opacity-70"></i>
                 </div>
+
+                <!-- Bouton EVENT fixe bas droite -->
+                <button onclick="showSection('event', event); return false;" id="eventBtn" style="
+                    position: absolute;
+                    bottom: 32px;
+                    right: 32px;
+                    z-index: 30;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 14px 22px;
+                    background: rgba(10,10,10,0.55);
+                    border: 1.5px solid rgba(57,131,249,0.55);
+                    border-radius: 50px;
+                    color: #F3F2F2;
+                    font-family: 'Orbitron', sans-serif;
+                    font-size: 0.78rem;
+                    font-weight: 700;
+                    letter-spacing: 0.18em;
+                    text-transform: uppercase;
+                    cursor: pointer;
+                    backdrop-filter: blur(14px);
+                    -webkit-backdrop-filter: blur(14px);
+                    box-shadow: 0 0 18px rgba(57,131,249,0.25);
+                    transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+                ">
+                    <span style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:linear-gradient(135deg,#3983F9,#0760EE);border-radius:50%;font-size:0.65rem;color:#fff;flex-shrink:0;">
+                        <i class="fas fa-play"></i>
+                    </span>
+                    EVENT
+                </button>
             </div>
 
             <!-- BLOCS EN QUINCONCE -->
@@ -366,6 +397,57 @@
 
             </div>
 
+        </section>
+
+        <!-- Event Section -->
+        <section id="event" class="section hidden" style="height: 100vh; overflow: hidden; position: relative;">
+            <video
+                id="eventBgVideo"
+                autoplay muted loop playsinline
+                style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; z-index:0;"
+            >
+                <source src="event.mp4" type="video/mp4">
+            </video>
+            <!-- Logo vinyle DJ Arthur -->
+            <div class="relative z-10 flex flex-col items-center" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
+                <div class="waveform-container">
+                    <div class="wf-halo wf-halo-b"></div>
+                    <div class="wf-halo wf-halo-a"></div>
+                    <div class="wf-ring wf-ring-inner"></div>
+                    <div class="waveform-center">
+                        <svg class="vinyl-svg" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="80" cy="80" r="76" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                            <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.8"/>
+                            <circle cx="80" cy="80" r="64" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.8"/>
+                            <circle cx="80" cy="80" r="58" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.8"/>
+                            <circle cx="80" cy="80" r="52" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.8"/>
+                            <circle cx="80" cy="80" r="46" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.8"/>
+                            <circle cx="80" cy="80" r="40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.7"/>
+                            <circle cx="80" cy="80" r="32" fill="url(#labelGradEv)"/>
+                            <circle cx="80" cy="80" r="32" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+                            <circle cx="80" cy="80" r="4" fill="rgba(0,0,0,0.9)" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+                            <circle cx="80" cy="80" r="55" fill="none" stroke="url(#grooveGlowEv)" stroke-width="1.5" opacity="0.4"/>
+                            <defs>
+                                <radialGradient id="labelGradEv" cx="40%" cy="38%">
+                                    <stop offset="0%"   stop-color="#1a0a2e"/>
+                                    <stop offset="60%"  stop-color="#0d0618"/>
+                                    <stop offset="100%" stop-color="#070410"/>
+                                </radialGradient>
+                                <linearGradient id="grooveGlowEv" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%"   stop-color="transparent"/>
+                                    <stop offset="40%"  stop-color="rgba(7,96,238,0.6)"/>
+                                    <stop offset="60%"  stop-color="rgba(200,60,255,0.5)"/>
+                                    <stop offset="100%" stop-color="transparent"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="vinyl-label">
+                            <span class="vinyl-dj">DJ</span>
+                            <span class="vinyl-name">Arthur</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- Demo Section -->
