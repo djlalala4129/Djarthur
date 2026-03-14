@@ -292,6 +292,9 @@
                 </div>
             </div>
 
+            <!-- Three.js + GLTFLoader chargés directement -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/loaders/GLTFLoader.js"></script>
             <script>
             (function(){
                 var wrapper = document.getElementById('hp-wrapper');
@@ -303,129 +306,91 @@
                     return Math.max(0, Math.min(1, -wrapper.getBoundingClientRect().top / h));
                 }
 
-                /* Charge un script dynamiquement puis appelle cb */
-                function loadScript(src, cb){
-                    var s = document.createElement('script');
-                    s.src = src;
-                    s.onload = cb;
-                    s.onerror = function(){ console.error('Impossible de charger', src); };
-                    document.head.appendChild(s);
-                }
+                var W = window.innerWidth;
+                var H = window.innerHeight;
 
-                /* Initialisation Three.js + GLTFLoader */
-                function init(){
-                    var W = canvas.clientWidth;
-                    var H = canvas.clientHeight;
+                /* Renderer */
+                var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                renderer.setSize(W, H);
+                renderer.outputEncoding = THREE.sRGBEncoding;
+                renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                renderer.toneMappingExposure = 1.6;
 
-                    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                    renderer.setSize(W, H, false);
-                    renderer.outputEncoding = THREE.sRGBEncoding;
-                    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-                    renderer.toneMappingExposure = 1.6;
+                /* Scène + caméra */
+                var scene  = new THREE.Scene();
+                var camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 100);
+                camera.position.z = 4;
 
-                    var scene  = new THREE.Scene();
-                    var camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 100);
-                    camera.position.z = 4;
+                /* Lumières */
+                scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 
-                    /* Lumières */
-                    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+                var key = new THREE.DirectionalLight(0x3983f9, 3);
+                key.position.set(-3, 2, 3);
+                scene.add(key);
 
-                    var key = new THREE.DirectionalLight(0x3983f9, 3);
-                    key.position.set(-3, 2, 3);
-                    scene.add(key);
+                var fill = new THREE.DirectionalLight(0x9147ff, 2);
+                fill.position.set(3, -1, 2);
+                scene.add(fill);
 
-                    var fill = new THREE.DirectionalLight(0x9147ff, 2);
-                    fill.position.set(3, -1, 2);
-                    scene.add(fill);
+                var rim = new THREE.DirectionalLight(0x00f0ff, 1.5);
+                rim.position.set(0, 3, -3);
+                scene.add(rim);
 
-                    var rim = new THREE.DirectionalLight(0x00f0ff, 1.5);
-                    rim.position.set(0, 3, -3);
-                    scene.add(rim);
+                /* Chargement GLB */
+                var model    = null;
+                var baseScale = 1;
 
-                    /* Chargement du modèle */
-                    var model = null;
-                    var baseScale = 1;
-
-                    var loader = new THREE.GLTFLoader();
-                    loader.load(
-                        'headphones.glb',
-                        function(gltf){
-                            model = gltf.scene;
-
-                            /* Centrer le modèle */
-                            var box = new THREE.Box3().setFromObject(model);
-                            var center = new THREE.Vector3();
-                            box.getCenter(center);
-                            model.position.sub(center);
-
-                            /* Mise à l'échelle */
-                            var size = new THREE.Vector3();
-                            box.getSize(size);
-                            baseScale = 2.0 / Math.max(size.x, size.y, size.z);
-                            model.scale.setScalar(baseScale * 0.01); /* commence tout petit */
-
-                            model.rotation.x = 0.2;
-                            scene.add(model);
-                        },
-                        undefined,
-                        function(e){ console.error('Erreur GLB :', e); }
-                    );
-
-                    /* Resize */
-                    window.addEventListener('resize', function(){
-                        W = canvas.clientWidth;
-                        H = canvas.clientHeight;
-                        renderer.setSize(W, H, false);
-                        camera.aspect = W / H;
-                        camera.updateProjectionMatrix();
-                    });
-
-                    /* Rendu */
-                    var rafId = null;
-                    function animate(){
-                        rafId = requestAnimationFrame(animate);
-                        var prog = getProgress();
-                        var t    = Date.now() * 0.001;
-
-                        if(model){
-                            /* Rotation Y = scroll */
-                            model.rotation.y = prog * Math.PI * 4;
-                            /* Légère inclinaison X */
-                            model.rotation.x = 0.2 + Math.sin(prog * Math.PI) * 0.15;
-                            /* Scale : apparaît, grossit au milieu, disparaît */
-                            var s = Math.sin(prog * Math.PI);
-                            model.scale.setScalar(baseScale * Math.max(0.01, s));
-                        }
-
-                        /* Lumières tournantes */
-                        key.position.x  =  Math.cos(t * 0.5) * 4;
-                        key.position.z  =  Math.sin(t * 0.5) * 4;
-                        fill.position.x = -Math.cos(t * 0.5) * 4;
-
-                        renderer.render(scene, camera);
-                    }
-
-                    /* Démarrer seulement quand visible */
-                    var obs = new IntersectionObserver(function(entries){
-                        entries.forEach(function(e){
-                            if(e.isIntersecting){ if(!rafId) animate(); }
-                            else{ cancelAnimationFrame(rafId); rafId = null; }
-                        });
-                    }, { threshold: 0 });
-                    obs.observe(wrapper);
-                }
-
-                /* Charger Three.js r128, puis GLTFLoader, puis init */
-                loadScript(
-                    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
-                    function(){
-                        loadScript(
-                            'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js',
-                            init
-                        );
-                    }
+                var loader = new THREE.GLTFLoader();
+                loader.load(
+                    'headphones.glb',
+                    function(gltf){
+                        model = gltf.scene;
+                        var box = new THREE.Box3().setFromObject(model);
+                        var center = new THREE.Vector3();
+                        box.getCenter(center);
+                        model.position.sub(center);
+                        var size = new THREE.Vector3();
+                        box.getSize(size);
+                        baseScale = 2.0 / Math.max(size.x, size.y, size.z);
+                        model.scale.setScalar(baseScale);
+                        model.rotation.x = 0.2;
+                        scene.add(model);
+                        console.log('Casque chargé !');
+                    },
+                    function(xhr){ console.log('Chargement : ' + Math.round(xhr.loaded/xhr.total*100) + '%'); },
+                    function(e){ console.error('Erreur GLB :', e); }
                 );
+
+                /* Resize */
+                window.addEventListener('resize', function(){
+                    W = window.innerWidth;
+                    H = window.innerHeight;
+                    renderer.setSize(W, H);
+                    camera.aspect = W / H;
+                    camera.updateProjectionMatrix();
+                });
+
+                /* Boucle */
+                function animate(){
+                    requestAnimationFrame(animate);
+                    var prog = getProgress();
+                    var t    = Date.now() * 0.001;
+
+                    if(model){
+                        model.rotation.y = prog * Math.PI * 4;
+                        model.rotation.x = 0.2 + Math.sin(prog * Math.PI) * 0.15;
+                        var s = Math.max(0.01, Math.sin(prog * Math.PI));
+                        model.scale.setScalar(baseScale * s);
+                    }
+
+                    key.position.x  =  Math.cos(t * 0.5) * 4;
+                    key.position.z  =  Math.sin(t * 0.5) * 4;
+                    fill.position.x = -Math.cos(t * 0.5) * 4;
+
+                    renderer.render(scene, camera);
+                }
+                animate();
             })();
             </script>
 
