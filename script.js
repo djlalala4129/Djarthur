@@ -300,6 +300,96 @@ document.addEventListener('DOMContentLoaded', function() {
     })();
 
 });
+
+
+// ─── 5b. WAVEFORM EVENT SECTION ─────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+    const containerEv = document.getElementById('waveformContainerEvent');
+    const ringInnerEv = document.getElementById('wfRingInnerEvent');
+    if (!containerEv || !ringInnerEv) return;
+
+    const isMob = () => window.innerWidth <= 768;
+
+    function hue(angle, offset) { return (offset + angle * 0.75) % 360; }
+    function barH(i, n, base, amp) {
+        const t = (i / n) * Math.PI * 2;
+        const v = .5  * Math.abs(Math.sin(t * 3))
+                + .3  * Math.abs(Math.sin(t * 7  + 1.1))
+                + .2  * Math.abs(Math.sin(t * 13 + 2.3));
+        return base + amp * v;
+    }
+
+    const N_IN = 64;
+    const barsEvIn = [];
+    for (let i = 0; i < N_IN; i++) {
+        const mob    = isMob();
+        const radius = mob ? 80  : 132;
+        const base   = mob ? 8   : 16;
+        const amp    = mob ? 16  : 38;
+        const angle  = (i / N_IN) * 360;
+        const h      = barH(i, N_IN, base, amp);
+        const h1 = hue(angle, 210), h2 = hue(angle, 255);
+        const w = mob ? 1.8 : (1.4 + 1.2 * Math.abs(Math.sin((i/N_IN)*Math.PI*5)));
+
+        const bar = document.createElement('div');
+        bar.className = 'wf-bar';
+        bar.style.cssText = `
+            width:${w}px;
+            transform:rotate(${angle}deg) translateY(-${radius}px);
+            background:linear-gradient(180deg,
+                transparent 0%,
+                hsla(${h1},100%,65%,.9) 40%,
+                hsla(${h2},100%,62%,.7) 100%);
+            box-shadow: 0 0 ${2+w*1.5}px hsla(${h1},100%,65%,.5);
+            --hA:${h*.58}px; --hB:${h*1.42}px; --oA:.5;
+            animation: wf-breathe ${3.5 + .5*Math.sin(i)}s ease-in-out ${-(i/N_IN)*3.5}s infinite;
+        `;
+        bar.style.height = h + 'px';
+        bar.dataset.angle  = angle;
+        bar.dataset.radius = radius;
+        bar.dataset.h1     = h1;
+        bar.dataset.ring   = 'in';
+        ringInnerEv.appendChild(bar);
+        barsEvIn.push(bar);
+    }
+
+    window.addEventListener('resize', () => {
+        const mob = isMob();
+        barsEvIn.forEach(b => {
+            const r = mob ? 80 : 132;
+            b.style.transform = `rotate(${b.dataset.angle}deg) translateY(-${r}px)`;
+        });
+    });
+
+    // Vague automatique en continu
+    let va = 0;
+    function loopEv() {
+        va = (va + 0.8) % 360;
+        const m = window.getComputedStyle(ringInnerEv).transform;
+        const rotIn = (m === 'none') ? 0 : ((Math.atan2(+m.split('(')[1].split(')')[0].split(',')[1], +m.split('(')[1].split(')')[0].split(',')[0]) * 180/Math.PI) + 360) % 360;
+        barsEvIn.forEach(bar => {
+            const bAng = (+bar.dataset.angle + rotIn) % 360;
+            let diff = Math.abs(va - bAng);
+            if (diff > 180) diff = 360 - diff;
+            const span = 60;
+            if (diff < span) {
+                const p   = Math.pow(1 - diff/span, 2);
+                const hA  = parseFloat(bar.style.getPropertyValue('--hA')) || 10;
+                const hB  = parseFloat(bar.style.getPropertyValue('--hB')) || 40;
+                const mid = (hA + hB) / 2;
+                bar.style.height  = (mid * (1 + p * 1.5)) + 'px';
+                bar.style.opacity = String(.55 + p * .45);
+                bar.style.filter  = `brightness(${1 + p * 1.3})`;
+                bar.dataset.hov   = '1';
+            } else if (bar.dataset.hov === '1') {
+                bar.style.height = bar.style.opacity = bar.style.filter = '';
+                bar.dataset.hov = '0';
+            }
+        });
+        requestAnimationFrame(loopEv);
+    }
+    requestAnimationFrame(loopEv);
+});
 // ─── 6a. KARAOKÉ — Chargement des chansons ──────────────────
 function loadSongs(filter = "") {
     select.innerHTML = '<option value="">-- Choisissez une chanson --</option>';
