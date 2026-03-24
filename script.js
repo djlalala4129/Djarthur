@@ -229,10 +229,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const r = mob ? 80 : 132;
             b.style.transform = `rotate(${b.dataset.angle}deg) translateY(-${r}px)`;
         });
-        barsOut.forEach(b => {
-            const r = mob ? 96 : 160;
-            b.style.transform = `rotate(${b.dataset.angle}deg) translateY(-${r}px)`;
-        });
     });
 
 
@@ -246,9 +242,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function applyHover(normAngle) {
         const rotIn  = getRot(ringInner);
-        const rotOut = getRot(ringOuter);
         allBars.forEach(bar => {
-            const rot  = bar.dataset.ring === 'in' ? rotIn : rotOut;
+            const rot  = rotIn;
             const bAng = (+bar.dataset.angle + rot) % 360;
             let diff   = Math.abs(normAngle - bAng);
             if (diff > 180) diff = 360 - diff;
