@@ -408,13 +408,22 @@
             >
                 <source src="event.mp4" type="video/mp4">
             </video>
-            <!-- Badge page en construction -->
-            <div style="position:absolute; top:120px; left:50%; transform:translateX(-50%); z-index:20; white-space:nowrap;">
-                <div class="flex items-center gap-4 px-10 py-5 rounded-full font-bold"
-                     style="background:rgba(7,96,238,0.25);border:2px solid rgba(57,131,249,0.6);color:#fff;backdrop-filter:blur(10px);box-shadow:0 0 40px rgba(7,96,238,0.4);font-size:1.8rem;letter-spacing:0.05em;">
-                    <i class="fas fa-tools" style="color:#3983F9;font-size:2rem;"></i>
-                    <span>Page en construction</span>
+            <!-- Étiquette site événements -->
+            <div style="position:absolute; top:120px; left:50%; transform:translateX(-50%); z-index:20; white-space:nowrap; display:flex; align-items:center; gap:16px;">
+                <!-- Barre d'URL style navigateur -->
+                <div class="flex items-center gap-2 px-4 py-2.5 rounded-full"
+                     style="background:rgba(15,15,25,0.85);border:1.5px solid rgba(57,131,249,0.5);backdrop-filter:blur(10px);box-shadow:0 0 24px rgba(7,96,238,0.3);min-width:320px;">
+                    <!-- Cadenas -->
+                    <i class="fas fa-lock" style="color:#68ee4e;font-size:0.85rem;flex-shrink:0;"></i>
+                    <!-- URL -->
+                    <span style="font-family:'Poppins',sans-serif;font-size:1rem;color:#a0a0a0;flex-shrink:0;">https://</span>
+                    <span style="font-family:'Poppins',sans-serif;font-size:1rem;font-weight:600;color:#fff;">djarthur.pages.dev</span>
+                    <span style="font-family:'Poppins',sans-serif;font-size:1rem;color:#a0a0a0;flex-shrink:0;">/</span>
                 </div>
+                <!-- QR Code -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://djarthur.pages.dev/&bgcolor=0B0B0B&color=3983F9&qzone=1"
+                     alt="QR Code DJ Arthur"
+                     style="width:60px;height:60px;border-radius:8px;display:block;border:1.5px solid rgba(57,131,249,0.5);box-shadow:0 0 16px rgba(7,96,238,0.3);">
             </div>
             <!-- Logo vinyle DJ Arthur -->
             <div class="relative z-10 flex flex-col items-center gap-6" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
