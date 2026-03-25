@@ -421,9 +421,9 @@
                     <span style="font-family:'Poppins',sans-serif;font-size:1.4rem;color:#a0a0a0;flex-shrink:0;">/</span>
                 </div>
                 <!-- QR Code -->
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://djarthur.pages.dev/&bgcolor=0B0B0B&color=3983F9&qzone=1"
+                <img src="QrCode.png"
                      alt="QR Code DJ Arthur"
-                     style="width:100px;height:100px;border-radius:10px;display:block;border:1.5px solid rgba(57,131,249,0.5);box-shadow:0 0 16px rgba(7,96,238,0.3);">
+                     style="width:120px;height:120px;border-radius:10px;display:block;border:1.5px solid rgba(57,131,249,0.5);box-shadow:0 0 16px 7px rgba(7,96,238,0.3);">
             </div>
             <!-- Logo vinyle DJ Arthur -->
             <div class="relative z-10 flex flex-col items-center gap-6" style="position:absolute; top:60%; left:50%; transform:translate(-50%,-50%);">
@@ -912,7 +912,7 @@
                         <div class="relative w-full select-none" id="ddj-container" style="max-width:900px;margin:0 auto;">
 
                             <!-- Photo réelle du DDJ-FLX10 -->
-                            <img src="ddj-flx10.webp" alt="Pioneer DDJ-FLX10" class="w-full h-auto rounded-xl block" id="ddj-img" draggable="false" style="filter: brightness(0.92) contrast(1.05);">
+                            <img src="ddj-flx10.png" alt="Pioneer DDJ-FLX10" class="w-full h-auto rounded-xl block" id="ddj-img" draggable="false" style="filter: brightness(0.92) contrast(1.05);">
 
                             <!-- Zones interactives (positionnées en % sur l'image) -->
 
@@ -921,130 +921,158 @@
                                 data-zone="jog"
                                 data-title="Jog Wheel (Deck 1)"
                                 data-desc="Plateau tactile capacitif pour contrôler et ajuster la vitesse du morceau afin de le synchroniser.Permet également de voir le morceau qui joue sur le deck avec l\'écran."
-                                style="left:7.5%;top:35%;width:26.5%;height:26.5%;border-radius:50%;"></div>
+                                style="left:2.5%;top:19%;width:30%;height:53.3%;border-radius:50%;"></div>
 
                             <!-- JOG DROIT -->
                             <div class="ddj-zone-img absolute cursor-pointer jog-zone" id="jog-right"
                                 data-zone="jog"
                                 data-title="Jog Wheel (Deck 2)"
                                 data-desc="Plateau tactile capacitif pour contrôler et ajuster la vitesse du morceau afin de le synchroniser.Permet également de voir le morceau qui joue sur le deck avec l\'écran."
-                                style="left:66%;top:35%;width:26.5%;height:26.5%;border-radius:50%;"></div>
+                                style="left:67.5%;top:19%;width:30%;height:53.3%;border-radius:50%;"></div>
 
                             <!-- PADS GAUCHE -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
                                 data-zone="pads"
                                 data-title="Performance Pads (Deck 1)"
                                 data-desc="8 pads rétroéclairés RGB pour ajouter plus de créativité dans les mix et les rendres dynamique. Hot Cues, PadFx, Beatloop, Beatjump, Keyshift, Sampler."
-                                style="left:11.5%;top:62%;width:17.5%;height:13%;"></div>
+                                style="left:8%;top:73%;width:18.75%;height:24.25%;"></div>
 
                             <!-- PADS DROIT -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
                                 data-zone="pads"
                                 data-title="Performance Pads (Deck 2)"
                                 data-desc="8 pads rétroéclairés RGB pour ajouter plus de créativité dans les mix et les rendres dynamique. Hot Cues, PadFx, Beatloop, Beatjump, Keyshift, Sampler."
-                                style="left:71%;top:62%;width:17.5%;height:13%;"></div>
+                                style="left:73%;top:73%;width:18.75%;height:24.25%;"></div>
 
                             <!-- EQ -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
                                 data-zone="eq"
                                 data-title="EQ 3 Bandes"
                                 data-desc="Égaliseur 3 bandes par canal (HI / MID / LOW) ou par stems (Instru/Vocal/Drums). Permet de rendre la transition plus fluide en intégrant progressivement la musique."
-                                style="left:40.5%;top:30.25%;width:19%;height:16.5%;"></div>
+                                style="left:40%;top:12%;width:20%;height:31.25%;"></div>
 
                             <!-- FADERS -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
                                 data-zone="fader"
                                 data-title="Faders"
                                 data-desc="4 Channel faders pour régler le volume des decks. 1 Crossfader central pour rendre les transitions fluides en fondu et pour le scratch."
-                                style="left:41%;top:57%;width:18%;height:18%;"></div>
+                                style="left:40%;top:62%;width:20%;height:36%;"></div>
 
                             <!-- FX Beat -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
                                 data-zone="fx"
                                 data-title="Beat FX"
                                 data-desc="14 effets pour un un max de créativité. Knobs pour ajuster l'intensité de l'effet et choisir les canaux. 3 boutons coloré pour choisir a quelle stems les effets s'applique."
-                                style="left:59%;top:45.25%;width:5.5%;height:30%;"></div>
+                                style="left:59.75%;top:40%;width:5.75%;height:58.6%;"></div>
 
                             <!-- STEMS GAUCHE -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-lg"
                                 data-zone="stems"
                                 data-title="Stems (Deck 1)"
                                 data-desc="3 boutons colorés pour séparer la musique en couches indépendantes : Bleu = Drums (percussions), Vert = Vocal, Rouge = Instrumental. Permet de mixer en coupant ou isolant chaque partie du morceau."
-                                style="left:5%;top:27.2%;width:15%;height:3%;"></div>
+                                style="left:0.66%;top:5.66%;width:16%;height:6%;"></div>
 
                             <!-- STEMS DROIT -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-lg"
                                 data-zone="stems"
                                 data-title="Stems (Deck 2)"
                                 data-desc="3 boutons colorés pour séparer la musique en couches indépendantes : Bleu = Drums (percussions), Vert = Vocal, Rouge = Instrumental. Permet de mixer en coupant ou isolant chaque partie du morceau."
-                                style="left:64.5%;top:27.2%;width:15%;height:3%;"></div>
+                                style="left:65.66%;top:5.66%;width:16%;height:6%;"></div>
 
                             <!-- PITCH FADER GAUCHE -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-lg"
                                 data-zone="pitch"
                                 data-title="Pitch Fader (Deck 1)"
                                 data-desc="Fader rectangulaire vertical pour ajuster précisément la vitesse (BPM) du morceau en cours. Monter = accélérer, descendre = ralentir. Utilisé pour aligner deux morceaux avant une transition."
-                                style="left:31%;top:57%;width:4.33%;height:18%;"></div>
+                                style="left:29.5%;top:63%;width:4%;height:34.5%;"></div>
 
                             <!-- PITCH FADER DROIT -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-lg"
                                 data-zone="pitch"
                                 data-title="Pitch Fader (Deck 2)"
                                 data-desc="Fader rectangulaire vertical pour ajuster précisément la vitesse (BPM) du morceau en cours. Monter = accélérer, descendre = ralentir. Utilisé pour aligner deux morceaux avant une transition."
-                                style="left:90.5%;top:57%;width:4.33%;height:18%;"></div>
+                                style="left:94.5%;top:63%;width:4%;height:34.5%;"></div>
 
                             <!-- BROWSE GAUCHE -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-full"
                                 data-zone="browse"
                                 data-title="Browse (Deck 1)"
                                 data-desc="Encodeur rotatif pour naviguer dans la bibliothèque musicale et sélectionner le morceau à charger sur le deck. Tourner = parcourir la liste, appuyer = charger le morceau sélectionné."
-                                style="left:30%;top:26%;width:6%;height:8.5%;border-radius:25%;"></div>
+                                style="left:28%;top:4%;width:6.3%;height:15%;border-radius:25%;"></div>
 
                             <!-- BROWSE DROIT -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-full"
                                 data-zone="browse"
                                 data-title="Browse (Deck 2)"
                                 data-desc="Encodeur rotatif pour naviguer dans la bibliothèque musicale et sélectionner le morceau à charger sur le deck. Tourner = parcourir la liste, appuyer = charger le morceau sélectionné."
-                                style="left:89.5%;top:26%;width:6%;height:8.5%;border-radius:25%;"></div>
+                                style="left:93%;top:4%;width:6.3%;height:15%;border-radius:25%;"></div>
 
                             <!-- DECK SWITCH GAUCHE -->
                             <div class="ddj-zone-img absolute cursor-pointer"
                                 data-zone="deckswitch"
                                 data-title="Deck Switch (1 ↔ 3)"
                                 data-desc="Bouton circulaire permettant de basculer entre le Deck 1 et le Deck 3 sur le même côté du contrôleur. Utile pour préparer un troisième morceau sans interrompre le mix en cours."
-                                style="left:5%;top:37%;width:4%;height:4.33%;border-radius:50%;"></div>
+                                style="left:0.7%;top:24%;width:4%;height:9.5%;border-radius:50%;"></div>
 
                             <!-- DECK SWITCH DROIT -->
                             <div class="ddj-zone-img absolute cursor-pointer"
                                 data-zone="deckswitch"
                                 data-title="Deck Switch (2 ↔ 4)"
                                 data-desc="Bouton circulaire permettant de basculer entre le Deck 2 et le Deck 4 sur le même côté du contrôleur. Utile pour préparer un quatrième morceau sans interrompre le mix en cours."
-                                style="left:64.5%;top:37%;width:4%;height:4.33%;border-radius:50%;"></div>
+                                style="left:65.7%;top:24%;width:4%;height:9.5%;border-radius:50%;"></div>
+
+                            <!-- LOOP GAUCHE -->
+                            <div class="ddj-zone-img absolute cursor-pointer rounded-lg"
+                                data-zone="loop"
+                                data-title="Boutons Boucle (Deck 1)"
+                                data-desc="Boutons de gestion des boucles : Auto Loop (crée une boucle automatique sur 1, 2, 4 ou 8 temps), Loop In/Out (définit manuellement les points de début et de fin de boucle), et Reloop (réactive la dernière boucle définie). Utile pour créer des effets de répétition ou maintenir une partie du morceau en suspension pendant une transition."
+                                style="left:0.66%;top:10.66%;width:14.2%;height:9%;"></div>
+
+                            <!-- LOOP DROIT -->
+                            <div class="ddj-zone-img absolute cursor-pointer rounded-lg"
+                                data-zone="loop"
+                                data-title="Boutons Boucle (Deck 2)"
+                                data-desc="Boutons de gestion des boucles : Auto Loop (crée une boucle automatique sur 1, 2, 4 ou 8 temps), Loop In/Out (définit manuellement les points de début et de fin de boucle), et Reloop (réactive la dernière boucle définie). Utile pour créer des effets de répétition ou maintenir une partie du morceau en suspension pendant une transition."
+                                style="left:65.66%;top:10.66%;width:14.2%;height:9%;"></div>
+
+                            <!-- PLAY GAUCHE -->
+                            <div class="ddj-zone-img absolute cursor-pointer rounded-lg"
+                                data-zone="play"
+                                data-title="Boutons Play (Deck 1)"
+                                data-desc="Boutons de lecture et de repère : Play/Pause (démarre ou met en pause le morceau), Cue (définit un point de repère et permet de revenir au début de la phrase musicale), et Sync (synchronise automatiquement le BPM et la phase du deck avec l'autre deck pour une transition parfaite)."
+                                style="left:1.3%;top:74.5%;width:6.6%;height:23%;"></div>
+
+                            <!-- PLAY DROIT -->
+                            <div class="ddj-zone-img absolute cursor-pointer rounded-lg"
+                                data-zone="play"
+                                data-title="Boutons Play (Deck 2)"
+                                data-desc="Boutons de lecture et de repère : Play/Pause (démarre ou met en pause le morceau), Cue (définit un point de repère et permet de revenir au début de la phrase musicale), et Sync (synchronise automatiquement le BPM et la phase du deck avec l'autre deck pour une transition parfaite)."
+                                style="left:66.33%;top:74.5%;width:6.6%;height:23%;"></div>
 
                             <!-- COLOR FX -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
                                 data-zone="colorfx"
                                 data-title="Color FX"
                                 data-desc="Effets de couleur appliqués en temps réel sur le canal sélectionné : Filter, Dub Echo, Noise, Pitch. Un knob par canal pour doser l'intensité. Idéal pour créer de la tension avant un drop ou enrichir une transition."
-                                style="left:35.5%;top:45%;width:24%;height:7%;"></div>
+                                style="left:34%;top:40.33%;width:26%;height:13%;"></div>
 
                             <!-- MICROS -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
                                 data-zone="micro"
                                 data-title="Contrôle Micros"
                                 data-desc="Section de gestion des micros : volume Micro 1 (XLR) et Micro 2 (Jack), EQ dédié (Hi/Low), atténuateur de musique (Talk Over) qui baisse automatiquement le volume du mix quand on parle."
-                                style="left:35.5%;top:27.5%;width:5.33%;height:18%;"></div>
+                                style="left:34.33%;top:7%;width:5.5%;height:34%;"></div>
 
                             <!-- MASTER & BOOTH -->
                             <div class="ddj-zone-img absolute cursor-pointer rounded-xl"
                                 data-zone="masterbooth"
                                 data-title="Master & Booth"
                                 data-desc="Master : knob de volume général envoyé sur les enceintes de la salle (sortie XLR/RCA).\nBooth : knob de volume indépendant pour le retour de scène du DJ (enceinte monitoring).\nPermet d'ajuster le son de la salle et son propre retour séparément."
-                                style="left:59.5%;top:25.75%;width:5%;height:20%;"></div>
+                                style="left:59.8%;top:2.5%;width:5.5%;height:38.5%;"></div>
 
                             <!-- Tooltip -->
                             <div id="ddj-tooltip" class="absolute pointer-events-none opacity-0 z-30 transition-opacity duration-200" style="top:0;left:0;">
-                                <div style="background:rgba(10,14,30,0.96);border:1.5px solid rgba(7,96,238,0.6);border-radius:14px;padding:14px 18px;min-width:220px;max-width:280px;box-shadow:0 8px 32px rgba(7,96,238,0.25);">
+                                <div style="background:rgba(10,14,30,0.96);border:1.5px solid rgba(7,96,238,0.6);border-radius:10px;padding:14px 18px;min-width:220px;max-width:280px;box-shadow:0 8px 32px rgba(7,96,238,0.25);">
                                     <div id="ddj-tooltip-title" style="color:#3983F9;font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.85rem;margin-bottom:6px;"></div>
                                     <div id="ddj-tooltip-desc" style="color:rgba(243,242,242,0.8);font-size:0.8rem;line-height:1.5;"></div>
                                 </div>
@@ -1089,6 +1117,14 @@
                                 <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
                                 <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium">Deck Switch</span>
                             </button>
+                            <button class="ddj-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone="loop">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium">Boutons Boucle</span>
+                            </button>
+                            <button class="ddj-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone="play">
+                                <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
+                                <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium">Boutons Play</span>
+                            </button>
                             <button class="ddj-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone="colorfx">
                                 <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
                                 <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium">Color FX</span>
@@ -1116,43 +1152,43 @@
                     <div class="relative glass-card rounded-2xl p-6 md:p-10 overflow-hidden">
                         <div class="relative w-full select-none" id="ddj-rear-container" style="max-width:900px;margin:0 auto;">
 
-                            <img src="pc-cgi_rear.webp" alt="Pioneer DDJ-FLX10 face arrière" class="w-full h-auto rounded-xl block" id="ddj-rear-img" draggable="false" style="filter: brightness(0.95) contrast(1.05);">
+                            <img src="pc-cgi_rear.png" alt="Pioneer DDJ-FLX10 face arrière" class="w-full h-auto rounded-xl block" id="ddj-rear-img" draggable="false" style="filter: brightness(0.95) contrast(1.05);">
 
                             <!-- Master XLR + RCA groupés -->
                             <div class="ddj-rear-zone absolute cursor-pointer rounded-lg"
                                 data-title="Master Out — XLR & RCA"
                                 data-desc="Sortie master principale : XLR balancé (×2) + RCA (cinch). Connecté directement à la sono ou à l'ampli de la salle. Signal XLR professionnel, résistant aux interférences sur longue distance."
-                                style="left:17%;top:42%;width:14%;height:16%;"></div>
+                                style="left:15%;top:35%;width:14.33%;height:52%;"></div>
 
                             <!-- Booth Jack -->
                             <div class="ddj-rear-zone absolute cursor-pointer rounded-lg"
                                 data-title="Booth Out — Jack 6.35mm"
                                 data-desc="Sortie Booth en jack 6.35mm balancé (×2). Dédiée au retour de scène pour le DJ (enceinte de monitoring). Volume indépendant du master."
-                                style="left:31%;top:42%;width:6%;height:16%;"></div>
+                                style="left:29%;top:35%;width:6%;height:52%;"></div>
 
                             <!-- Inputs RCA CH1-CH4 -->
                             <div class="ddj-rear-zone absolute cursor-pointer rounded-lg"
                                 data-title="Entrées Ligne — RCA (CH1–CH4)"
                                 data-desc="4 entrées ligne RCA (Line/Phono) pour brancher guitare, basse, clavier ou platine vinyle. Compatibles phono avec préampli intégré pour les platines vinyles."
-                                style="left:39%;top:42%;width:22%;height:16%;"></div>
+                                style="left:38.5%;top:35%;width:23%;height:52%;"></div>
 
                             <!-- DMX -->
                             <div class="ddj-rear-zone absolute cursor-pointer rounded-lg"
                                 data-title="Sortie DMX"
                                 data-desc="Sortie DMX 512 pour le contrôle des éclairages de scène (jeux de lumières, lasers, stroboscopes). Synchronisés au BPM pour des shows lumières automatiques."
-                                style="left:61%;top:42%;width:3.5%;height:16%;"></div>
+                                style="left:61.25%;top:35%;width:5%;height:52%;"></div>
 
                             <!-- USB A+B -->
                             <div class="ddj-rear-zone absolute cursor-pointer rounded-lg"
                                 data-title="Ports USB-C (A & B)"
                                 data-desc="2 ports USB-C pour connecter simultanément 2 ordinateurs. Idéal pour le back-to-back ou le handover entre DJs sans interruption. Interface audio intégrée."
-                                style="left:65%;top:42%;width:7%;height:16%;"></div>
+                                style="left:66.25%;top:35%;width:6%;height:52%;"></div>
 
                             <!-- Micro 2 Jack + Micro 1 XLR groupés -->
                             <div class="ddj-rear-zone absolute cursor-pointer rounded-lg"
                                 data-title="Entrées Micro — Jack & XLR"
                                 data-desc="Micro 1 : entrée XLR balancé principale pour micro de scène professionnel. Micro 2 : entrée jack 6.35mm pour un second micro (animateur, chanteur). EQ et volumes indépendants."
-                                style="left:74%;top:42%;width:11%;height:16%;"></div>
+                                style="left:76.5%;top:35%;width:9.5%;height:52%;"></div>
 
                             <!-- Tooltip arrière : positionné au-dessus de la zone via JS -->
                             <div id="ddj-rear-tooltip" class="absolute pointer-events-none opacity-0 z-30 transition-opacity duration-200" style="top:0;left:0;">
@@ -1165,27 +1201,27 @@
 
                         <!-- Légende ports arrière -->
                         <div class="flex flex-wrap justify-center gap-3 mt-8">
-                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="🔊 Master Out — XLR & RCA">
+                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="Master Out — XLR & RCA">
                                 <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
                                 <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium"><i class="fas fa-volume-up mr-1"></i>Master XLR & RCA</span>
                             </button>
-                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="🎧 Booth Out — Jack 6.35mm">
+                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="Booth Out — Jack 6.35mm">
                                 <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
                                 <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium"><i class="fas fa-headphones mr-1"></i>Booth Jack</span>
                             </button>
-                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="🎸 Entrées Ligne — RCA (CH1–CH4)">
+                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="Entrées Ligne — RCA (CH1–CH4)">
                                 <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
                                 <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium"><i class="fas fa-guitar mr-1"></i>Entrées RCA ×4</span>
                             </button>
-                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="💡 Sortie DMX">
+                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="Sortie DMX">
                                 <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
                                 <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium"><i class="fas fa-lightbulb mr-1"></i>DMX</span>
                             </button>
-                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="💻 Ports USB-C (A & B)">
+                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="Ports USB-C (A & B)">
                                 <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
                                 <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium"><i class="fas fa-laptop mr-1"></i>USB-C ×2</span>
                             </button>
-                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="🎤 Entrées Micro — Jack & XLR">
+                            <button class="ddj-rear-legend-btn flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 hover:border-accent/80 transition-all group" data-zone-title="Entrées Micro — Jack & XLR">
                                 <div class="w-2.5 h-2.5 rounded-full bg-accent group-hover:scale-125 transition-transform"></div>
                                 <span class="text-sm text-gray group-hover:text-accent transition-colors font-medium"><i class="fas fa-microphone mr-1"></i>Micro Jack & XLR</span>
                             </button>

@@ -655,6 +655,14 @@ const ddjZoneData = {
     'masterbooth': {
         title: 'Master & Booth',
         desc: 'Master : knob de volume général envoyé sur les enceintes de la salle (sortie XLR/RCA).\nBooth : knob de volume indépendant pour le retour de scène du DJ (enceinte monitoring).\nPermet d\'ajuster le son de la salle et son propre retour séparément sans se gêner.'
+    },
+    'loop': {
+        title: 'Boutons Boucle',
+        desc: 'Boutons de gestion des boucles :\nAuto Loop : crée une boucle automatique sur 1, 2, 4 ou 8 temps d\'un seul clic.\nLoop In / Loop Out : définit manuellement les points de début et de fin de boucle.\nReloop : réactive la dernière boucle définie.\nUtile pour maintenir une partie du morceau en suspension pendant une transition ou créer des effets de répétition.'
+    },
+    'play': {
+        title: 'Boutons Play',
+        desc: 'Boutons de lecture et de repère :\nPlay/Pause : démarre ou met en pause le morceau sur le deck.\nCue : définit un point de repère et permet de revenir au début de la phrase musicale pour un lancement précis.\nSync : synchronise automatiquement le BPM et la phase du deck avec l\'autre deck pour une transition parfaite.'
     }
 };
 
