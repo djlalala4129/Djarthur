@@ -61,7 +61,7 @@ body {
    3. NAVIGATION
    ============================================================ */
 .glass-nav {
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.15);
     backdrop-filter: blur(20px);
     border-top: none;
     border-left: none;
