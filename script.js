@@ -186,7 +186,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ── Rayon dynamique : lit la taille réelle du vinyle dans le DOM ──
     function getVinylRadius() {
-        return centerEl.offsetWidth / 2;
+        if (centerEl && centerEl.offsetWidth > 0) return centerEl.offsetWidth / 2;
+        const wfSize = parseFloat(getComputedStyle(container).getPropertyValue('--wf-size'));
+        return ((wfSize > 0 ? wfSize : 400) * 0.645) / 2;
     }
 
     // ── Anneau intérieur : 64 barres ─────────────────────────
@@ -322,10 +324,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const N_IN = 64;
     const barsEvIn = [];
 
-    // Rayon dynamique : lit la taille du vinyle Event depuis le DOM
+    // Rayon dynamique : lit la taille du vinyle Event depuis le DOM.
+    // Si la section est cachée (offsetWidth = 0), on calcule depuis --wf-size.
     function getVinylRadiusEv() {
         const centerEv = containerEv.querySelector('.waveform-center');
-        return centerEv ? centerEv.offsetWidth / 2 : 132;
+        if (centerEv && centerEv.offsetWidth > 0) return centerEv.offsetWidth / 2;
+        const wfSize = parseFloat(getComputedStyle(containerEv).getPropertyValue('--wf-size'));
+        return ((wfSize > 0 ? wfSize : 400) * 0.645) / 2;
     }
 
     for (let i = 0; i < N_IN; i++) {
