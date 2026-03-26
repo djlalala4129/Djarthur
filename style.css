@@ -17,6 +17,64 @@
 
 
 /* ============================================================
+   0. VARIABLES — Palette de couleurs
+   ============================================================
+   Toutes les couleurs réutilisées sont centralisées ici.
+   Pour les usages rgba(), les valeurs RGB brutes sont stockées
+   séparément (ex: --accent-rgb) afin de pouvoir écrire
+   rgba(var(--accent-rgb), 0.4) sans surcharge de syntaxe.
+   ============================================================ */
+:root {
+    /* ── Polices ── */
+    --font-body:    'Poppins', sans-serif;     /* corps de texte, boutons, UI */
+    --font-display: 'Orbitron', sans-serif;   /* titres, vinyle, logo */
+
+    /* ── Fonds ── */
+    --color-bg:             #0A0A0A;           /* fond global du site */
+    --color-bg-dark:        #050308;           /* fond vinyle / éléments très sombres */
+    --color-bg-card:        rgba(26, 26, 26, 0.7); /* fond glass-card */
+    --color-bg-card-social: #0a0a0e;          /* fond cards réseaux sociaux */
+
+    /* ── Accent bleu — couleur principale ── */
+    --color-accent:         #0760EE;
+    --accent-rgb:           7, 96, 238;        /* pour rgba(var(--accent-rgb), opacité) */
+
+    /* ── Accent rose / magenta ── */
+    --color-accent-pink:    #FF00F5;
+    --accent-pink-rgb:      255, 0, 245;
+
+    /* ── Accent jaune ── */
+    --color-accent-yellow:  #FFE600;
+
+    /* ── Accent orange (secondaire, halos & karaoké) ── */
+    --accent-orange-rgb:    238, 96, 7;
+
+    /* ── Texte ── */
+    --color-text:           #ffffff;
+    --color-text-muted:     #d0d0d0;
+    --color-text-dim:       #555555;
+
+    /* ── Boutons ── */
+    --color-btn-dark:       #03142e;           /* fond le plus sombre (btn-neon, btn-outline) */
+    --color-btn-mid:        #0a2a5e;           /* fond intermédiaire (btn-neon, btn-outline border) */
+
+    /* ── Bordures ── */
+    --color-border-social:  #1e1e28;           /* bordure cards réseaux sociaux */
+    /* ── Réseaux sociaux ── */
+    --color-instagram:     #e1306c;
+    --instagram-rgb:       225, 48, 108;
+    --color-tiktok:        #d2d2d2;
+    --tiktok-rgb:          210, 210, 210;
+    --color-youtube:       #ff0000;
+    --youtube-rgb:         255, 0, 0;
+    --color-twitch:        #9146ff;
+    --twitch-rgb:          145, 70, 255;
+    --color-soundcloud:    #ff5500;
+    --soundcloud-rgb:      255, 85, 0;
+}
+
+
+/* ============================================================
    1. RESET & BASE
    ============================================================ */
 * {
@@ -26,10 +84,10 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-body);
     scroll-behavior: smooth;
     overflow-x: hidden;
-    background: #0A0A0A;
+    background: var(--color-bg);
     scrollbar-width: none;
 }
 
@@ -42,7 +100,7 @@ body {
    2. TYPOGRAPHIE & TEXTES
    ============================================================ */
 .gradient-text {
-    background: linear-gradient(135deg, #0760EE 0%, #FF00F5 50%, #FFE600 100%);
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-pink) 50%, var(--color-accent-yellow) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -50,10 +108,10 @@ body {
 
 .neon-glow {
     text-shadow:
-        0 0 10px rgba(7, 96, 238, 0.8),
-        0 0 20px rgba(7, 96, 238, 0.6),
-        0 0 30px rgba(7, 96, 238, 0.4),
-        0 0 40px rgba(7, 96, 238, 0.2);
+        0 0 10px rgba(var(--accent-rgb), 0.8),
+        0 0 20px rgba(var(--accent-rgb), 0.6),
+        0 0 30px rgba(var(--accent-rgb), 0.4),
+        0 0 40px rgba(var(--accent-rgb), 0.2);
 }
 
 
@@ -66,7 +124,7 @@ body {
     border-top: none;
     border-left: none;
     border-right: none;
-    border-bottom: 1px solid rgba(7, 96, 238, 0.2);
+    border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -86,9 +144,9 @@ body {
    ============================================================ */
 .btn-neon {
     position: relative;
-    background: linear-gradient(135deg, #0a2a5e 0%, #03142e 100%);
-    border: 2px solid #0760EE;
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--color-btn-mid) 0%, var(--color-btn-dark) 100%);
+    border: 2px solid var(--color-accent);
+    color: var(--color-text);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -110,9 +168,9 @@ body {
 }
 
 .btn-gradient {
-    background: linear-gradient(135deg, #0760EE 0%, #FF00F5 100%);
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-pink) 100%);
     border: none;
-    color: #0A0A0A;
+    color: var(--color-bg);
     font-weight: 700;
     position: relative;
     overflow: hidden;
@@ -122,14 +180,14 @@ body {
 .btn-gradient:hover::after { width: 300px; height: 300px; }
 .btn-gradient:hover {
     transform: scale(1.05);
-    box-shadow: 0 10px 40px rgba(7, 96, 238, 0.4);
+    box-shadow: 0 10px 40px rgba(var(--accent-rgb), 0.4);
 }
 
 .btn-outline {
     position: relative;
-    background: #0A0A0A;
-    border: 2px solid #0a2a5e;
-    color: #ffffff;
+    background: var(--color-bg);
+    border: 2px solid var(--color-btn-mid);
+    color: var(--color-text);
     font-weight: 700;
     overflow: hidden;
     transition: color 0.4s ease;
@@ -143,7 +201,7 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #0760EE 0%, #03142e 100%);
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-btn-dark) 100%);
     transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: -1;
 }
@@ -159,16 +217,16 @@ body {
 .glass-card {
     position: relative;
     overflow: hidden;
-    background: rgba(26, 26, 26, 0.7);
+    background: var(--color-bg-card);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(7, 96, 238, 0.2);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
-    border-color: rgba(7, 96, 238, 0.6);
-    box-shadow: 0 20px 60px rgba(7, 96, 238, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(var(--accent-rgb), 0.6);
+    box-shadow: 0 20px 60px rgba(var(--accent-rgb), 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Spotlight (effet lumière curseur) */
@@ -185,8 +243,8 @@ body {
 /* Grille de fond */
 .grid-bg {
     background-image:
-        linear-gradient(rgba(7, 96, 238, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(7, 96, 238, 0.05) 1px, transparent 1px);
+        linear-gradient(rgba(var(--accent-rgb), 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(var(--accent-rgb), 0.05) 1px, transparent 1px);
     background-size: 50px 50px;
 }
 
@@ -201,8 +259,8 @@ body {
     width: 200%;
     height: 200%;
     background:
-        radial-gradient(circle at 20% 50%, rgba(7, 96, 238, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(238, 96, 7, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 20% 50%, rgba(var(--accent-rgb), 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(var(--accent-orange-rgb), 0.1) 0%, transparent 50%),
         radial-gradient(circle at 40% 20%, rgba(255, 230, 0, 0.05) 0%, transparent 50%);
     animation: float 15s ease-in-out infinite;
 }
@@ -213,8 +271,8 @@ body {
 }
 
 .testimonial-card {
-    background: linear-gradient(135deg, rgba(7, 96, 238, 0.1) 0%, rgba(238, 96, 7, 0.1) 100%);
-    border-left: 3px solid #0760EE;
+    background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.1) 0%, rgba(var(--accent-orange-rgb), 0.1) 100%);
+    border-left: 3px solid var(--color-accent);
 }
 
 
@@ -222,11 +280,13 @@ body {
    6. WAVEFORM & VINYLE
    ============================================================ */
 .waveform-container {
+    /* Sur desktop : taille proportionnelle à la hauteur de l'écran */
+    --wf-size: clamp(280px, 44vh, 480px);
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 400px;
-    width: 400px;
+    height: var(--wf-size);
+    width: var(--wf-size);
     margin: 0 auto;
     position: relative;
     cursor: default;
@@ -289,16 +349,16 @@ body {
 }
 
 .wf-halo-a {
-    width: 280px;
-    height: 280px;
-    background: radial-gradient(circle, rgba(7,96,238,.22) 0%, transparent 70%);
+    width: calc(var(--wf-size) * 0.70);
+    height: calc(var(--wf-size) * 0.70);
+    background: radial-gradient(circle, rgba(var(--accent-rgb), .22) 0%, transparent 70%);
     animation: wf-halo-breathe 4s ease-in-out infinite;
 }
 
 .wf-halo-b {
-    width: 340px;
-    height: 340px;
-    background: radial-gradient(circle, rgba(255,0,245,.10) 0%, transparent 70%);
+    width: calc(var(--wf-size) * 0.85);
+    height: calc(var(--wf-size) * 0.85);
+    background: radial-gradient(circle, rgba(var(--accent-pink-rgb), .10) 0%, transparent 70%);
     animation: wf-halo-breathe 6s ease-in-out 2s infinite;
 }
 
@@ -313,10 +373,10 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 258px;
-    height: 258px;
+    width: calc(var(--wf-size) * 0.645);
+    height: calc(var(--wf-size) * 0.645);
     border-radius: 50%;
-    background: #050308;
+    background: var(--color-bg-dark);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -325,8 +385,8 @@ body {
     z-index: 5;
     box-shadow:
         0 0 0 1px rgba(255,255,255,0.06),
-        0 0 30px rgba(7,96,238,0.18),
-        0 0 60px rgba(7,96,238,0.07);
+        0 0 30px rgba(var(--accent-rgb), 0.18),
+        0 0 60px rgba(var(--accent-rgb), 0.07);
     animation: wf-vinyl-spin 4s linear infinite;
     transition:
         width  .55s cubic-bezier(.34,1.4,.64,1),
@@ -342,12 +402,12 @@ body {
 .waveform-center:hover,
 .waveform-center.center-hovered {
     animation-play-state: paused;
-    width: 278px;
-    height: 278px;
+    width: calc(var(--wf-size) * 0.695);
+    height: calc(var(--wf-size) * 0.695);
     box-shadow:
         0 0 0 1px rgba(255,255,255,0.10),
         0 0 40px rgba(80,40,255,0.25),
-        0 0 80px rgba(7,96,238,0.12);
+        0 0 80px rgba(var(--accent-rgb), 0.12);
 }
 
 .vinyl-svg {
@@ -384,8 +444,8 @@ body {
 }
 
 .vinyl-dj {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 38px;
+    font-family: var(--font-display);
+    font-size: calc(var(--wf-size) * 0.095);
     font-weight: 800;
     color: rgba(255,255,255,0.92);
     letter-spacing: 5px;
@@ -394,8 +454,8 @@ body {
 }
 
 .vinyl-name {
-    font-family: 'Poppins', sans-serif;
-    font-size: 17px;
+    font-family: var(--font-body);
+    font-size: calc(var(--wf-size) * 0.0425);
     font-weight: 400;
     letter-spacing: 5px;
     text-indent: 4px;
@@ -435,7 +495,7 @@ body {
 }
 
 .demo-filter-btn.active-filter .btn-label {
-    color: #0A0A0A !important;
+    color: var(--color-bg) !important;
     font-weight: 700;
 }
 
@@ -450,10 +510,10 @@ body {
 }
 
 .karaoke-line.active {
-    background: linear-gradient(90deg, rgba(7, 96, 238, 0.2), rgba(238, 96, 7, 0.2));
+    background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.2), rgba(var(--accent-orange-rgb), 0.2));
     transform: scale(1.05);
     font-weight: 700;
-    color: #0760EE;
+    color: var(--color-accent);
 }
 
 
@@ -472,8 +532,8 @@ body {
     width: 165px;
     padding: 28px 18px 22px;
     border-radius: 18px;
-    background: #0a0a0e;
-    border: 1px solid #1e1e28;
+    background: var(--color-bg-card-social);
+    border: 1px solid var(--color-border-social);
     overflow: hidden;
     cursor: pointer;
     transition:
@@ -508,14 +568,14 @@ body {
     z-index: 1;
     font-size: 0.83rem;
     font-weight: 600;
-    color: #d0d0d0;
+    color: var(--color-text-muted);
 }
 
 .card-followers {
     position: relative;
     z-index: 1;
     font-size: 0.67rem;
-    color: #555;
+    color: var(--color-text-dim);
     transition: color 0.3s;
 }
 
@@ -528,7 +588,7 @@ body {
     padding: 6px 20px;
     border-radius: 50px;
     border: none;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.7rem;
     font-weight: 600;
     cursor: pointer;
@@ -544,19 +604,19 @@ body {
 .card:hover .card-btn { background: rgba(255,255,255,0.18); transform: scale(1.05); }
 
 .card--instagram .card-icon { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-.card--instagram:hover { border-color: rgba(225,48,108,0.4); box-shadow: 0 18px 50px rgba(225,48,108,0.15); }
+.card--instagram:hover { border-color: rgba(var(--instagram-rgb), 0.4); box-shadow: 0 18px 50px rgba(var(--instagram-rgb), 0.15); }
 
 .card--tiktok .card-icon { background: #010101; border: 1.5px solid #222; }
-.card--tiktok:hover { border-color: rgba(210,210,210,0.25); box-shadow: 0 18px 50px rgba(210,210,210,0.08); }
+.card--tiktok:hover { border-color: rgba(var(--tiktok-rgb), 0.25); box-shadow: 0 18px 50px rgba(var(--tiktok-rgb), 0.08); }
 
-.card--youtube .card-icon { background: #ff0000; }
-.card--youtube:hover { border-color: rgba(255,0,0,0.4); box-shadow: 0 18px 50px rgba(255,0,0,0.15); }
+.card--youtube .card-icon { background: var(--color-youtube); }
+.card--youtube:hover { border-color: rgba(var(--youtube-rgb), 0.4); box-shadow: 0 18px 50px rgba(var(--youtube-rgb), 0.15); }
 
-.card--twitch .card-icon { background: #9146ff; }
-.card--twitch:hover { border-color: rgba(145,70,255,0.45); box-shadow: 0 18px 50px rgba(145,70,255,0.18); }
+.card--twitch .card-icon { background: var(--color-twitch); }
+.card--twitch:hover { border-color: rgba(var(--twitch-rgb), 0.45); box-shadow: 0 18px 50px rgba(var(--twitch-rgb), 0.18); }
 
-.card--soundcloud .card-icon { background: #ff5500; }
-.card--soundcloud:hover { border-color: rgba(255,85,0,0.45); box-shadow: 0 18px 50px rgba(255,85,0,0.18); }
+.card--soundcloud .card-icon { background: var(--color-soundcloud); }
+.card--soundcloud:hover { border-color: rgba(var(--soundcloud-rgb), 0.45); box-shadow: 0 18px 50px rgba(var(--soundcloud-rgb), 0.18); }
 
 /* Variante petite (footer) */
 .card-sm { width: 108px !important; padding: 16px 10px 14px !important; gap: 5px !important; border-radius: 14px !important; }
@@ -591,17 +651,10 @@ body {
     #main-nav nav         { display: none; }
     #main-nav .mobile-btn { display: block; }
 
-    .waveform-container { height: 270px; width: 270px; }
-    .waveform-center    { width: 156px !important; height: 156px !important; }
-    .vinyl-dj           { font-size: 24px !important; letter-spacing: 4px !important; }
-    .vinyl-name         { font-size: 12px !important; letter-spacing: 4px !important; }
+    /* Sur mobile : taille proportionnelle à la largeur de l'écran */
+    .waveform-container { --wf-size: clamp(200px, 68vw, 320px); }
 
-    #home .hero-inner    { display: flex; flex-direction: column; align-items: center; }
-    #home .hero-waveform { order: 3; }
-    #home .hero-scroll   { order: 2; }
-
-    .wf-halo-a { width: 170px; height: 170px; }
-    .wf-halo-b { width: 210px; height: 210px; }
+    /* Les halos, le vinyle et les polices se recalculent automatiquement via calc() */
 
     /* Spotlight statique simulé sur mobile */
     .card .spotlight {
@@ -615,11 +668,11 @@ body {
         transition: none !important;
     }
 
-    .card--instagram  { --card-glow-color-1: rgba(225,48,108,0.32);  --card-glow-color-2: rgba(225,48,108,0.10); }
-    .card--tiktok     { --card-glow-color-1: rgba(210,210,210,0.28); --card-glow-color-2: rgba(210,210,210,0.09); }
-    .card--youtube    { --card-glow-color-1: rgba(255,0,0,0.32);     --card-glow-color-2: rgba(255,0,0,0.10); }
-    .card--twitch     { --card-glow-color-1: rgba(145,70,255,0.32);  --card-glow-color-2: rgba(145,70,255,0.10); }
-    .card--soundcloud { --card-glow-color-1: rgba(255,85,0,0.32);    --card-glow-color-2: rgba(255,85,0,0.10); }
+    .card--instagram  { --card-glow-color-1: rgba(var(--instagram-rgb), 0.32);  --card-glow-color-2: rgba(var(--instagram-rgb), 0.10); }
+    .card--tiktok     { --card-glow-color-1: rgba(var(--tiktok-rgb), 0.28);     --card-glow-color-2: rgba(var(--tiktok-rgb), 0.09); }
+    .card--youtube    { --card-glow-color-1: rgba(var(--youtube-rgb), 0.32);    --card-glow-color-2: rgba(var(--youtube-rgb), 0.10); }
+    .card--twitch     { --card-glow-color-1: rgba(var(--twitch-rgb), 0.32);     --card-glow-color-2: rgba(var(--twitch-rgb), 0.10); }
+    .card--soundcloud { --card-glow-color-1: rgba(var(--soundcloud-rgb), 0.32); --card-glow-color-2: rgba(var(--soundcloud-rgb), 0.10); }
 }
 
 /* ============================================================
@@ -634,4 +687,105 @@ body {
     object-fit: cover;
     object-position: center;
     z-index: 0;
+}
+
+/* ============================================================
+   13. LAZY VIDEO — placeholder clic-pour-charger
+   ============================================================ */
+
+/* Grille en fond */
+.lazy-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+
+/* Overlay sombre pour lisibilité */
+.lazy-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    pointer-events: none;
+    transition: background 0.3s ease;
+}
+
+.lazy-video-wrapper:hover .lazy-overlay {
+    background: rgba(0,0,0,0.2);
+}
+
+/* Bouton play */
+.lazy-play-btn {
+    position: relative;
+    z-index: 1;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    animation: lazy-pulse 2.5s ease-in-out infinite;
+}
+
+.lazy-play-btn i {
+    font-size: 24px;
+    color: #fff;
+    margin-left: 4px;
+}
+
+.lazy-video-wrapper:hover .lazy-play-btn {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.12);
+    box-shadow: 0 0 30px rgba(255,255,255,0.3);
+    animation: none;
+}
+
+@keyframes lazy-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.35); }
+    50%       { box-shadow: 0 0 0 14px rgba(255,255,255,0); }
+}
+
+/* Titre */
+.lazy-title {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+    padding: 0 20px;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+}
+
+/* Hint */
+.lazy-hint {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color 0.3s ease;
+}
+
+.lazy-video-wrapper:hover .lazy-hint {
+    color: rgba(255,255,255,0.75);
+}
+
+/* Iframe injectée au clic */
+.lazy-video-wrapper iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    z-index: 2;
 }

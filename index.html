@@ -536,7 +536,7 @@
                         </div>
 
                         <!-- Lecteur audio natif -->
-                        <div class="relative flex-1 bg-dark/50 rounded-2xl overflow-hidden flex flex-col items-center justify-center gap-6 p-6" style="min-height:480px">
+                        <div class="relative flex-1 rounded-2xl overflow-hidden flex flex-col items-center justify-center gap-6 p-6" style="min-height:480px; background:linear-gradient(135deg,#1a0900 0%,#3a1a00 40%,#ffb43d55 100%);">
                             <div class="flex flex-col items-center gap-3 w-full">
                                 <div class="w-24 h-24 rounded-full flex items-center justify-center" style="background:rgba(255,180,61,0.15);border:2px solid rgba(255,180,61,0.4);">
                                     <i class="fas fa-headphones" style="font-size:2.5rem;color:#ffb43d;"></i>
@@ -590,36 +590,36 @@
                             <div class="overflow-hidden rounded-2xl h-full">
                                 <div id="shortsTrack" class="flex transition-transform duration-500 ease-in-out h-full">
                                     <div class="shorts-slide min-w-full h-full">
-                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden h-full">
-                                            <iframe
-                                                src="https://drive.google.com/file/d/1CIy4vTuesY-x3gEVbV7FpHFPtkQI0t2d/preview"
-                                                width="100%"
-                                                height="100%"
-                                                style="min-height:480px"
-                                                allow="autoplay">
-                                            </iframe>
+                                        <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative w-full rounded-2xl overflow-hidden h-full" data-src="https://drive.google.com/file/d/1CIy4vTuesY-x3gEVbV7FpHFPtkQI0t2d/preview" style="min-height:480px; cursor:pointer;">
+                                            <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#0d1f3c 0%,#fe3e68 100%);">
+                                                <div class="lazy-grid"></div>
+                                                <div class="lazy-overlay"></div>
+                                                <div class="lazy-play-btn"><i class="fas fa-play"></i></div>
+                                                <span class="lazy-title">Short Live #1</span>
+                                                <span class="lazy-hint">Cliquer pour lancer</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="shorts-slide min-w-full h-full">
-                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden h-full">
-                                            <iframe
-                                                src="https://drive.google.com/file/d/1P4TzCbreG_Wsx7Ykann2X-DnqcKikjoi/preview"
-                                                width="100%"
-                                                height="100%"
-                                                style="min-height:480px"
-                                                allow="autoplay">
-                                            </iframe>
+                                        <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative w-full rounded-2xl overflow-hidden h-full" data-src="https://drive.google.com/file/d/1P4TzCbreG_Wsx7Ykann2X-DnqcKikjoi/preview" style="min-height:480px; cursor:pointer;">
+                                            <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#0d1f3c 0%,#E3F939 100%);">
+                                                <div class="lazy-grid"></div>
+                                                <div class="lazy-overlay"></div>
+                                                <div class="lazy-play-btn"><i class="fas fa-play"></i></div>
+                                                <span class="lazy-title">Short Live #2</span>
+                                                <span class="lazy-hint">Cliquer pour lancer</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="shorts-slide min-w-full h-full">
-                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden h-full">
-                                            <iframe
-                                                src="https://drive.google.com/file/d/16nCh0jKxaaX7v20WBm29jEIG7YxOZ6l5/preview"
-                                                width="100%"
-                                                height="100%"
-                                                style="min-height:480px"
-                                                allow="autoplay">
-                                            </iframe>
+                                        <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative w-full rounded-2xl overflow-hidden h-full" data-src="https://drive.google.com/file/d/16nCh0jKxaaX7v20WBm29jEIG7YxOZ6l5/preview" style="min-height:480px; cursor:pointer;">
+                                            <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#0d1f3c 0%,#00F0FF 100%);">
+                                                <div class="lazy-grid"></div>
+                                                <div class="lazy-overlay"></div>
+                                                <div class="lazy-play-btn"><i class="fas fa-play"></i></div>
+                                                <span class="lazy-title">Short Live #3</span>
+                                                <span class="lazy-hint">Cliquer pour lancer</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -649,14 +649,14 @@
                                 <p class="text-gray text-xs">Février 2026 · 55 min</p>
                             </div>
                         </div>
-                        <div class="relative flex-1 bg-dark/50 rounded-2xl overflow-hidden" style="min-height:480px">
-                            <iframe 
-                                src="https://drive.google.com/file/d/11IxbpSP7GtApFe5D2EtWIc0KNINGN_c-/preview" 
-                                width="100%" 
-                                height="100%"
-                                style="position:absolute;inset:0;height:100%"
-                                allow="autoplay">
-                            </iframe>
+                        <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative flex-1 rounded-2xl overflow-hidden" style="min-height:480px; cursor:pointer;" data-src="https://drive.google.com/file/d/11IxbpSP7GtApFe5D2EtWIc0KNINGN_c-/preview">
+                            <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#0a1a10 0%,#68ee4e 100%);">
+                                <div class="lazy-grid"></div>
+                                <div class="lazy-overlay"></div>
+                                <div class="lazy-play-btn"><i class="fas fa-play"></i></div>
+                                <span class="lazy-title">Set Ambiance · 55 min</span>
+                                <span class="lazy-hint">Cliquer pour lancer</span>
+                            </div>
                         </div>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-accent16/20 text-accent16 rounded-full text-xs">Ambiance</span>
@@ -680,7 +680,7 @@
                         </div>
 
                         <!-- Lecteur audio natif -->
-                        <div class="relative flex-1 bg-dark/50 rounded-2xl overflow-hidden flex flex-col items-center justify-center gap-6 p-6" style="min-height:480px">
+                        <div class="relative flex-1 rounded-2xl overflow-hidden flex flex-col items-center justify-center gap-6 p-6" style="min-height:480px; background:linear-gradient(135deg,#050d20 0%,#0d1f3c 40%,#3983F955 100%);">
                             <div class="flex flex-col items-center gap-3 w-full">
                                 <div class="w-24 h-24 rounded-full flex items-center justify-center" style="background:rgba(57,131,249,0.15);border:2px solid rgba(57,131,249,0.4);">
                                     <i class="fas fa-music" style="font-size:2.5rem;color:#3983F9;"></i>
@@ -734,25 +734,25 @@
                             <div class="overflow-hidden rounded-2xl h-full">
                                 <div id="carouselTrack" class="flex transition-transform duration-500 ease-in-out h-full">
                                     <div class="carousel-slide min-w-full h-full">
-                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden h-full">
-                                            <iframe 
-                                                src="https://drive.google.com/file/d/1DdfEXZ7PBg2Rh5dXPQEzEMxoTB_8HJS3/preview" 
-                                                width="100%" 
-                                                height="100%"
-                                                style="min-height:480px"
-                                                allow="autoplay">
-                                            </iframe>
+                                        <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative w-full rounded-2xl overflow-hidden h-full" data-src="https://drive.google.com/file/d/1DdfEXZ7PBg2Rh5dXPQEzEMxoTB_8HJS3/preview" style="min-height:480px; cursor:pointer;">
+                                            <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#1a1000 0%,#ffb43d 100%);">
+                                                <div class="lazy-grid"></div>
+                                                <div class="lazy-overlay"></div>
+                                                <div class="lazy-play-btn"><i class="fas fa-play"></i></div>
+                                                <span class="lazy-title">Fête de la Musique · Clip 1</span>
+                                                <span class="lazy-hint">Cliquer pour lancer</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="carousel-slide min-w-full h-full">
-                                        <div class="relative w-full bg-dark/50 rounded-2xl overflow-hidden h-full">
-                                            <iframe 
-                                                src="https://drive.google.com/file/d/1yJB0l0vP4iAugKB2HTm-TNH1-JqNyDYy/preview" 
-                                                width="100%" 
-                                                height="100%"
-                                                style="min-height:480px"
-                                                allow="autoplay">
-                                            </iframe>
+                                        <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative w-full rounded-2xl overflow-hidden h-full" data-src="https://drive.google.com/file/d/1yJB0l0vP4iAugKB2HTm-TNH1-JqNyDYy/preview" style="min-height:480px; cursor:pointer;">
+                                            <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#0d1f3c 0%,#0760EE 100%);">
+                                                <div class="lazy-grid"></div>
+                                                <div class="lazy-overlay"></div>
+                                                <div class="lazy-play-btn"><i class="fas fa-play"></i></div>
+                                                <span class="lazy-title">Fête de la Musique · Clip 2</span>
+                                                <span class="lazy-hint">Cliquer pour lancer</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -780,14 +780,14 @@
                                 <p class="text-gray text-xs">Juin 2025 · EPB Dammarie-les-Lys</p>
                             </div>
                         </div>
-                        <div class="relative flex-1 bg-dark/50 rounded-2xl overflow-hidden" style="min-height:480px">
-                            <iframe 
-                                src="https://drive.google.com/file/d/1O8wRL9dO74uqnz-qVPIavO-KZLuuLiqr/preview" 
-                                width="100%" 
-                                height="100%"
-                                style="position:absolute;inset:0;height:100%"
-                                allow="autoplay">
-                            </iframe>
+                        <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative flex-1 rounded-2xl overflow-hidden" style="min-height:480px; cursor:pointer;" data-src="https://drive.google.com/file/d/1O8wRL9dO74uqnz-qVPIavO-KZLuuLiqr/preview">
+                            <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#0d1020 0%,#ff453d 100%);">
+                                <div class="lazy-grid"></div>
+                                <div class="lazy-overlay"></div>
+                                <div class="lazy-play-btn"><i class="fas fa-play"></i></div>
+                                <span class="lazy-title">Concert Évasion Live · Dammarie-les-Lys</span>
+                                <span class="lazy-hint">Cliquer pour lancer</span>
+                            </div>
                         </div>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-accent15/20 text-accent15 rounded-full text-xs">Live</span>

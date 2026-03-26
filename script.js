@@ -184,12 +184,17 @@ document.addEventListener('DOMContentLoaded', function() {
         return base + amp * v;
     }
 
+    // ── Rayon dynamique : lit la taille réelle du vinyle dans le DOM ──
+    function getVinylRadius() {
+        return centerEl.offsetWidth / 2;
+    }
+
     // ── Anneau intérieur : 64 barres ─────────────────────────
     const N_IN = 64;
     const barsIn = [];
     for (let i = 0; i < N_IN; i++) {
         const mob    = isMob();
-        const radius = mob ? 80  : 132;
+        const radius = getVinylRadius();
         const base   = mob ? 8   : 16;
         const amp    = mob ? 16  : 38;
         const angle  = (i / N_IN) * 360;
@@ -224,10 +229,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // ── Resize ────────────────────────────────────────────────
     const allBars = [...barsIn];
     window.addEventListener('resize', () => {
-        const mob = isMob();
+        const r = getVinylRadius();
         barsIn.forEach(b => {
-            const r = mob ? 80 : 132;
             b.style.transform = `rotate(${b.dataset.angle}deg) translateY(-${r}px)`;
+            b.dataset.radius = r;
         });
     });
 
@@ -316,9 +321,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const N_IN = 64;
     const barsEvIn = [];
+
+    // Rayon dynamique : lit la taille du vinyle Event depuis le DOM
+    function getVinylRadiusEv() {
+        const centerEv = containerEv.querySelector('.waveform-center');
+        return centerEv ? centerEv.offsetWidth / 2 : 132;
+    }
+
     for (let i = 0; i < N_IN; i++) {
         const mob    = isMob();
-        const radius = mob ? 80  : 132;
+        const radius = getVinylRadiusEv();
         const base   = mob ? 8   : 16;
         const amp    = mob ? 16  : 38;
         const angle  = (i / N_IN) * 360;
@@ -349,10 +361,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.addEventListener('resize', () => {
-        const mob = isMob();
+        const r = getVinylRadiusEv();
         barsEvIn.forEach(b => {
-            const r = mob ? 80 : 132;
             b.style.transform = `rotate(${b.dataset.angle}deg) translateY(-${r}px)`;
+            b.dataset.radius = r;
         });
     });
 
@@ -1401,3 +1413,26 @@ if (btn) {
         }
     };
 })();
+/* ============================================================
+   LAZY VIDEO — charge l'iframe au clic (onclick inline)
+   ============================================================ */
+function loadLazyVideo(wrapper) {
+    var src = wrapper.dataset.src;
+    if (!src) return;
+    // Supprime le placeholder
+    var ph = wrapper.querySelector('.lazy-placeholder');
+    if (ph) {
+        ph.style.transition = 'opacity 0.25s ease';
+        ph.style.opacity = '0';
+        setTimeout(function () { if (ph.parentNode) ph.parentNode.removeChild(ph); }, 260);
+    }
+    // Injecte l'iframe
+    var iframe = document.createElement('iframe');
+    iframe.src = src;
+    iframe.allow = 'autoplay';
+    iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;z-index:2;';
+    wrapper.appendChild(iframe);
+    // Désactive le clic une fois lancé
+    wrapper.style.cursor = 'default';
+    wrapper.removeAttribute('onclick');
+}
