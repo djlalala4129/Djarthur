@@ -129,14 +129,165 @@ body {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.mobile-menu {
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
+/* ── Fluid Mobile Nav ────────────────────────────────────── */
+
+/* Bouton toggle principal */
+.fluid-nav-toggle {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    background: rgba(8, 10, 20, 0.97);
+    border: 1.5px solid rgba(57, 131, 249, 0.6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow:
+        0 0 24px rgba(57, 131, 249, 0.25),
+        0 4px 16px rgba(0, 0, 0, 0.6);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    backdrop-filter: blur(12px);
 }
 
-.mobile-menu.active {
-    transform: translateX(0);
+.fluid-nav-toggle:hover {
+    border-color: rgba(57, 131, 249, 0.9);
+    box-shadow:
+        0 0 32px rgba(57, 131, 249, 0.4),
+        0 4px 20px rgba(0, 0, 0, 0.7);
 }
+
+/* Icônes toggle (hamburger / X) */
+.fluid-toggle-icon {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fluid-toggle-icon i {
+    color: #3983F9;
+    font-size: 1.1rem;
+}
+
+.fluid-icon-bars {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+.fluid-icon-x {
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+}
+
+#fluidNav.open .fluid-icon-bars {
+    opacity: 0;
+    transform: scale(0) rotate(180deg);
+}
+
+#fluidNav.open .fluid-icon-x {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+/* Items de navigation */
+.fluid-nav-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 56px;
+    height: 56px;
+    background: rgba(8, 10, 20, 0.97);
+    border: 1.5px solid rgba(57, 131, 249, 0.25);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    cursor: pointer;
+    z-index: 5;
+    backdrop-filter: blur(12px);
+    clip-path: circle(50% at 50% 50%);
+
+    /* Caché par défaut (empilé sous le toggle) */
+    transform: translateY(0);
+    opacity: 0;
+    pointer-events: none;
+
+    transition:
+        transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
+        opacity   280ms ease,
+        border-color 0.2s,
+        box-shadow   0.2s;
+    will-change: transform;
+}
+
+.fluid-nav-item i {
+    color: #A0A0A0;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.fluid-nav-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.37rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #A0A0A0;
+    transition: color 0.2s;
+}
+
+.fluid-nav-item:hover {
+    border-color: rgba(57, 131, 249, 0.7);
+    box-shadow: 0 0 18px rgba(57, 131, 249, 0.2);
+}
+
+.fluid-nav-item:hover i,
+.fluid-nav-item:hover .fluid-nav-label {
+    color: #3983F9;
+}
+
+/* Item Live spécial */
+.fluid-nav-live:not(.hidden) {
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+.fluid-nav-live:hover {
+    border-color: rgba(239, 68, 68, 0.8) !important;
+    box-shadow: 0 0 18px rgba(239, 68, 68, 0.25) !important;
+}
+
+.fluid-live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    animation: fluid-pulse 1.5s ease-in-out infinite;
+    display: block;
+}
+
+@keyframes fluid-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+    50%       { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+
+/* État ouvert — items qui remontent */
+#fluidNav.open .fluid-nav-item {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(calc(var(--fluid-idx) * 60px));
+}
+
+/* Délais d'apparition en cascade (rapide) */
+#fluidNav.open .fluid-nav-item[data-target="home"]    { transition-delay: 0ms;  }
+#fluidNav.open .fluid-nav-item[data-target="demo"]    { transition-delay: 30ms; }
+#fluidNav.open .fluid-nav-item[data-target="karaoke"] { transition-delay: 55ms; }
+#fluidNav.open .fluid-nav-item[data-target="setup"]   { transition-delay: 80ms; }
+#fluidNav.open .fluid-nav-item[data-target="booking"] { transition-delay: 105ms;}
+#fluidNav.open .fluid-nav-item[data-target="live"]    { transition-delay: 130ms;}
 
 
 /* ============================================================
