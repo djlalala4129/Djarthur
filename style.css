@@ -182,12 +182,12 @@ body {
     transform: scale(0) rotate(-180deg);
 }
 
-#fluidNav.open .fluid-icon-bars {
+#fluidNavToggle.open .fluid-icon-bars {
     opacity: 0;
     transform: scale(0) rotate(180deg);
 }
 
-#fluidNav.open .fluid-icon-x {
+#fluidNavToggle.open .fluid-icon-x {
     opacity: 1;
     transform: scale(1) rotate(0deg);
 }
@@ -208,7 +208,7 @@ body {
     justify-content: center;
     gap: 2px;
     cursor: pointer;
-    z-index: 5;
+    z-index: 2;
     backdrop-filter: blur(12px);
     clip-path: circle(50% at 50% 50%);
 
@@ -274,11 +274,45 @@ body {
     50%       { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
 }
 
-/* État ouvert — items qui remontent */
+/* Fond rectangulaire verre derrière les items déployés */
+.fluid-nav-backdrop {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    width: 72px;
+    height: 0;
+    border-radius: 16px;
+    background: rgba(8, 10, 20, 0.92);
+    border: 1px solid rgba(57, 131, 249, 0.28);
+    backdrop-filter: blur(20px);
+    box-shadow:
+        0 8px 40px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 0 0 1px rgba(57, 131, 249, 0.08) inset;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition:
+        height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s ease;
+}
+
+#fluidNav.open .fluid-nav-backdrop {
+    /* 5 items × 60px + 16px padding (8px haut + 8px bas) */
+    height: 316px;
+    opacity: 1;
+}
+
+/* Quand le Live est visible : agrandir le backdrop pour 6 items */
+#fluidNav.open.has-live .fluid-nav-backdrop {
+    height: 376px;
+}
+
+/* État ouvert — items qui descendent */
 #fluidNav.open .fluid-nav-item {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(calc(var(--fluid-idx) * 60px));
+    transform: translateY(calc((var(--fluid-idx) - 1) * 60px));
 }
 
 /* Délais d'apparition en cascade (rapide) */

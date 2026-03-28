@@ -164,57 +164,59 @@
                     </a>
                 </div>
 
+                <!-- Wrapper mobile : toggle + panel ancrés ensemble dans la navbar -->
+                <div class="md:hidden" style="position:relative; width:56px; height:56px; flex-shrink:0;">
+
+                    <!-- Bouton toggle -->
+                    <div id="fluidNavToggle" onclick="toggleFluidNav()" class="fluid-nav-toggle">
+                        <div class="fluid-toggle-icon fluid-icon-bars">
+                            <i class="fas fa-bars"></i>
+                        </div>
+                        <div class="fluid-toggle-icon fluid-icon-x">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+
+                    <!-- Panel déroulant — ancré sous le toggle via position:absolute -->
+                    <div id="fluidNav" style="position:absolute; top:calc(100% + 8px); right:0; width:56px; z-index:997; overflow:visible;">
+
+                        <!-- Fond rectangulaire verre -->
+                        <div class="fluid-nav-backdrop"></div>
+
+                        <!-- Items nav -->
+                        <div class="fluid-nav-item" data-target="home" onclick="fluidNavClick('home')" style="--fluid-idx:1;" title="Accueil">
+                            <i class="fas fa-home"></i>
+                            <span class="fluid-nav-label">Accueil</span>
+                        </div>
+                        <div class="fluid-nav-item" data-target="demo" onclick="fluidNavClick('demo')" style="--fluid-idx:2;" title="Démo">
+                            <i class="fas fa-music"></i>
+                            <span class="fluid-nav-label">Démo</span>
+                        </div>
+                        <div class="fluid-nav-item" data-target="karaoke" onclick="fluidNavClick('karaoke')" style="--fluid-idx:3;" title="Karaoké">
+                            <i class="fas fa-microphone"></i>
+                            <span class="fluid-nav-label">Karaoké</span>
+                        </div>
+                        <div class="fluid-nav-item" data-target="setup" onclick="fluidNavClick('setup')" style="--fluid-idx:4;" title="Setup">
+                            <i class="fas fa-sliders-h"></i>
+                            <span class="fluid-nav-label">Setup</span>
+                        </div>
+                        <div class="fluid-nav-item" data-target="booking" onclick="fluidNavClick('booking')" style="--fluid-idx:5;" title="Contact">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span class="fluid-nav-label">Contact</span>
+                        </div>
+                        <!-- Item Live (caché par défaut, affiché par le JS Twitch) -->
+                        <div id="nav-live-mobile" class="fluid-nav-item fluid-nav-live hidden" data-target="live" onclick="fluidNavClick('live')" style="--fluid-idx:6;" title="Live">
+                            <span class="fluid-live-dot"></span>
+                            <span class="fluid-nav-label" style="color:#ef4444;">Live</span>
+                        </div>
+
+                    </div>
+
+                </div><!-- /wrapper mobile -->
+
             </div>
         </div>
     </nav>
-
-    <!-- ═══════════════════════════════════════════════════════
-         FLUID MOBILE NAV — menu circulaire flottant (mobile)
-    ═══════════════════════════════════════════════════════════ -->
-    <div id="fluidNav" class="md:hidden" style="position:fixed; top:80px; right:24px; z-index:999; width:56px;">
-        <div style="position:relative; width:56px; height:56px;">
-
-            <!-- Items nav (positionnés en absolu, glissent vers le haut à l'ouverture) -->
-            <div class="fluid-nav-item" data-target="booking" onclick="fluidNavClick('booking')" style="--fluid-idx:5;" title="Contact">
-                <i class="fas fa-calendar-alt"></i>
-                <span class="fluid-nav-label">Contact</span>
-            </div>
-            <div class="fluid-nav-item" data-target="setup" onclick="fluidNavClick('setup')" style="--fluid-idx:4;" title="Setup">
-                <i class="fas fa-sliders-h"></i>
-                <span class="fluid-nav-label">Setup</span>
-            </div>
-            <div class="fluid-nav-item" data-target="karaoke" onclick="fluidNavClick('karaoke')" style="--fluid-idx:3;" title="Karaoké">
-                <i class="fas fa-microphone"></i>
-                <span class="fluid-nav-label">Karaoké</span>
-            </div>
-            <div class="fluid-nav-item" data-target="demo" onclick="fluidNavClick('demo')" style="--fluid-idx:2;" title="Démo">
-                <i class="fas fa-music"></i>
-                <span class="fluid-nav-label">Démo</span>
-            </div>
-            <div class="fluid-nav-item" data-target="home" onclick="fluidNavClick('home')" style="--fluid-idx:1;" title="Accueil">
-                <i class="fas fa-home"></i>
-                <span class="fluid-nav-label">Accueil</span>
-            </div>
-            <!-- Item Live (caché par défaut, affiché par le JS Twitch) -->
-            <div id="nav-live-mobile" class="fluid-nav-item fluid-nav-live hidden" data-target="live" onclick="fluidNavClick('live')" style="--fluid-idx:6;" title="Live">
-                <span class="fluid-live-dot"></span>
-                <span class="fluid-nav-label" style="color:#ef4444;">Live</span>
-            </div>
-
-            <!-- Bouton toggle (toujours visible, par-dessus les items) -->
-            <div id="fluidNavToggle" onclick="toggleFluidNav()" class="fluid-nav-toggle">
-                <div id="fluidIconBars" class="fluid-toggle-icon fluid-icon-bars">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <div id="fluidIconX" class="fluid-toggle-icon fluid-icon-x">
-                    <i class="fas fa-times"></i>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    </div>
-    </div>
 
     <!-- Main Content -->
     <main>

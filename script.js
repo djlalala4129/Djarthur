@@ -109,14 +109,18 @@ let lines = [];
 // ─── 3. FLUID MOBILE NAV ────────────────────────────────────
 function _fluidClose() {
     const nav = document.getElementById('fluidNav');
+    const toggle = document.getElementById('fluidNavToggle');
     if (!nav) return;
     nav.classList.remove('open');
+    if (toggle) toggle.classList.remove('open');
 }
 
 function toggleFluidNav() {
     const nav = document.getElementById('fluidNav');
+    const toggle = document.getElementById('fluidNavToggle');
     if (!nav) return;
     nav.classList.toggle('open');
+    if (toggle) toggle.classList.toggle('open');
 }
 
 function fluidNavClick(section) {
@@ -127,7 +131,10 @@ function fluidNavClick(section) {
 // Fermer le menu si clic à l'extérieur
 document.addEventListener('click', function(e) {
     const nav = document.getElementById('fluidNav');
-    if (nav && nav.classList.contains('open') && !nav.contains(e.target)) {
+    const toggle = document.getElementById('fluidNavToggle');
+    const wrapper = toggle ? toggle.closest('[style*="position:relative"]') : null;
+    if (nav && nav.classList.contains('open')
+        && !(wrapper && wrapper.contains(e.target))) {
         _fluidClose();
     }
 });
@@ -1040,12 +1047,15 @@ document.addEventListener('mouseleave', () => {
     let sdkLoaded     = false;
 
     function setLiveState(isLive) {
+        const fluidNav = document.getElementById('fluidNav');
         if (isLive) {
             navDesktop.classList.remove('hidden');
             navMobile.classList.remove('hidden');
+            if (fluidNav) fluidNav.classList.add('has-live');
         } else {
             navDesktop.classList.add('hidden');
             navMobile.classList.add('hidden');
+            if (fluidNav) fluidNav.classList.remove('has-live');
             if (liveSection.classList.contains('active')) {
                 if (typeof showSection === 'function') showSection('home', null);
             }
