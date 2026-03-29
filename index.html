@@ -533,6 +533,105 @@
                 <!-- GRILLE 3 COLONNES -->
                 <div id="demoGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto" style="grid-auto-rows: 1fr;">
 
+                    <!-- ── SET AFRO-HOUSE : Vidéo ── -->
+                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="house,deplacement,maison,video,long">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 bg-gradient-to-br from-accent13 to-accent11 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-video text-primary text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-heading font-bold truncate" style="color:#ffb43d;">Set Afro-House</h3>
+                                <p class="text-gray text-xs">Afro-House · Vidéo</p>
+                            </div>
+                        </div>
+                        <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative flex-1 rounded-2xl overflow-hidden" style="min-height:480px; cursor:pointer;" data-src="https://drive.google.com/file/d/1mkMQBc7vuDUJW5UHPnaDnxH9eXReOH4F/preview">
+                            <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#1a0800 0%,#7a3200 50%,#fe3e68 100%);">
+                                <div class="lazy-grid"></div>
+                                <div class="lazy-overlay"></div>
+                                <div class="lazy-play-btn"><i class="fas fa-play"></i></div>
+                                <span class="lazy-title">Set Afro-House</span>
+                                <span class="lazy-hint">Cliquer pour lancer</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-accent11/20 text-accent11 rounded-full text-xs">House</span>
+                            <span class="px-3 py-1 rounded-full text-xs" style="background:rgba(255,180,61,0.2);color:#ffb43d;">Afro</span>
+                            <span class="px-3 py-1 bg-accent/20 text-accent rounded-full text-xs">Vidéo</span>
+                        </div>
+                    </div>
+
+                    <!-- ── SET GOOD VIBES : Vidéo ── -->
+                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="ambiance,electro,house,deplacement,maison,video,long">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 bg-gradient-to-br from-accent10 to-accent16 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-video text-primary text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-heading font-bold text-accent10 truncate">Set Good Vibes</h3>
+                                <p class="text-gray text-xs">Good Vibes · Vidéo</p>
+                            </div>
+                        </div>
+                        <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative flex-1 rounded-2xl overflow-hidden" style="min-height:480px; cursor:pointer;" data-src="https://drive.google.com/file/d/1uRqh_uFUsRkS9Oh_PwCZWXhI09eLgzaJ/preview">
+                            <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#001515 0%,#005555 50%,#68ee4e 100%);">
+                                <div class="lazy-grid"></div>
+                                <div class="lazy-overlay"></div>
+                                <div class="lazy-play-btn"><i class="fas fa-play"></i></div>
+                                <span class="lazy-title">Set Good Vibes</span>
+                                <span class="lazy-hint">Cliquer pour lancer</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-accent10/20 text-accent10 rounded-full text-xs">Electro</span>
+                            <span class="px-3 py-1 bg-accent16/20 text-accent16 rounded-full text-xs">Ambiance</span>
+                            <span class="px-3 py-1 bg-accent/20 text-accent rounded-full text-xs">Vidéo</span>
+                        </div>
+                    </div>
+
+                    <!-- ── SET TECH-HOUSE : Audio ── -->
+                    <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="house,electro,maison,audio,long">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 bg-gradient-to-br from-accent2 to-accent10 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-headphones text-primary text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-heading font-bold text-accent2 truncate">Set Tech-House</h3>
+                                <p class="text-gray text-xs">Tech-House · Audio</p>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap" style="background:rgba(7,96,238,0.15);border:1px solid rgba(7,96,238,0.4);color:#0760EE;">Audio</span>
+                        </div>
+
+                        <!-- Lecteur audio natif -->
+                        <div class="relative flex-1 rounded-2xl overflow-hidden flex flex-col items-center justify-center gap-6 p-6" style="min-height:480px; background:linear-gradient(135deg,#020d20 0%,#031e4a 50%,#00F0FF22 100%);">
+                            <div class="flex flex-col items-center gap-3 w-full">
+                                <div class="w-24 h-24 rounded-full flex items-center justify-center" style="background:rgba(7,96,238,0.15);border:2px solid rgba(0,240,255,0.4);">
+                                    <i class="fas fa-headphones" style="font-size:2.5rem;color:#00F0FF;"></i>
+                                </div>
+                                <p class="text-secondary font-semibold text-center text-lg">Set Tech-House</p>
+                                <p class="text-gray text-sm text-center">Tech · House</p>
+                            </div>
+                            <audio
+                                controls
+                                controlsList="nodownload"
+                                preload="none"
+                                class="w-full rounded-xl"
+                                style="accent-color:#00F0FF;"
+                                src="https://www.dropbox.com/scl/fi/hdq9zao7xc8d3spvcotaz/Set_Tech_House.mp3?rlkey=j37jki6vcdd6zadyzca1nvdwp&st=42bymic5&raw=1">
+                                Votre navigateur ne supporte pas la lecture audio.
+                            </audio>
+                            <a href="https://www.dropbox.com/scl/fi/hdq9zao7xc8d3spvcotaz/Set_Tech_House.mp3?rlkey=j37jki6vcdd6zadyzca1nvdwp&st=42bymic5&dl=0" target="_blank"
+                               class="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 hover:scale-105"
+                               style="background:rgba(7,96,238,0.15);border:1px solid rgba(0,240,255,0.4);color:#00F0FF;">
+                                <i class="fas fa-external-link-alt"></i> Ouvrir sur Dropbox
+                            </a>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-accent11/20 text-accent11 rounded-full text-xs">House</span>
+                            <span class="px-3 py-1 bg-accent10/20 text-accent10 rounded-full text-xs">Tech</span>
+                            <span class="px-3 py-1 bg-accent/20 text-accent rounded-full text-xs">Audio</span>
+                        </div>
+                    </div>
+
                     <!-- ── SET FESTIF : Audio ── -->
                     <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="ambiance,electro,urbain,house,deplacement,maison,audio,long">
                         <div class="flex items-center gap-3">
@@ -805,8 +904,7 @@
                             <span class="px-3 py-1 bg-accent16/20 text-accent16 rounded-full text-xs">Ambiance</span>
                             <span class="px-3 py-1 bg-accent11/20 text-accent11 rounded-full text-xs">House</span>
                         </div>
-                    </div>
-
+                    </div>                  
                 </div>
 
                 <!-- CTA -->
