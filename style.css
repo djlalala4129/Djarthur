@@ -974,3 +974,60 @@ body {
     border: none;
     z-index: 2;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   DEMO GRID — Scroll horizontal drag (mobile)
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+    #demoCarouselPrev,
+    #demoCarouselNext {
+        display: none !important;
+    }
+
+    #demoGrid {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 16px !important;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 16px;
+        /* Déborde légèrement du container pour effet edge-peek */
+        margin-left: -16px;
+        margin-right: -16px;
+        cursor: default;
+        user-select: none;
+        /* Empêche le flash de fond noir lors du saut de scroll infini */
+        background: var(--color-bg);
+        /* Force le compositing GPU — élimine le rectangle noir au scroll */
+        will-change: scroll-position;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+
+    #demoGrid::-webkit-scrollbar {
+        display: none;
+    }
+
+    #demoGrid.demo-dragging {
+        cursor: default;
+        scroll-snap-type: none; /* Désactive snap pendant le drag souris */
+    }
+
+    /* Désactive snap pendant le saut infini pour éviter le flash noir
+       et le décalage de carte vers la droite */
+    #demoGrid.demo-jumping {
+        scroll-snap-type: none !important;
+    }
+
+    #demoGrid .demo-card {
+        flex: 0 0 85vw;
+        min-width: 0;
+        scroll-snap-align: start;
+        max-width: 340px;
+    }
+}

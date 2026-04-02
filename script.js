@@ -1136,31 +1136,35 @@ document.addEventListener('mouseleave', () => {
 
 // ─── Filtres & Carrousels ─────────────────────────────────────
 
-// ===== FILTRES GRILLE DÉMO =====
+// ===== FILTRES GRILLE DÉMO — Multi-sélection par Set =====
+// Logique : OR à l'intérieur d'un groupe, AND entre groupes.
+// Le bouton "Tous" dans le groupe style vide la sélection du groupe.
 (function() {
 var filterBtns = document.querySelectorAll('.demo-filter-btn');
 var cards = document.querySelectorAll('.demo-card');
 
-// Active filters per group: { style: 'all', contexte: null, format: null }
-var activeFilters = { style: 'all', contexte: null, format: null };
+// Un Set par groupe — ensemble vide = pas de filtre actif pour ce groupe
+var activeFilters = {
+    style:    new Set(),
+    contexte: new Set(),
+    format:   new Set()
+};
 
 function applyFilters() {
     cards.forEach(function(card) {
-        var tags = card.getAttribute('data-tags').split(',');
+        var tags = card.getAttribute('data-tags').split(',').map(function(t) { return t.trim(); });
         var show = true;
 
-        // Style group: 'all' means no restriction
-        if (activeFilters.style && activeFilters.style !== 'all') {
-            if (tags.indexOf(activeFilters.style) < 0) show = false;
-        }
-        // Contexte group: null means no restriction
-        if (activeFilters.contexte) {
-            if (tags.indexOf(activeFilters.contexte) < 0) show = false;
-        }
-        // Format group: null means no restriction
-        if (activeFilters.format) {
-            if (tags.indexOf(activeFilters.format) < 0) show = false;
-        }
+        // Pour chaque groupe : si le Set est non-vide, au moins un tag du groupe doit matcher (OR)
+        ['style', 'contexte', 'format'].forEach(function(group) {
+            var sel = activeFilters[group];
+            if (sel.size === 0) return; // pas de filtre pour ce groupe
+            var match = false;
+            sel.forEach(function(f) {
+                if (tags.indexOf(f) >= 0) match = true;
+            });
+            if (!match) show = false;
+        });
 
         card.style.display = show ? '' : 'none';
     });
@@ -1171,23 +1175,39 @@ filterBtns.forEach(function(btn) {
         var group  = btn.getAttribute('data-group');
         var filter = btn.getAttribute('data-filter');
 
-        // Toggle: click active non-all button → deactivate
-        if (group !== 'style' && activeFilters[group] === filter) {
-            activeFilters[group] = null;
-            btn.classList.remove('active-filter');
-        } else {
-            // Deactivate all buttons in same group
+        // Bouton "Tous" : vide le groupe style et réactive "Tous"
+        if (filter === 'all') {
+            activeFilters[group].clear();
             document.querySelectorAll('.demo-filter-btn[data-group="' + group + '"]').forEach(function(b) {
                 b.classList.remove('active-filter');
             });
-            activeFilters[group] = filter;
             btn.classList.add('active-filter');
-            // If style = 'all', reset contexte & format highlights but keep selections
+            applyFilters();
+            return;
+        }
+
+        // Désactiver "Tous" si présent dans ce groupe
+        var allBtn = document.querySelector('.demo-filter-btn[data-group="' + group + '"][data-filter="all"]');
+        if (allBtn) allBtn.classList.remove('active-filter');
+
+        // Toggle : si déjà actif → retirer, sinon → ajouter
+        if (activeFilters[group].has(filter)) {
+            activeFilters[group].delete(filter);
+            btn.classList.remove('active-filter');
+            // Si le groupe est vide et c'est le groupe style → remettre "Tous"
+            if (activeFilters[group].size === 0 && group === 'style' && allBtn) {
+                allBtn.classList.add('active-filter');
+            }
+        } else {
+            activeFilters[group].add(filter);
+            btn.classList.add('active-filter');
         }
 
         applyFilters();
     });
 });
+
+
 })();
 
 // ===== FONCTION GÉNÉRIQUE CARROUSEL =====
@@ -1250,6 +1270,172 @@ slideClass: 'shorts-slide', color: '#E3F939'
 });
 
 
+
+// ─── 13c. DEMO GRID — SCROLL EN BOUCLE INFINIE (mobile) ─────
+(function () {
+    var grid = document.getElementById('demoGrid');
+    if (!grid) return;
+
+    var isJumping  = false;
+    var cloneCount = 0;
+
+    /* ── Vrai uniquement quand le layout mobile est actif ── */
+    function isMobileLayout() {
+        return window.innerWidth < 768;
+    }
+
+    /* ── Supprime tous les clones existants ── */
+    function removeClones() {
+        Array.from(grid.querySelectorAll('.demo-card-clone'))
+            .forEach(function (el) { el.remove(); });
+        cloneCount = 0;
+    }
+
+    /* ── Récupère les cartes réelles visibles (pas les clones) ── */
+    function getRealCards() {
+        return Array.from(
+            grid.querySelectorAll('.demo-card:not(.demo-card-clone)')
+        ).filter(function (c) { return c.style.display !== 'none'; });
+    }
+
+    /* ── Calcule le pas card-à-card (largeur + gap) ── */
+    function getStep() {
+        var style = getComputedStyle(grid);
+        var gap   = parseFloat(style.columnGap || style.gap || '16') || 16;
+        var cards = getRealCards();
+        if (!cards.length) return 0;
+        return cards[0].offsetWidth + gap;
+    }
+
+    /* ── Verrouille le grid (snap OFF, events ignorés) ── */
+    function lockGrid() {
+        isJumping = true;
+        grid.classList.add('demo-jumping');
+    }
+
+    /* ── Déverrouille après 2 frames + 20 ms ── */
+    function unlockGrid() {
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                setTimeout(function () {
+                    grid.classList.remove('demo-jumping');
+                    isJumping = false;
+                }, 20);
+            });
+        });
+    }
+
+    /* ── Saut sans flash ── */
+    function doJump(newLeft) {
+        lockGrid();
+        grid.scrollLeft = newLeft;
+        unlockGrid();
+    }
+
+    /* ── Construit les clones de début et de fin ── */
+    function buildClones() {
+        if (!isMobileLayout()) { removeClones(); return; }
+
+        /* Verrouille dès le début : évite tout repaint intermédiaire
+           et tout saut parasite pendant le rebuild */
+        lockGrid();
+
+        removeClones();
+
+        var realCards = getRealCards();
+        cloneCount    = realCards.length;
+        if (cloneCount < 2) { unlockGrid(); return; }
+
+        /* Clones de FIN */
+        realCards.forEach(function (card) {
+            var clone = card.cloneNode(true);
+            clone.classList.add('demo-card-clone');
+            clone.querySelectorAll('[id]').forEach(function (el) { el.removeAttribute('id'); });
+            grid.appendChild(clone);
+        });
+
+        /* Clones de DÉBUT */
+        var firstChild = grid.firstChild;
+        realCards.forEach(function (card) {
+            var clone = card.cloneNode(true);
+            clone.classList.add('demo-card-clone');
+            clone.querySelectorAll('[id]').forEach(function (el) { el.removeAttribute('id'); });
+            grid.insertBefore(clone, firstChild);
+        });
+
+
+        /* Repositionnement SYNCHRONE — accéder à offsetLeft force un
+           reflow immédiat, valeur fiable, aucun frame intermédiaire. */
+        var target = grid.children[cloneCount];
+        if (target) { grid.scrollLeft = target.offsetLeft; }
+
+        unlockGrid();
+    }
+
+    /* ── Positionne le scroll sur la 1re carte réelle ── */
+    function scrollToRealStart() {
+        var target = grid.children[cloneCount];
+        if (!target) return;
+        doJump(target.offsetLeft);
+    }
+
+    /* ── Saut invisible aux extrémités ── */
+    grid.addEventListener('scroll', function () {
+        if (isJumping || cloneCount < 2 || !isMobileLayout()) return;
+
+        var step     = getStep();
+        if (!step) return;
+
+        var s        = grid.scrollLeft;
+        var sectionW = cloneCount * step;
+
+        if (s >= sectionW * 2) {
+            doJump(s - sectionW);
+        } else if (s < step * 0.5) {
+            doJump(s + sectionW);
+        }
+    }, { passive: true });
+
+    /* ── Nettoie les clones au resize vers desktop ── */
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+            if (!isMobileLayout()) { removeClones(); }
+            else { buildClones(); }
+        }, 150);
+    });
+
+    /* ── Reconstruit à chaque changement de filtre ── */
+    document.querySelectorAll('.demo-filter-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            if (!isMobileLayout()) return;
+            /* Gèle visuellement le grid pendant le rebuild pour éviter le shake */
+            grid.style.visibility = 'hidden';
+            requestAnimationFrame(function () {
+                buildClones();
+                requestAnimationFrame(function () {
+                    grid.style.visibility = '';
+                });
+            });
+        });
+    });
+
+    /* ── Reconstruit quand la section demo devient active ── */
+    var _origShow = window.showSection;
+    window.showSection = function (id, ev) {
+        _origShow && _origShow(id, ev);
+        if (id === 'demo') { setTimeout(buildClones, 60); }
+    };
+
+    /* ── Init au chargement si démo déjà visible ── */
+    setTimeout(function () {
+        var demoSection = document.getElementById('demo');
+        if (demoSection && !demoSection.classList.contains('hidden')) {
+            buildClones();
+        }
+    }, 150);
+})();
 
 // ─── 14. ANIMATION NAVIGATION (GSAP) ────────────────────────
 

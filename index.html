@@ -48,7 +48,7 @@
         "@context": "https://schema.org",
         "@type": "MusicGroup",
         "name": "DJ Arthur",
-        "description": "DJ généraliste en Seine-et-Marne. Electro, House, Urbain, Latino, 80's. Disponible pour bars, soirées et événements.",
+        "description": "DJ généraliste en Seine-et-Marne. Electro, House, Urbain, Latino. Disponible pour bars, soirées et événements.",
         "url": "https://djarthur.pages.dev/",
         "image": "https://djarthur.pages.dev/IMG4.webp",
         "genre": ["Electro", "House", "Urbain", "Latino"],
@@ -361,7 +361,6 @@
                                 <span class="px-3 py-1.5 bg-accent11/20 border border-accent11 rounded-full text-accent11 text-xs font-medium">HOUSE</span>
                                 <span class="px-3 py-1.5 bg-accent12/20 border border-accent12 rounded-full text-accent12 text-xs font-medium">URBAIN</span>
                                 <span class="px-3 py-1.5 bg-accent13/20 border border-accent13 rounded-full text-accent13 text-xs font-medium">LATINO</span>
-                                <span class="px-3 py-1.5 bg-accent14/20 border border-accent14 rounded-full text-accent14 text-xs font-medium">80'S → 2000'S</span>
                                 <span class="px-3 py-1.5 bg-accent16/20 border border-accent16 rounded-full text-accent16 text-xs font-medium">AMBIANCE</span>
                             </div>
                         </div>
@@ -372,7 +371,7 @@
                                 J'organisée et je prépare mes sets sur Rekordbox, mon outil principal. J'utilise également Serato occasionnellement selon les configurations et les besoins.
                             </p>
                             <p class="text-secondary/80 text-base leading-relaxed">
-                                DJ généraliste, je mixe tous les genres sans frontières : Electro, House, Urbain, Latino, 80's jusqu'aux hits d'aujourd'hui. Avec plus de 3 000 titres, peu importe l'ambiance, j'ai ce qu'il faut !
+                                DJ généraliste, je mixe tous les genres sans frontières : Electro, House, Urbain, Latino. Avec plus de 3 000 titres, peu importe l'ambiance, j'ai ce qu'il faut !
                             </p>
                         </div>
                     </div>
@@ -479,7 +478,7 @@
         </section>
 
         <!-- Demo Section -->
-        <section id="demo" class="section hidden min-h-screen py-20 pt-24 bg-primary grid-bg">
+        <section id="demo" class="section hidden min-h-screen py-20 pt-24 pb-32 bg-primary grid-bg">
             <div class="container mx-auto px-4">
                 <div class="text-center mb-16">
                     <h2 class="text-5xl md:text-6xl font-heading font-bold mb-4">
@@ -491,47 +490,63 @@
                 </div>
 
                 <!-- Filtres par tags – 3 séries -->
-                <div class="flex flex-col items-center gap-4 mb-10">
+                <div class="flex flex-col items-center gap-4 mb-10 w-full">
 
                     <!-- Série 1 : Style musical -->
-                    <div class="flex flex-wrap justify-center items-center gap-2">
-                        <span class="text-gray text-xs font-semibold uppercase tracking-widest mr-1 opacity-60">Style</span>
-                        <button data-filter="all"      data-group="style" class="demo-filter-btn active-filter px-4 py-1.5 rounded-full text-xs font-semibold border border-accent/50 text-accent bg-accent/10 transition-all duration-300"><span class="btn-label">Tous</span></button>
-                        <button data-filter="electro"  data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent10/40 text-accent10 bg-transparent hover:bg-accent10/10 transition-all duration-300"><span class="btn-label">Electro</span></button>
-                        <button data-filter="house"    data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent11/40 text-accent11 bg-transparent hover:bg-accent11/10 transition-all duration-300"><span class="btn-label">House</span></button>
-                        <button data-filter="urbain"   data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent12/40 text-accent12 bg-transparent hover:bg-accent12/10 transition-all duration-300"><span class="btn-label">Urbain</span></button>
-                        <button data-filter="ambiance" data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent16/40 text-accent16 bg-transparent hover:bg-accent16/10 transition-all duration-300"><span class="btn-label">Ambiance</span></button>
-                        <button data-filter="latino"   data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent13/40 text-accent13 bg-transparent hover:bg-accent13/10 transition-all duration-300"><span class="btn-label">Latino</span></button>
-                        <button data-filter="annees"   data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent14/40 text-accent14 bg-transparent hover:bg-accent14/10 transition-all duration-300"><span class="btn-label">80's → 2020's</span></button>
+                    <div class="demo-filter-row w-full flex flex-col items-center gap-2">
+                        <span class="text-gray text-xs font-semibold uppercase tracking-widest opacity-60">Style</span>
+                        <div class="demo-filter-pills flex flex-wrap justify-center items-center gap-2">
+                            <button data-filter="all"      data-group="style" class="demo-filter-btn active-filter px-4 py-1.5 rounded-full text-xs font-semibold border border-accent/50 text-accent bg-accent/10 transition-all duration-300"><span class="btn-label">Tous</span></button>
+                            <button data-filter="electro"  data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent10/40 text-accent10 bg-transparent hover:bg-accent10/10 transition-all duration-300"><span class="btn-label">Electro</span></button>
+                            <button data-filter="house"    data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent11/40 text-accent11 bg-transparent hover:bg-accent11/10 transition-all duration-300"><span class="btn-label">House</span></button>
+                            <button data-filter="urbain"   data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent12/40 text-accent12 bg-transparent hover:bg-accent12/10 transition-all duration-300"><span class="btn-label">Urbain</span></button>
+                            <button data-filter="ambiance" data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent16/40 text-accent16 bg-transparent hover:bg-accent16/10 transition-all duration-300"><span class="btn-label">Ambiance</span></button>
+                            <button data-filter="latino"   data-group="style" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent13/40 text-accent13 bg-transparent hover:bg-accent13/10 transition-all duration-300"><span class="btn-label">Latino</span></button>
+                        </div>
                     </div>
 
                     <!-- Séparateur -->
                     <div class="w-48 border-t border-white/10"></div>
 
                     <!-- Série 2 : Contexte -->
-                    <div class="flex flex-wrap justify-center items-center gap-2">
-                        <span class="text-gray text-xs font-semibold uppercase tracking-widest mr-1 opacity-60">Contexte</span>
-                        <button data-filter="deplacement" data-group="contexte" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent13/40 text-accent13 bg-transparent hover:bg-accent13/10 transition-all duration-300"><span class="btn-label">En déplacement</span></button>
-                        <button data-filter="maison"      data-group="contexte" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent14/40 text-accent14 bg-transparent hover:bg-accent14/10 transition-all duration-300"><span class="btn-label">À la maison</span></button>
-
+                    <div class="demo-filter-row w-full flex flex-col items-center gap-2">
+                        <span class="text-gray text-xs font-semibold uppercase tracking-widest opacity-60">Contexte</span>
+                        <div class="demo-filter-pills flex flex-wrap justify-center items-center gap-2">
+                            <button data-filter="deplacement" data-group="contexte" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent13/40 text-accent13 bg-transparent hover:bg-accent13/10 transition-all duration-300"><span class="btn-label">En déplacement</span></button>
+                            <button data-filter="maison"      data-group="contexte" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent14/40 text-accent14 bg-transparent hover:bg-accent14/10 transition-all duration-300"><span class="btn-label">À la maison</span></button>
+                        </div>
                     </div>
 
                     <!-- Séparateur -->
                     <div class="w-48 border-t border-white/10"></div>
 
                     <!-- Série 3 : Format -->
-                    <div class="flex flex-wrap justify-center items-center gap-2">
-                        <span class="text-gray text-xs font-semibold uppercase tracking-widest mr-1 opacity-60">Format</span>
-                        <button data-filter="video" data-group="format" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent2/40 text-accent2 bg-transparent hover:bg-accent2/10 transition-all duration-300"><span class="btn-label">Vidéo</span></button>
-                        <button data-filter="audio" data-group="format" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent/40 text-accent bg-transparent hover:bg-accent/10 transition-all duration-300"><span class="btn-label">Audio</span></button>
-                        <button data-filter="short" data-group="format" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent3/40 text-accent3 bg-transparent hover:bg-accent3/10 transition-all duration-300"><span class="btn-label">Short</span></button>
-                        <button data-filter="long"  data-group="format" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent3/40 text-accent3 bg-transparent hover:bg-accent3/10 transition-all duration-300"><span class="btn-label">Long</span></button>
+                    <div class="demo-filter-row w-full flex flex-col items-center gap-2">
+                        <span class="text-gray text-xs font-semibold uppercase tracking-widest opacity-60">Format</span>
+                        <div class="demo-filter-pills flex flex-wrap justify-center items-center gap-2">
+                            <button data-filter="video" data-group="format" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent2/40 text-accent2 bg-transparent hover:bg-accent2/10 transition-all duration-300"><span class="btn-label">Vidéo</span></button>
+                            <button data-filter="audio" data-group="format" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent/40 text-accent bg-transparent hover:bg-accent/10 transition-all duration-300"><span class="btn-label">Audio</span></button>
+                            <button data-filter="short" data-group="format" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent3/40 text-accent3 bg-transparent hover:bg-accent3/10 transition-all duration-300"><span class="btn-label">Short</span></button>
+                            <button data-filter="long"  data-group="format" class="demo-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-accent3/40 text-accent3 bg-transparent hover:bg-accent3/10 transition-all duration-300"><span class="btn-label">Long</span></button>
+                        </div>
                     </div>
 
                 </div>
 
-                <!-- GRILLE 3 COLONNES -->
-                <div id="demoGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto" style="grid-auto-rows: 1fr;">
+                <!-- CAROUSEL WRAPPER mobile + GRILLE desktop -->
+                <div class="demo-carousel-outer relative max-w-7xl mx-auto">
+
+                    <!-- Flèches navigation mobile -->
+                    <button id="demoCarouselPrev" class="demo-carousel-arrow demo-carousel-arrow--prev md:hidden" aria-label="Précédent">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button id="demoCarouselNext" class="demo-carousel-arrow demo-carousel-arrow--next md:hidden" aria-label="Suivant">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+
+                    <!-- Grille (devient track sur mobile via JS) -->
+                    <div id="demoGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" style="grid-auto-rows: 1fr;">
+                        <div id="demoSlider" class="contents">
 
                     <!-- ── SET AFRO-HOUSE : Vidéo ── -->
                     <div class="demo-card glass-card rounded-3xl p-5 flex flex-col gap-4" data-tags="house,deplacement,maison,video,long">
@@ -543,6 +558,7 @@
                                 <h3 class="font-heading font-bold truncate" style="color:#ffb43d;">Set Afro-House</h3>
                                 <p class="text-gray text-xs">Afro-House · Vidéo</p>
                             </div>
+                            <span class="px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap" style="background:rgba(7,96,238,0.15);border:1px solid rgba(7,96,238,0.4);color:#3983F9;">Vidéo</span>
                         </div>
                         <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative flex-1 rounded-2xl overflow-hidden" style="min-height:480px; cursor:pointer;" data-src="https://drive.google.com/file/d/1mkMQBc7vuDUJW5UHPnaDnxH9eXReOH4F/preview">
                             <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#1a0800 0%,#7a3200 50%,#fe3e68 100%);">
@@ -570,6 +586,7 @@
                                 <h3 class="font-heading font-bold text-accent10 truncate">Set Good Vibes</h3>
                                 <p class="text-gray text-xs">Good Vibes · Vidéo</p>
                             </div>
+                            <span class="px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap" style="background:rgba(7,96,238,0.15);border:1px solid rgba(7,96,238,0.4);color:#3983F9;">Vidéo</span>
                         </div>
                         <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative flex-1 rounded-2xl overflow-hidden" style="min-height:480px; cursor:pointer;" data-src="https://drive.google.com/file/d/1uRqh_uFUsRkS9Oh_PwCZWXhI09eLgzaJ/preview">
                             <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#001515 0%,#005555 50%,#68ee4e 100%);">
@@ -758,6 +775,7 @@
                                 <h3 class="font-heading font-bold text-accent16 truncate">Set Ambiance</h3>
                                 <p class="text-gray text-xs">Février 2026 · 55 min</p>
                             </div>
+                            <span class="px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap" style="background:rgba(104,238,78,0.12);border:1px solid rgba(104,238,78,0.4);color:#68ee4e;">55 min</span>
                         </div>
                         <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative flex-1 rounded-2xl overflow-hidden" style="min-height:480px; cursor:pointer;" data-src="https://drive.google.com/file/d/11IxbpSP7GtApFe5D2EtWIc0KNINGN_c-/preview">
                             <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#0a1a10 0%,#68ee4e 100%);">
@@ -889,6 +907,7 @@
                                 <h3 class="font-heading font-bold text-accent truncate">Concert Évasion Live</h3>
                                 <p class="text-gray text-xs">Juin 2025 · EPB Dammarie-les-Lys</p>
                             </div>
+                            <span class="px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap" style="background:rgba(7,96,238,0.15);border:1px solid rgba(7,96,238,0.4);color:#3983F9;">Vidéo</span>
                         </div>
                         <div onclick="loadLazyVideo(this)" class="lazy-video-wrapper relative flex-1 rounded-2xl overflow-hidden" style="min-height:480px; cursor:pointer;" data-src="https://drive.google.com/file/d/1O8wRL9dO74uqnz-qVPIavO-KZLuuLiqr/preview">
                             <div class="lazy-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#0d1020 0%,#ff453d 100%);">
@@ -905,10 +924,16 @@
                             <span class="px-3 py-1 bg-accent11/20 text-accent11 rounded-full text-xs">House</span>
                         </div>
                     </div>                  
-                </div>
+                        </div><!-- /demoSlider -->
+                    </div><!-- /demoGrid -->
+
+                    <!-- Dots mobiles -->
+                    <div id="demoCarouselDots" class="md:hidden flex justify-center gap-2 mt-5" aria-hidden="true"></div>
+
+                </div><!-- /demo-carousel-outer -->
 
                 <!-- CTA -->
-                <div class="text-center mt-16">
+                <div class="text-center mt-16 pb-8">
                     <p class="text-gray mb-6 text-lg">Besoin d'entendre plus de démos ?</p>
                     <button onclick="showSection('booking', event); return false;" class="btn-neon px-8 py-4 rounded-full font-bold text-lg">
                         <i class="fas fa-headphones mr-2"></i>PLUS DE DÉMOS
@@ -1501,7 +1526,6 @@
                         <span class="px-2 py-0.5 bg-accent11/20 border border-accent11/40 rounded-full text-accent11 text-xs">HOUSE</span>
                         <span class="px-2 py-0.5 bg-accent12/20 border border-accent12/40 rounded-full text-accent12 text-xs">URBAIN</span>
                         <span class="px-2 py-0.5 bg-accent13/20 border border-accent13/40 rounded-full text-accent13 text-xs">LATINO</span>
-                        <span class="px-2 py-0.5 bg-accent14/20 border border-accent14/40 rounded-full text-accent14 text-xs">80'S → 2000'S</span>
                     </div>
                 </div>
 
@@ -1578,6 +1602,40 @@
     <!-- ═══════════════════════════════════════════════════════════
          SCRIPTS — GSAP (animation nav) + script principal
     ═══════════════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════════
+         MINI-PLAYER — Lecteur audio persistant
+    ═══════════════════════════════════════════════════════════════ -->
+    <div id="miniPlayer" class="mini-player" aria-hidden="true">
+        <div class="mini-player-inner">
+
+            <!-- Icône vinyle animée -->
+            <div class="mini-player-vinyl" id="miniPlayerVinyl">
+                <i class="fas fa-compact-disc"></i>
+            </div>
+
+            <!-- Infos track -->
+            <div class="mini-player-info">
+                <span class="mini-player-title" id="miniPlayerTitle">—</span>
+                <span class="mini-player-sub"   id="miniPlayerSub">Audio</span>
+            </div>
+
+            <!-- Barre de progression -->
+            <div class="mini-player-progress" id="miniPlayerProgress">
+                <div class="mini-player-bar" id="miniPlayerBar"></div>
+            </div>
+
+            <!-- Contrôles -->
+            <div class="mini-player-controls">
+                <button class="mini-btn" id="miniPlayerPlay" title="Play / Pause">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="mini-btn mini-btn-close" id="miniPlayerClose" title="Fermer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="script.js"></script>
