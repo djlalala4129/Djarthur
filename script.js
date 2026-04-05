@@ -1364,19 +1364,36 @@ slideClass: 'shorts-slide', color: '#E3F939'
         });
 
 
-        /* Repositionnement SYNCHRONE — accéder à offsetLeft force un
-           reflow immédiat, valeur fiable, aucun frame intermédiaire. */
-        var target = grid.children[cloneCount];
-        if (target) { grid.scrollLeft = target.offsetLeft; }
-
-        unlockGrid();
+        /* #demoSlider a display:contents — grid.children[cloneCount] est ce wrapper
+           invisible dont offsetLeft = 0, ce qui bloquait le scroll à gauche.
+           On reset d'abord scrollLeft=0, puis on utilise getBoundingClientRect()
+           sur la vraie première carte pour calculer sa position réelle dans le scroll,
+           et on centre visuellement cette carte dans le viewport. */
+        grid.scrollLeft = 0;
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                var firstReal = getRealCards()[0];
+                if (!firstReal) { unlockGrid(); return; }
+                var cardW          = firstReal.offsetWidth;
+                var cardScrollLeft = firstReal.getBoundingClientRect().left
+                                     - grid.getBoundingClientRect().left;
+                /* cardScrollLeft = distance de la carte depuis le bord gauche du scroll.
+                   On soustrait la moitié de l'espace restant pour centrer. */
+                grid.scrollLeft = cardScrollLeft - Math.max(0, (window.innerWidth - cardW) / 2);
+                unlockGrid();
+            });
+        });
     }
 
-    /* ── Positionne le scroll sur la 1re carte réelle ── */
+    /* ── Recentre sur la 1re carte réelle (après saut infini) ── */
     function scrollToRealStart() {
-        var target = grid.children[cloneCount];
-        if (!target) return;
-        doJump(target.offsetLeft);
+        var firstReal = getRealCards()[0];
+        if (!firstReal) return;
+        var cardW          = firstReal.offsetWidth;
+        var cardScrollLeft = firstReal.getBoundingClientRect().left
+                             - grid.getBoundingClientRect().left
+                             + grid.scrollLeft;
+        doJump(cardScrollLeft - Math.max(0, (window.innerWidth - cardW) / 2));
     }
 
     /* ── Saut invisible aux extrémités ── */

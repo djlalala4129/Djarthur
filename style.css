@@ -989,7 +989,7 @@ body {
         flex-wrap: nowrap !important;
         overflow-x: auto;
         overflow-y: hidden;
-        scroll-snap-type: x mandatory;
+        scroll-snap-type: none;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         gap: 16px !important;
@@ -1015,19 +1015,14 @@ body {
 
     #demoGrid.demo-dragging {
         cursor: default;
-        scroll-snap-type: none; /* Désactive snap pendant le drag souris */
     }
-
-    /* Désactive snap pendant le saut infini pour éviter le flash noir
-       et le décalage de carte vers la droite */
     #demoGrid.demo-jumping {
-        scroll-snap-type: none !important;
     }
 
     #demoGrid .demo-card {
         flex: 0 0 85vw;
         min-width: 0;
-        scroll-snap-align: start;
+        scroll-snap-align: none;
         max-width: 340px;
     }
 }
