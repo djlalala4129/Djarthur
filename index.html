@@ -145,16 +145,20 @@
                         <i class="fas fa-music mr-2"></i>Démo
                         <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
                     </a>
-                    <a onclick="showSection('karaoke', event); return false;" class="nav-link text-secondary hover:text-accent transition-colors font-medium cursor-pointer relative">
+                    <!-- <a onclick="showSection('karaoke', event); return false;" class="nav-link text-secondary hover:text-accent transition-colors font-medium cursor-pointer relative">
                         <i class="fas fa-microphone mr-2"></i>Karaoké
                         <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
-                    </a>
+                    </a>-->
                     <a onclick="showSection('setup', event); return false;" class="nav-link text-secondary hover:text-accent transition-colors font-medium cursor-pointer relative">
                         <i class="fas fa-sliders-h mr-2"></i>Setup
                         <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
                     </a>
                     <a onclick="showSection('booking', event); return false;" class="nav-link text-secondary hover:text-accent transition-colors font-medium cursor-pointer relative">
                         <i class="fas fa-calendar-alt mr-2"></i>Contact
+                        <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
+                    </a>
+                    <a onclick="showSection('blindtest', event); return false;" class="nav-link text-secondary hover:text-accent transition-colors font-medium cursor-pointer relative">
+                        <i class="fas fa-question-circle mr-2"></i>Blind Test
                         <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
                     </a>
                     <a id="nav-live-desktop" onclick="showSection('live', event); return false;" class="nav-link text-red-500 hover:text-red-400 transition-colors font-medium cursor-pointer relative flex items-center gap-2 hidden">
@@ -200,12 +204,16 @@
                             <i class="fas fa-sliders-h"></i>
                             <span class="fluid-nav-label">Setup</span>
                         </div>
-                        <div class="fluid-nav-item" data-target="booking" onclick="fluidNavClick('booking')" style="--fluid-idx:5;" title="Contact">
+                        <div class="fluid-nav-item" data-target="blindtest" onclick="fluidNavClick('blindtest')" style="--fluid-idx:5;" title="Blind Test">
+                            <i class="fas fa-question-circle"></i>
+                            <span class="fluid-nav-label">Blind Test</span>
+                        </div>
+                        <div class="fluid-nav-item" data-target="booking" onclick="fluidNavClick('booking')" style="--fluid-idx:6;" title="Contact">
                             <i class="fas fa-calendar-alt"></i>
                             <span class="fluid-nav-label">Contact</span>
                         </div>
                         <!-- Item Live (caché par défaut, affiché par le JS Twitch) -->
-                        <div id="nav-live-mobile" class="fluid-nav-item fluid-nav-live hidden" data-target="live" onclick="fluidNavClick('live')" style="--fluid-idx:6;" title="Live">
+                        <div id="nav-live-mobile" class="fluid-nav-item fluid-nav-live hidden" data-target="live" onclick="fluidNavClick('live')" style="--fluid-idx:7;" title="Live">
                             <span class="fluid-live-dot"></span>
                             <span class="fluid-nav-label" style="color:#ef4444;">Live</span>
                         </div>
@@ -1506,6 +1514,46 @@
                         <i class="fab fa-twitch text-xl"></i> Ouvrir sur Twitch
                     </a>
                 </div>
+            </div>
+        </section>
+
+        <!-- Blind Test Section -->
+        <section id="blindtest" class="section hidden min-h-screen py-20 pt-24 pb-32 bg-primary grid-bg">
+            <div class="container mx-auto px-4">
+
+                <!-- Header -->
+                <div class="text-center mb-14">
+                    <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full mb-6" style="background:rgba(57,131,249,0.12);border:1px solid rgba(57,131,249,0.35);">
+                        <i class="fas fa-headphones-alt text-accent text-sm"></i>
+                        <span class="text-accent font-bold text-sm tracking-widest uppercase">Sauras-tu trouver ?</span>
+                    </div>
+                    <h2 class="text-5xl md:text-6xl font-display font-bold mb-4">
+                        <span class="gradient-text">BLIND TEST</span>
+                    </h2>
+                    <p class="text-gray text-lg max-w-2xl mx-auto">
+                        Écoute l'extrait et trouve la bonne réponse parmi les 4 propositions.
+                    </p>
+
+                    <!-- Score + boutons -->
+                    <div class="flex flex-wrap items-center justify-center gap-4 mt-8">
+                        <div class="inline-flex items-center gap-4 px-6 py-3 rounded-full" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);">
+                            <span class="text-gray text-sm">Score</span>
+                            <span id="bt-score-correct" class="text-green-400 font-bold text-xl">0</span>
+                            <span class="text-gray opacity-40">/</span>
+                            <span id="bt-score-total" class="text-secondary font-bold text-xl">5</span>
+                        </div>
+                        <button id="bt-btn-new" onclick="btGenerate()" class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm transition-all hover:scale-105" style="background:rgba(57,131,249,0.18);border:1.5px solid rgba(57,131,249,0.5);color:#3983F9;">
+                            <i class="fas fa-random"></i> Nouvelle partie
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- Grille générée par JS -->
+                <div id="bt-grid" class="flex flex-col items-center gap-8 max-w-2xl mx-auto w-full">
+                    <!-- Les cartes sont injectées dynamiquement par btGenerate() -->
+                </div>
+
             </div>
         </section>
 

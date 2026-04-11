@@ -1457,6 +1457,7 @@ slideClass: 'shorts-slide', color: '#E3F939'
 // ─── 14. ANIMATION NAVIGATION (GSAP) ────────────────────────
 
 const navElement = document.getElementById("desktopNav");
+if (navElement) {
 
 const activeElement = document.createElement("div");
 activeElement.classList.add("active-element");
@@ -1616,6 +1617,8 @@ if (btn) {
 }
 };
 
+} // end if (navElement)
+
 // ─── 15. SECTION EVENT — lecture vidéo de fond + masquer navbar ──
 (function () {
     const _prev = window.showSection;
@@ -1661,3 +1664,334 @@ function loadLazyVideo(wrapper) {
     wrapper.style.cursor = 'default';
     wrapper.removeAttribute('onclick');
 }
+
+/* ============================================================
+   BLIND TEST — Deezer Widget · pochette masquée par overlay CSS
+   ============================================================
+   Pour ajouter un titre, ajoute un objet dans BT_SONGS :
+   {
+     label  : "Titre — Artiste",   ← affiché comme réponse et dans les choix
+     id     : "1234567890",        ← ID numérique Deezer de la track
+                                      (visible dans l'URL : deezer.com/fr/track/XXXXXXXX)
+     genre  : "electro",           ← sert à choisir des faux choix similaires
+                                      utilise le même mot pour les morceaux du même style
+   }
+   Genres suggérés (libre à toi) : "electro", "house", "urbain", "latino", "ambiance", "80s"
+   ── Minimum 4 titres au total pour que le quiz fonctionne ──
+   ============================================================ */
+
+// ── BASE DE TITRES ───────────────────────────────────────────
+var BT_SONGS = [
+    // ── Electro ──
+    { label: "Levels — Avicii",                          id: "14383880",   genre: "electro" },
+    { label: "Animals — Martin Garrix",                  id: "70887258",   genre: "electro" },
+    { label: "Titanium — David Guetta ft. Sia",          id: "62624905",   genre: "electro" },
+    { label: "Clarity — Zedd ft. Foxes",                 id: "60904700",   genre: "electro" },
+    { label: "Wake Me Up — Avicii",                      id: "70266756",   genre: "electro" },
+    // ── House ──
+    { label: "Get Lucky — Daft Punk ft. Pharrell",       id: "66609426",   genre: "house"   },
+    { label: "One More Time — Daft Punk",                id: "3135553",    genre: "house"   },
+    { label: "Lean On — Major Lazer",                    id: "112952330",  genre: "house"   },
+    { label: "I Feel It Coming — The Weeknd",            id: "136887010",  genre: "house"   },
+    // ── Urbain ──
+    { label: "Blinding Lights — The Weeknd",             id: "819736552",  genre: "urbain"  },
+    { label: "SICKO MODE — Travis Scott",                id: "536421002",  genre: "urbain"  },
+    { label: "God's Plan — Drake",                       id: "533609232",  genre: "urbain"  },
+    { label: "Señorita — Shawn Mendes & Camila Cabello", id: "698905582",  genre: "urbain"  },
+    // ── Latino ──
+    { label: "Despacito — Luis Fonsi ft. Daddy Yankee",  id: "143783500",  genre: "latino"  },
+    { label: "Shape of You — Ed Sheeran",                id: "142986204",  genre: "latino"  },
+    { label: "Con Calma — Daddy Yankee",                 id: "619949882",  genre: "latino"  },
+    { label: "Taki Taki — DJ Snake",                     id: "716383912",  genre: "latino"  },
+];
+
+// Nombre de cartes par partie (session complète)
+var BT_CARDS_COUNT = 5;
+
+// État session : liste des picks et index courant
+var btPicks = [];
+var btCurrentIdx = 0;
+
+// Démarrage fixe de chaque extrait (en secondes)
+var BT_START_SEC = 20;
+
+// Score (global pour être accessible partout)
+var btScoreCorrect = 0;
+var btScoreTotal   = 0;
+
+// ─── Utilitaires ──────────────────────────────────────────────
+
+function btEscHtml(s) {
+    return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function btShuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+}
+
+function btUpdateScore() {
+    var el1 = document.getElementById('bt-score-correct');
+    var el2 = document.getElementById('bt-score-total');
+    if (el1) el1.textContent = btScoreCorrect;
+    if (el2) el2.textContent = BT_CARDS_COUNT;
+}
+
+// ─── Sélection des titres ──────────────────────────────────────
+
+function btPickRandom(n) {
+    return btShuffle(BT_SONGS).slice(0, Math.min(n, BT_SONGS.length));
+}
+
+function btWrongChoices(correctSong) {
+    var same  = BT_SONGS.filter(function(s){ return s.label !== correctSong.label && s.genre === correctSong.genre; });
+    var other = BT_SONGS.filter(function(s){ return s.label !== correctSong.label && s.genre !== correctSong.genre; });
+    return btShuffle(same).concat(btShuffle(other)).slice(0, 3).map(function(s){ return s.label; });
+}
+
+function btBuildSrc(song) {
+    // Widget Deezer en mode sombre, autoplay désactivé
+    return 'https://widget.deezer.com/widget/dark/track/' + song.id
+        + '?autoplay=false&tracklist=false';
+}
+
+// ─── Construction d'une carte ─────────────────────────────────
+
+function btBuildCard(song, cardIdx) {
+    var wrongs  = btWrongChoices(song);
+    var choices = btShuffle([song.label].concat(wrongs));
+    var correct = choices.indexOf(song.label);
+
+    var choiceBtns = choices.map(function(c, i){
+        return '<button class="bt-choice-btn w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium"'
+            + ' style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);color:#F3F2F2;cursor:pointer;"'
+            + ' onclick="btAnswer(this,' + i + ')">'
+            + btEscHtml(c)
+            + '</button>';
+    }).join('');
+
+    return '<div class="bt-card glass-card rounded-3xl p-5 flex flex-col gap-4"'
+        + ' data-correct="' + correct + '"'
+        + ' data-answer="' + btEscHtml(song.label) + '"'
+        + ' data-answered="0">'
+
+        + '<div class="flex items-center justify-between gap-3">'
+        +   '<div class="flex items-center gap-3">'
+        +     '<div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#a238ff,#7c1fff);"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M18.81 11.05c-.42 0-.82.1-1.17.28C17.3 9.3 15.6 8 13.6 8c-.42 0-.83.07-1.2.2V16h7.6c1.1 0 2-.9 2-2s-.9-1.95-2-1.95h-.19zM3 14c0 1.1.9 2 2 2h1v-4H5c-1.1 0-2 .9-2 2zm3 2h1.5v-4H6v4zm2 0h1.5v-6H8v6zm2 0h1.5V9H10v7z"/></svg></div>'
+        +     '<div>'
+        +       '<p class="font-heading font-bold text-secondary">Blind Test #' + (cardIdx+1) + '</p>'
+        +       '<p class="text-gray text-xs">Audio · Trouve le titre</p>'
+        +     '</div>'
+        +   '</div>'
+        +   '<span class="bt-badge px-2 py-1 rounded-full text-xs font-bold" style="background:rgba(162,56,255,0.15);border:1px solid rgba(162,56,255,0.4);color:#c97bff;">?</span>'
+        + '</div>'
+
+        + '<div class="bt-player-wrap relative rounded-2xl overflow-hidden" style="height:80px;background:#0a0a0a;cursor:pointer;" onclick="btLoadPlayer(this)"'
+        +   ' data-src="' + btEscHtml(btBuildSrc(song)) + '">'
+        +   '<div class="bt-player-placeholder absolute inset-0 flex flex-col items-center justify-center gap-3" style="background:linear-gradient(135deg,#0d0020,#1a0040);">'
+        +     '<div class="w-16 h-16 rounded-full flex items-center justify-center" style="background:rgba(162,56,255,0.15);border:2px solid rgba(162,56,255,0.5);">'
+        +       '<i class="fas fa-play text-xl ml-1" style="color:#c97bff;"></i>'
+        +     '</div>'
+        +     '<span class="text-gray text-sm">Cliquer pour écouter</span>'
+        +   '</div>'
+        +   '<div class="bt-player-frame absolute inset-0 hidden" style="position:relative;">'
+        +     '<!-- overlay qui masque la pochette et le titre Deezer (partie gauche du widget) -->'
+        +     '<div style="position:absolute;top:0;left:0;width:72px;height:100%;background:#111;z-index:10;border-radius:4px 0 0 4px;"></div>'
+        +   '</div>'
+        + '</div>'
+
+        + '<div class="bt-choices grid grid-cols-2 gap-2">' + choiceBtns + '</div>'
+        + '<div class="bt-feedback hidden rounded-xl px-4 py-3 text-sm font-semibold text-center"></div>'
+        + '<button class="bt-reveal-btn text-gray text-xs underline opacity-60 hover:opacity-100 transition-opacity self-center" onclick="btReveal(this)">'
+        +   '<i class="fas fa-eye mr-1"></i>Révéler la réponse'
+        + '</button>'
+        + '<button class="bt-next-btn hidden w-full py-3 rounded-2xl font-bold text-sm" style="background:rgba(57,131,249,0.18);border:1px solid rgba(57,131,249,0.45);color:#93c5fd;cursor:pointer;" onclick="btNextCard()">'
+        +   '<i class="fas fa-arrow-right mr-2"></i>' + (cardIdx + 1 < BT_CARDS_COUNT ? 'Question suivante (' + (cardIdx + 2) + '/' + BT_CARDS_COUNT + ')' : 'Voir le score final')
+        + '</button>'
+    + '</div>';
+}
+
+// ─── Générer une nouvelle partie ──────────────────────────────
+
+function btGenerate() {
+    var grid = document.getElementById('bt-grid');
+    if (!grid) return;
+
+    if (BT_SONGS.length < 4) {
+        grid.innerHTML = '<div class="col-span-full text-center text-gray py-20">'
+            + '<i class="fas fa-exclamation-triangle text-yellow-400 text-3xl mb-4 block"></i>'
+            + '<p>Ajoute au moins 4 titres dans <code>BT_SONGS</code> pour lancer le blind test.</p>'
+            + '</div>';
+        return;
+    }
+
+    btScoreCorrect = 0;
+    btScoreTotal   = 0;
+    btUpdateScore();
+    btPicks = btPickRandom(BT_CARDS_COUNT);
+    btCurrentIdx = 0;
+    btShowCurrentCard();
+}
+
+function btShowCurrentCard() {
+    var grid = document.getElementById('bt-grid');
+    if (!grid) return;
+
+    if (btCurrentIdx >= btPicks.length) {
+        var pct = btPicks.length > 0 ? Math.round((btScoreCorrect / btPicks.length) * 100) : 0;
+        var emoji = pct >= 80 ? '🏆' : pct >= 50 ? '👍' : '😅';
+        grid.style.transition = 'opacity .2s';
+        grid.style.opacity = '0';
+        setTimeout(function() {
+            grid.innerHTML = '<div class="bt-card glass-card rounded-3xl p-8 flex flex-col items-center gap-5 text-center">'
+                + '<div class="text-5xl">' + emoji + '</div>'
+                + '<p class="font-heading font-bold text-secondary text-xl">Partie terminée !</p>'
+                + '<p class="text-gray">Tu as répondu correctement à <strong style="color:#3983F9">' + btScoreCorrect + '/' + btPicks.length + '</strong> questions (' + pct + '%)</p>'
+                + '<button onclick="btGenerate()" class="mt-2 px-6 py-3 rounded-2xl font-bold text-sm" style="background:rgba(57,131,249,0.18);border:1px solid rgba(57,131,249,0.45);color:#93c5fd;cursor:pointer;">'
+                + '<i class="fas fa-redo mr-2"></i>Rejouer</button>'
+                + '</div>';
+            grid.style.opacity = '1';
+        }, 200);
+        return;
+    }
+
+    grid.style.transition = 'opacity .2s';
+    grid.style.opacity = '0';
+    setTimeout(function() {
+        grid.innerHTML = btBuildCard(btPicks[btCurrentIdx], btCurrentIdx);
+        grid.style.opacity = '1';
+    }, 200);
+}
+
+// ─── Carte suivante ───────────────────────────────────────────
+
+function btNextCard() {
+    btCurrentIdx++;
+    btShowCurrentCard();
+}
+
+// ─── Réponse utilisateur ──────────────────────────────────────
+
+function btAnswer(btn, chosenIdx) {
+    var card = btn.closest('.bt-card');
+    if (!card || card.dataset.answered === '1') return;
+    card.dataset.answered = '1';
+
+    var correctIdx = parseInt(card.dataset.correct, 10);
+    var isCorrect  = (chosenIdx === correctIdx);
+
+    card.querySelectorAll('.bt-choice-btn').forEach(function(b, i){
+        b.style.cursor = 'default';
+        b.setAttribute('onclick', '');
+        if (i === correctIdx) {
+            b.style.background = 'rgba(34,197,94,0.2)'; b.style.borderColor = '#22c55e'; b.style.color = '#86efac';
+        } else if (i === chosenIdx) {
+            b.style.background = 'rgba(239,68,68,0.2)'; b.style.borderColor = '#ef4444'; b.style.color = '#fca5a5';
+        } else {
+            b.style.opacity = '0.35';
+        }
+    });
+
+    var fb = card.querySelector('.bt-feedback');
+    if (fb) {
+        fb.classList.remove('hidden');
+        if (isCorrect) {
+            fb.style.cssText = 'display:block;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.4);color:#86efac;border-radius:.75rem;padding:.75rem 1rem;';
+            fb.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Bravo ! C\'était <strong>' + btEscHtml(card.dataset.answer) + '</strong>';
+        } else {
+            fb.style.cssText = 'display:block;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#fca5a5;border-radius:.75rem;padding:.75rem 1rem;';
+            fb.innerHTML = '<i class="fas fa-times-circle mr-2"></i>Raté ! C\'était <strong>' + btEscHtml(card.dataset.answer) + '</strong>';
+        }
+    }
+
+    var badge = card.querySelector('.bt-badge');
+    if (badge) {
+        badge.textContent = isCorrect ? '✓' : '✗';
+        badge.style.background   = isCorrect ? 'rgba(34,197,94,0.2)'  : 'rgba(239,68,68,0.15)';
+        badge.style.borderColor  = isCorrect ? 'rgba(34,197,94,0.5)'  : 'rgba(239,68,68,0.4)';
+        badge.style.color        = isCorrect ? '#86efac'               : '#fca5a5';
+    }
+
+    var rv = card.querySelector('.bt-reveal-btn');
+    if (rv) rv.style.display = 'none';
+
+    btScoreTotal++;
+    if (isCorrect) btScoreCorrect++;
+    btUpdateScore();
+
+    var nx = card.querySelector('.bt-next-btn');
+    if (nx) nx.classList.remove('hidden');
+}
+
+// ─── Révélation ───────────────────────────────────────────────
+
+function btReveal(btn) {
+    var card = btn.closest('.bt-card');
+    if (!card || card.dataset.answered === '1') return;
+    card.dataset.answered = '1';
+
+    var correctIdx = parseInt(card.dataset.correct, 10);
+    card.querySelectorAll('.bt-choice-btn').forEach(function(b, i){
+        b.style.cursor = 'default'; b.setAttribute('onclick','');
+        if (i === correctIdx) {
+            b.style.background = 'rgba(57,131,249,0.2)'; b.style.borderColor = '#3983F9'; b.style.color = '#93c5fd';
+        } else {
+            b.style.opacity = '0.3';
+        }
+    });
+
+    var fb = card.querySelector('.bt-feedback');
+    if (fb) {
+        fb.classList.remove('hidden');
+        fb.style.cssText = 'display:block;background:rgba(57,131,249,0.1);border:1px solid rgba(57,131,249,0.35);color:#93c5fd;border-radius:.75rem;padding:.75rem 1rem;';
+        fb.innerHTML = '<i class="fas fa-eye mr-2"></i>C\'était <strong>' + btEscHtml(card.dataset.answer) + '</strong>';
+    }
+    btn.style.display = 'none';
+
+    var nx = card.querySelector('.bt-next-btn');
+    if (nx) nx.classList.remove('hidden');
+}
+
+// ─── Chargement du player SoundCloud ──────────────────────────
+
+function btLoadPlayer(wrap) {
+    var src = wrap.dataset.src;
+    if (!src || src.indexOf('TODO') !== -1) {
+        var sp = wrap.querySelector('span');
+        if (sp) { sp.textContent = '⚠ Contenu pas encore configuré'; sp.style.color = '#f59e0b'; }
+        return;
+    }
+
+    var ph    = wrap.querySelector('.bt-player-placeholder');
+    var frame = wrap.querySelector('.bt-player-frame');
+
+    if (ph)    { ph.style.opacity = '0'; ph.style.transition = 'opacity .25s'; setTimeout(function(){ ph.style.display='none'; }, 260); }
+    if (frame) { frame.classList.remove('hidden'); }
+
+    var iframe = document.createElement('iframe');
+    iframe.src = src;
+    iframe.title = 'Deezer Player';
+    iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+    iframe.style.cssText = 'width:100%;height:80px;border:none;display:block;';
+    if (frame) frame.appendChild(iframe);
+
+    wrap.style.cursor = 'default';
+    wrap.removeAttribute('onclick');
+}
+
+// ─── Reset score ──────────────────────────────────────────────
+
+function btResetScore() {
+    btGenerate();
+}
+
+// ─── Init au chargement ───────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', function() {
+    btGenerate();
+    btUpdateScore();
+});

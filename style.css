@@ -1026,3 +1026,61 @@ body {
         max-width: 340px;
     }
 }
+
+/* ============================================================
+   BLIND TEST — Styles des cartes quiz
+   ============================================================ */
+
+.bt-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.bt-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(57, 131, 249, 0.12);
+}
+
+/* Boutons QCM */
+.bt-choice-btn {
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+}
+.bt-choice-btn:hover {
+    background: rgba(57, 131, 249, 0.12) !important;
+    border-color: rgba(57, 131, 249, 0.4) !important;
+}
+
+/* Wrapper player : ratio fixe avec fallback */
+.bt-player-wrap {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+}
+.bt-player-placeholder {
+    transition: opacity 0.25s ease;
+}
+.bt-player-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Feedback */
+.bt-feedback {
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+/* Badge état */
+.bt-badge {
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+    border-radius: 9999px;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid transparent;
+}
