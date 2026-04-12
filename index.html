@@ -372,26 +372,26 @@
                 <!-- Séparateur -->
                 <div style="height:1px; background: linear-gradient(90deg, transparent, rgba(7,96,238,0.3), transparent); margin: 0 5%;"></div>
 
-                <!-- BLOC 3 : Description karaoké gauche — bouton droite -->
+                <!-- BLOC 3 : Description blind test gauche — bouton droite -->
                 <div class="container mx-auto px-6 py-24">
                     <div class="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
                         <!-- Gauche : description -->
                         <div class="flex-1 text-left">
-                            <h2 class="text-4xl md:text-5xl font-display font-bold mb-6" style="background: linear-gradient(135deg, #00F0FF 0%, #0760EE 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Karaoké</h2>
+                            <h2 class="text-4xl md:text-5xl font-display font-bold mb-6" style="background: linear-gradient(135deg, #00F0FF 0%, #0760EE 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Blind Test</h2>
                             <p class="text-secondary text-lg leading-relaxed mb-4">
-                                Ce karaoké, je l'ai développé moi-même de A à Z. Il est encore en cours d'amélioration et continuera d'évoluer avec de nouvelles fonctionnalités, plus de titres, meilleure expérience.
+                                Ce blind test, je l'ai développé moi-même de A à Z. Il est encore en cours d'amélioration et continuera d'évoluer avec de nouvelles fonctionnalités, plus de titres, meilleure expérience.
                             </p>
                             <p class="text-secondary/80 text-base leading-relaxed">
-                                C'est un projet personnel que je fais grandir à petit à petit. Si vous souhaitez voir votre chanson préféré dans le karaoké faites-le moi savoir et je la rajouterai.
+                                C'est un projet personnel que je fais grandir à petit à petit. Si vous souhaitez voir votre chanson préférée dans le blind test faites-le moi savoir et je la rajouterai.
                             </p>
                         </div>
                         <!-- Droite : bouton -->
                         <div class="flex-shrink-0 flex flex-col items-center gap-4">
                             <div class="w-20 h-20 rounded-full flex items-center justify-center mb-2" style="background: linear-gradient(135deg, rgba(7,96,238,0.3), rgba(255,0,245,0.2)); border: 2px solid rgba(7,96,238,0.5); box-shadow: 0 0 30px rgba(7,96,238,0.3);">
-                                <i class="fas fa-microphone text-accent text-3xl"></i>
+                                <i class="fas fa-question-circle text-accent text-3xl"></i>
                             </div>
-                            <button onclick="showSection('karaoke', event); return false;" class="btn-gradient px-10 py-4 rounded-full font-bold text-lg whitespace-nowrap">
-                                <i class="fas fa-microphone mr-2"></i>KARAOKÉ
+                            <button onclick="showSection('blindtest', event); return false;" class="btn-gradient px-10 py-4 rounded-full font-bold text-lg whitespace-nowrap">
+                                <i class="fas fa-question-circle mr-2"></i>BLIND TEST
                             </button>
                         </div>
                     </div>
@@ -1515,11 +1515,21 @@
                         <span class="gradient-text">BLIND TEST</span>
                     </h2>
                     <p class="text-gray text-lg max-w-2xl mx-auto">
-                        Écoute l'extrait et trouve la bonne réponse parmi les 4 propositions.
+                        Écoute l'extrait et trouve la bonne réponse.
                     </p>
 
+                    <!-- Sélecteur de mode -->
+                    <div class="flex items-center justify-center gap-3 mt-8">
+                        <button id="bt-mode-qcm" onclick="btSetMode('qcm')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all hover:scale-105" style="background:rgba(57,131,249,0.25);border:1.5px solid #3983F9;color:#3983F9;">
+                            <i class="fas fa-list-ul"></i> 4 Propositions
+                        </button>
+                        <button id="bt-mode-libre" onclick="btSetMode('libre')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all hover:scale-105" style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.15);color:#A0A0A0;">
+                            <i class="fas fa-keyboard"></i> Saisie libre
+                        </button>
+                    </div>
+
                     <!-- Score + boutons -->
-                    <div class="flex flex-wrap items-center justify-center gap-4 mt-8">
+                    <div class="flex flex-wrap items-center justify-center gap-4 mt-5">
                         <div class="inline-flex items-center gap-4 px-6 py-3 rounded-full" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);">
                             <span class="text-gray text-sm">Score</span>
                             <span id="bt-score-correct" class="text-green-400 font-bold text-xl">0</span>
@@ -1529,7 +1539,6 @@
                         <button id="bt-btn-new" onclick="btGenerate()" class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm transition-all hover:scale-105" style="background:rgba(57,131,249,0.18);border:1.5px solid rgba(57,131,249,0.5);color:#3983F9;">
                             <i class="fas fa-random"></i> Nouvelle partie
                         </button>
-
                     </div>
                 </div>
 
@@ -1634,39 +1643,7 @@
     <!-- ═══════════════════════════════════════════════════════════
          SCRIPTS — GSAP (animation nav) + script principal
     ═══════════════════════════════════════════════════════════════ -->
-    <!-- ═══════════════════════════════════════════════════════════
-         MINI-PLAYER — Lecteur audio persistant
-    ═══════════════════════════════════════════════════════════════ -->
-    <div id="miniPlayer" class="mini-player" aria-hidden="true">
-        <div class="mini-player-inner">
 
-            <!-- Icône vinyle animée -->
-            <div class="mini-player-vinyl" id="miniPlayerVinyl">
-                <i class="fas fa-compact-disc"></i>
-            </div>
-
-            <!-- Infos track -->
-            <div class="mini-player-info">
-                <span class="mini-player-title" id="miniPlayerTitle">—</span>
-                <span class="mini-player-sub"   id="miniPlayerSub">Audio</span>
-            </div>
-
-            <!-- Barre de progression -->
-            <div class="mini-player-progress" id="miniPlayerProgress">
-                <div class="mini-player-bar" id="miniPlayerBar"></div>
-            </div>
-
-            <!-- Contrôles -->
-            <div class="mini-player-controls">
-                <button class="mini-btn" id="miniPlayerPlay" title="Play / Pause">
-                    <i class="fas fa-play"></i>
-                </button>
-                <button class="mini-btn mini-btn-close" id="miniPlayerClose" title="Fermer">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-    </div>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>

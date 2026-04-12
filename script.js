@@ -1763,6 +1763,33 @@ function btUpdateScore() {
     if (el2) el2.textContent = BT_CARDS_COUNT;
 }
 
+// ─── Mode de jeu : 'qcm' ou 'libre' ──────────────────────────
+var BT_MODE = 'qcm';
+
+function btSetMode(mode) {
+    BT_MODE = mode;
+    var btnQcm   = document.getElementById('bt-mode-qcm');
+    var btnLibre = document.getElementById('bt-mode-libre');
+    if (btnQcm && btnLibre) {
+        if (mode === 'qcm') {
+            btnQcm.style.background   = 'rgba(57,131,249,0.25)';
+            btnQcm.style.borderColor  = '#3983F9';
+            btnQcm.style.color        = '#3983F9';
+            btnLibre.style.background = 'rgba(255,255,255,0.04)';
+            btnLibre.style.borderColor= 'rgba(255,255,255,0.15)';
+            btnLibre.style.color      = '#A0A0A0';
+        } else {
+            btnLibre.style.background  = 'rgba(57,131,249,0.25)';
+            btnLibre.style.borderColor = '#3983F9';
+            btnLibre.style.color       = '#3983F9';
+            btnQcm.style.background    = 'rgba(255,255,255,0.04)';
+            btnQcm.style.borderColor   = 'rgba(255,255,255,0.15)';
+            btnQcm.style.color         = '#A0A0A0';
+        }
+    }
+    btGenerate();
+}
+
 // ─── Sélection des titres ──────────────────────────────────────
 
 function btPickRandom(n) {
@@ -1837,6 +1864,160 @@ function btBuildCard(song, cardIdx) {
     + '</div>';
 }
 
+// ─── Construction d'une carte mode Saisie Libre ───────────────
+
+function btNormalize(s) {
+    return (s || '').toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]/g, '');
+}
+
+function btBuildCardLibre(song, cardIdx) {
+    var parts = song.label.split(' — ');
+    var titre   = parts[0] || '';
+    var artiste = parts[1] || '';
+
+    return '<div class="bt-card glass-card rounded-3xl p-5 flex flex-col gap-4"'
+        + ' data-titre="'   + btEscHtml(btNormalize(titre))   + '"'
+        + ' data-artiste="' + btEscHtml(btNormalize(artiste)) + '"'
+        + ' data-answer="'  + btEscHtml(song.label) + '"'
+        + ' data-answered="0">'
+
+        + '<div class="flex items-center justify-between gap-3">'
+        +   '<div class="flex items-center gap-3">'
+        +     '<div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#a238ff,#7c1fff);"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M18.81 11.05c-.42 0-.82.1-1.17.28C17.3 9.3 15.6 8 13.6 8c-.42 0-.83.07-1.2.2V16h7.6c1.1 0 2-.9 2-2s-.9-1.95-2-1.95h-.19zM3 14c0 1.1.9 2 2 2h1v-4H5c-1.1 0-2 .9-2 2zm3 2h1.5v-4H6v4zm2 0h1.5v-6H8v6zm2 0h1.5V9H10v7z"/></svg></div>'
+        +     '<div>'
+        +       '<p class="font-heading font-bold text-secondary">Blind Test #' + (cardIdx+1) + '</p>'
+        +       '<p class="text-gray text-xs">Audio · Saisis le titre et l\'artiste</p>'
+        +     '</div>'
+        +   '</div>'
+        +   '<span class="bt-badge px-2 py-1 rounded-full text-xs font-bold" style="background:rgba(162,56,255,0.15);border:1px solid rgba(162,56,255,0.4);color:#c97bff;">?</span>'
+        + '</div>'
+
+        + '<div class="bt-player-wrap relative rounded-2xl overflow-hidden" style="height:80px;background:#0a0a0a;cursor:pointer;" onclick="btLoadPlayer(this)"'
+        +   ' data-src="' + btEscHtml(btBuildSrc(song)) + '">'
+        +   '<div class="bt-player-placeholder absolute inset-0 flex flex-col items-center justify-center gap-3" style="background:linear-gradient(135deg,#0d0020,#1a0040);">'
+        +     '<div class="w-16 h-16 rounded-full flex items-center justify-center" style="background:rgba(162,56,255,0.15);border:2px solid rgba(162,56,255,0.5);">'
+        +       '<i class="fas fa-play text-xl ml-1" style="color:#c97bff;"></i>'
+        +     '</div>'
+        +     '<span class="text-gray text-sm">Cliquer pour écouter</span>'
+        +   '</div>'
+        +   '<div class="bt-player-frame absolute inset-0 hidden" style="position:relative;">'
+        +     '<div style="position:absolute;top:0;left:0;width:72px;height:100%;background:#111;z-index:10;border-radius:4px 0 0 4px;"></div>'
+        +   '</div>'
+        + '</div>'
+
+        + '<div class="flex flex-col gap-3">'
+        +   '<div class="flex flex-col gap-1">'
+        +     '<label class="text-gray text-xs font-semibold uppercase tracking-wider">Titre</label>'
+        +     '<input id="bt-input-titre-' + cardIdx + '" type="text" placeholder="Nom du titre..." autocomplete="off"'
+        +       ' style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#F3F2F2;border-radius:.75rem;padding:.6rem 1rem;font-size:.9rem;width:100%;outline:none;"'
+        +       ' onkeydown="if(event.key===\'Enter\') document.getElementById(\'bt-input-artiste-' + cardIdx + '\').focus()">'
+        +   '</div>'
+        +   '<div class="flex flex-col gap-1">'
+        +     '<label class="text-gray text-xs font-semibold uppercase tracking-wider">Artiste</label>'
+        +     '<input id="bt-input-artiste-' + cardIdx + '" type="text" placeholder="Nom de l\'artiste..." autocomplete="off"'
+        +       ' style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#F3F2F2;border-radius:.75rem;padding:.6rem 1rem;font-size:.9rem;width:100%;outline:none;"'
+        +       ' onkeydown="if(event.key===\'Enter\') btAnswerLibre(' + cardIdx + ')">'
+        +   '</div>'
+        + '</div>'
+
+        + '<div class="flex gap-3">'
+        +   '<button onclick="btAnswerLibre(' + cardIdx + ')" class="flex-1 py-3 rounded-2xl font-bold text-sm transition-all hover:scale-105" style="background:rgba(57,131,249,0.2);border:1px solid rgba(57,131,249,0.5);color:#93c5fd;cursor:pointer;">'
+        +     '<i class="fas fa-check mr-2"></i>Valider'
+        +   '</button>'
+        +   '<button onclick="btRevealLibre(this)" class="py-3 px-5 rounded-2xl text-xs font-medium transition-opacity opacity-60 hover:opacity-100" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#A0A0A0;cursor:pointer;">'
+        +     '<i class="fas fa-eye mr-1"></i>Révéler'
+        +   '</button>'
+        + '</div>'
+
+        + '<div class="bt-feedback hidden rounded-xl px-4 py-3 text-sm font-semibold text-center"></div>'
+        + '<button class="bt-next-btn hidden w-full py-3 rounded-2xl font-bold text-sm" style="background:rgba(57,131,249,0.18);border:1px solid rgba(57,131,249,0.45);color:#93c5fd;cursor:pointer;" onclick="btNextCard()">'
+        +   '<i class="fas fa-arrow-right mr-2"></i>' + (cardIdx + 1 < BT_CARDS_COUNT ? 'Question suivante (' + (cardIdx + 2) + '/' + BT_CARDS_COUNT + ')' : 'Voir le score final')
+        + '</button>'
+    + '</div>';
+}
+
+// ─── Réponse mode Saisie Libre ────────────────────────────────
+
+function btAnswerLibre(cardIdx) {
+    var card = document.querySelector('.bt-card');
+    if (!card || card.dataset.answered === '1') return;
+    card.dataset.answered = '1';
+
+    var inputTitre   = document.getElementById('bt-input-titre-'   + cardIdx);
+    var inputArtiste = document.getElementById('bt-input-artiste-' + cardIdx);
+    var saisiTitre   = btNormalize(inputTitre   ? inputTitre.value   : '');
+    var saisiArtiste = btNormalize(inputArtiste ? inputArtiste.value : '');
+    var correctTitre   = card.dataset.titre;
+    var correctArtiste = card.dataset.artiste;
+
+    var bonTitre   = saisiTitre.length > 0   && correctTitre.indexOf(saisiTitre)   !== -1 || saisiTitre.indexOf(correctTitre)   !== -1;
+    var bonArtiste = saisiArtiste.length > 0 && correctArtiste.indexOf(saisiArtiste) !== -1 || saisiArtiste.indexOf(correctArtiste) !== -1;
+    var isCorrect  = bonTitre && bonArtiste;
+
+    // Feedback sur les champs
+    if (inputTitre)   { inputTitre.disabled   = true; inputTitre.style.borderColor   = bonTitre   ? '#22c55e' : '#ef4444'; }
+    if (inputArtiste) { inputArtiste.disabled = true; inputArtiste.style.borderColor = bonArtiste ? '#22c55e' : '#ef4444'; }
+
+    // Badge
+    var badge = card.querySelector('.bt-badge');
+    if (badge) {
+        badge.textContent    = isCorrect ? '✓' : '✗';
+        badge.style.background  = isCorrect ? 'rgba(34,197,94,0.2)'  : 'rgba(239,68,68,0.15)';
+        badge.style.borderColor = isCorrect ? 'rgba(34,197,94,0.5)'  : 'rgba(239,68,68,0.4)';
+        badge.style.color       = isCorrect ? '#86efac'               : '#fca5a5';
+    }
+
+    // Feedback texte
+    var fb = card.querySelector('.bt-feedback');
+    if (fb) {
+        fb.classList.remove('hidden');
+        if (isCorrect) {
+            fb.style.cssText = 'display:block;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.4);color:#86efac;border-radius:.75rem;padding:.75rem 1rem;';
+            fb.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Bravo ! C\'était bien <strong>' + btEscHtml(card.dataset.answer) + '</strong>';
+        } else {
+            fb.style.cssText = 'display:block;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#fca5a5;border-radius:.75rem;padding:.75rem 1rem;';
+            fb.innerHTML = '<i class="fas fa-times-circle mr-2"></i>Raté ! La réponse était <strong>' + btEscHtml(card.dataset.answer) + '</strong>';
+        }
+    }
+
+    // Cacher bouton Valider + Révéler
+    var btns = card.querySelectorAll('button:not(.bt-next-btn)');
+    btns.forEach(function(b) { if (!b.classList.contains('bt-next-btn')) b.style.display = 'none'; });
+
+    btScoreTotal++;
+    if (isCorrect) btScoreCorrect++;
+    btUpdateScore();
+
+    var nx = card.querySelector('.bt-next-btn');
+    if (nx) nx.classList.remove('hidden');
+}
+
+function btRevealLibre(btn) {
+    var card = btn.closest('.bt-card');
+    if (!card || card.dataset.answered === '1') return;
+    card.dataset.answered = '1';
+
+    var inputTitre   = card.querySelector('input[id^="bt-input-titre"]');
+    var inputArtiste = card.querySelector('input[id^="bt-input-artiste"]');
+    if (inputTitre)   { inputTitre.disabled   = true; inputTitre.style.borderColor   = '#3983F9'; }
+    if (inputArtiste) { inputArtiste.disabled = true; inputArtiste.style.borderColor = '#3983F9'; }
+
+    var fb = card.querySelector('.bt-feedback');
+    if (fb) {
+        fb.classList.remove('hidden');
+        fb.style.cssText = 'display:block;background:rgba(57,131,249,0.1);border:1px solid rgba(57,131,249,0.35);color:#93c5fd;border-radius:.75rem;padding:.75rem 1rem;';
+        fb.innerHTML = '<i class="fas fa-eye mr-2"></i>C\'était <strong>' + btEscHtml(card.dataset.answer) + '</strong>';
+    }
+
+    var btns = card.querySelectorAll('button:not(.bt-next-btn)');
+    btns.forEach(function(b) { b.style.display = 'none'; });
+
+    var nx = card.querySelector('.bt-next-btn');
+    if (nx) nx.classList.remove('hidden');
+}
+
 // ─── Générer une nouvelle partie ──────────────────────────────
 
 function btGenerate() {
@@ -1884,7 +2065,10 @@ function btShowCurrentCard() {
     grid.style.transition = 'opacity .2s';
     grid.style.opacity = '0';
     setTimeout(function() {
-        grid.innerHTML = btBuildCard(btPicks[btCurrentIdx], btCurrentIdx);
+        var card = BT_MODE === 'libre'
+            ? btBuildCardLibre(btPicks[btCurrentIdx], btCurrentIdx)
+            : btBuildCard(btPicks[btCurrentIdx], btCurrentIdx);
+        grid.innerHTML = card;
         grid.style.opacity = '1';
     }, 200);
 }
