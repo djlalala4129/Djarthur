@@ -106,41 +106,37 @@ let timer;
 let currentIndex = 0;
 let lines = [];
 
-// ─── 3. FLUID MOBILE NAV ────────────────────────────────────
-function _fluidClose() {
-    const nav = document.getElementById('fluidNav');
-    const toggle = document.getElementById('fluidNavToggle');
-    if (!nav) return;
-    nav.classList.remove('open');
-    if (toggle) toggle.classList.remove('open');
+// ─── 3. NAVIGATION MOBILE ───────────────────────────────────────
+function closeMobileMenuFunc() {
+    document.getElementById('mobileMenu').classList.remove('active');
+    document.getElementById('mobileMenuBtn').querySelector('i').className = 'fas fa-bars';
 }
 
-function toggleFluidNav() {
-    const nav = document.getElementById('fluidNav');
-    const toggle = document.getElementById('fluidNavToggle');
-    if (!nav) return;
-    nav.classList.toggle('open');
-    if (toggle) toggle.classList.toggle('open');
-}
-
-function fluidNavClick(section) {
-    showSection(section, null);
-    _fluidClose();
-}
-
-// Fermer le menu si clic à l'extérieur
-document.addEventListener('click', function(e) {
-    const nav = document.getElementById('fluidNav');
-    const toggle = document.getElementById('fluidNavToggle');
-    const wrapper = toggle ? toggle.closest('[style*="position:relative"]') : null;
-    if (nav && nav.classList.contains('open')
-        && !(wrapper && wrapper.contains(e.target))) {
-        _fluidClose();
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+    const menu = document.getElementById('mobileMenu');
+    const btn  = document.getElementById('mobileMenuBtn');
+    const isOpen = menu.classList.contains('active');
+    if (isOpen) {
+        menu.classList.remove('active');
+        btn.querySelector('i').className = 'fas fa-bars';
+    } else {
+        menu.classList.add('active');
+        btn.querySelector('i').className = 'fas fa-times';
     }
 });
 
-// Compatibilité : closeMobileMenuFunc() appelé depuis d'autres endroits
-function closeMobileMenuFunc() { _fluidClose(); }
+document.getElementById('closeMobileMenu').addEventListener('click', closeMobileMenuFunc);
+
+// Fermer le menu si clic à l'extérieur
+document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobileMenu');
+    const btn  = document.getElementById('mobileMenuBtn');
+    if (menu.classList.contains('active')
+        && !menu.contains(e.target)
+        && !btn.contains(e.target)) {
+        closeMobileMenuFunc();
+    }
+});
 
 // ─── 4. AFFICHAGE DES SECTIONS ──────────────────────────────
 function showSection(id, event) {
@@ -1047,15 +1043,12 @@ document.addEventListener('mouseleave', () => {
     let sdkLoaded     = false;
 
     function setLiveState(isLive) {
-        const fluidNav = document.getElementById('fluidNav');
         if (isLive) {
             navDesktop.classList.remove('hidden');
             navMobile.classList.remove('hidden');
-            if (fluidNav) fluidNav.classList.add('has-live');
         } else {
             navDesktop.classList.add('hidden');
             navMobile.classList.add('hidden');
-            if (fluidNav) fluidNav.classList.remove('has-live');
             if (liveSection.classList.contains('active')) {
                 if (typeof showSection === 'function') showSection('home', null);
             }

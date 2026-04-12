@@ -168,63 +168,48 @@
                     </a>
                 </div>
 
-                <!-- Wrapper mobile : toggle + panel ancrés ensemble dans la navbar -->
-                <div class="md:hidden" style="position:relative; width:56px; height:56px; flex-shrink:0;">
-
-                    <!-- Bouton toggle -->
-                    <div id="fluidNavToggle" onclick="toggleFluidNav()" class="fluid-nav-toggle">
-                        <div class="fluid-toggle-icon fluid-icon-bars">
-                            <i class="fas fa-bars"></i>
-                        </div>
-                        <div class="fluid-toggle-icon fluid-icon-x">
-                            <i class="fas fa-times"></i>
-                        </div>
-                    </div>
-
-                    <!-- Panel déroulant — ancré sous le toggle via position:absolute -->
-                    <div id="fluidNav" style="position:absolute; top:calc(100% + 8px); right:0; width:56px; z-index:997; overflow:visible;">
-
-                        <!-- Fond rectangulaire verre -->
-                        <div class="fluid-nav-backdrop"></div>
-
-                        <!-- Items nav -->
-                        <div class="fluid-nav-item" data-target="home" onclick="fluidNavClick('home')" style="--fluid-idx:1;" title="Accueil">
-                            <i class="fas fa-home"></i>
-                            <span class="fluid-nav-label">Accueil</span>
-                        </div>
-                        <div class="fluid-nav-item" data-target="demo" onclick="fluidNavClick('demo')" style="--fluid-idx:2;" title="Démo">
-                            <i class="fas fa-music"></i>
-                            <span class="fluid-nav-label">Démo</span>
-                        </div>
-                        <!--<div class="fluid-nav-item" data-target="karaoke" onclick="fluidNavClick('karaoke')" style="--fluid-idx:3;" title="Karaoké">
-                            <i class="fas fa-microphone"></i>
-                            <span class="fluid-nav-label">Karaoké</span>
-                        </div>-->
-                        <div class="fluid-nav-item" data-target="setup" onclick="fluidNavClick('setup')" style="--fluid-idx:4;" title="Setup">
-                            <i class="fas fa-sliders-h"></i>
-                            <span class="fluid-nav-label">Setup</span>
-                        </div>
-                        <div class="fluid-nav-item" data-target="blindtest" onclick="fluidNavClick('blindtest')" style="--fluid-idx:5;" title="Blind Test">
-                            <i class="fas fa-question-circle"></i>
-                            <span class="fluid-nav-label">Blind Test</span>
-                        </div>
-                        <div class="fluid-nav-item" data-target="booking" onclick="fluidNavClick('booking')" style="--fluid-idx:6;" title="Contact">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span class="fluid-nav-label">Contact</span>
-                        </div>
-                        <!-- Item Live (caché par défaut, affiché par le JS Twitch) -->
-                        <div id="nav-live-mobile" class="fluid-nav-item fluid-nav-live hidden" data-target="live" onclick="fluidNavClick('live')" style="--fluid-idx:7;" title="Live">
-                            <span class="fluid-live-dot"></span>
-                            <span class="fluid-nav-label" style="color:#ef4444;">Live</span>
-                        </div>
-
-                    </div>
-
-                </div><!-- /wrapper mobile -->
+                <button id="mobileMenuBtn" class="md:hidden text-accent text-2xl">
+                    <i class="fas fa-bars"></i>
+                </button>
 
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu — panel latéral droit -->
+    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 h-full z-40 md:hidden flex flex-col" style="width:72px; background:rgba(8,10,20,0.97); backdrop-filter:blur(20px); border-left:1px solid rgba(7,96,238,0.25); box-shadow:-8px 0 32px rgba(0,0,0,0.6);">
+        <!-- Bouton fermeture -->
+        <button id="closeMobileMenu" class="flex items-center justify-center text-accent text-xl mt-5 mb-8" style="height:44px;">
+            <i class="fas fa-times"></i>
+        </button>
+        <!-- Liens verticaux -->
+        <div class="flex flex-col items-center gap-7 flex-1 justify-center pb-16">
+            <a onclick="showSection('home', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-accent transition-colors cursor-pointer group">
+                <i class="fas fa-home text-xl group-hover:text-accent transition-colors"></i>
+                <span class="text-gray group-hover:text-accent transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Accueil</span>
+            </a>
+            <a onclick="showSection('demo', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-accent transition-colors cursor-pointer group">
+                <i class="fas fa-music text-xl group-hover:text-accent transition-colors"></i>
+                <span class="text-gray group-hover:text-accent transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Démo</span>
+            </a>
+            <a onclick="showSection('setup', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-accent transition-colors cursor-pointer group">
+                <i class="fas fa-sliders-h text-xl group-hover:text-accent transition-colors"></i>
+                <span class="text-gray group-hover:text-accent transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Setup</span>
+            </a>
+            <a onclick="showSection('blindtest', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-accent transition-colors cursor-pointer group">
+                <i class="fas fa-question-circle text-xl group-hover:text-accent transition-colors"></i>
+                <span class="text-gray group-hover:text-accent transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Blind Test</span>
+            </a>
+            <a onclick="showSection('booking', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-accent transition-colors cursor-pointer group">
+                <i class="fas fa-calendar-alt text-xl group-hover:text-accent transition-colors"></i>
+                <span class="text-gray group-hover:text-accent transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Contact</span>
+            </a>
+            <a id="nav-live-mobile" onclick="showSection('live', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-red-400 transition-colors cursor-pointer group hidden">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+                <span class="text-gray group-hover:text-red-400 transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Live</span>
+            </a>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main>
@@ -299,12 +284,11 @@
                 </div>
 
                 <!-- Bouton EVENT fixe bas droite -->
-                <button onclick="showSection('event', event); return false;" id="eventBtn" style="
+                <button onclick="showSection('event', event); return false;" id="eventBtn" class="hidden md:flex" style="
                     position: absolute;
                     bottom: 32px;
                     right: 32px;
                     z-index: 30;
-                    display: flex;
                     align-items: center;
                     gap: 10px;
                     padding: 14px 22px;
