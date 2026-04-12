@@ -1673,30 +1673,59 @@ function loadLazyVideo(wrapper) {
    ── Minimum 4 titres au total pour que le quiz fonctionne ──
    ============================================================ */
 
-// ── BASE DE TITRES ───────────────────────────────────────────
-var BT_SONGS = [
-    // ── Electro ──
-    { label: "Levels — Avicii",                          id: "14383880",   genre: "electro" },
-    { label: "Animals — Martin Garrix",                  id: "70887258",   genre: "electro" },
-    { label: "Titanium — David Guetta ft. Sia",          id: "62624905",   genre: "electro" },
-    { label: "Clarity — Zedd ft. Foxes",                 id: "60904700",   genre: "electro" },
-    { label: "Wake Me Up — Avicii",                      id: "70266756",   genre: "electro" },
-    // ── House ──
-    { label: "Get Lucky — Daft Punk ft. Pharrell",       id: "66609426",   genre: "house"   },
-    { label: "One More Time — Daft Punk",                id: "3135553",    genre: "house"   },
-    { label: "Lean On — Major Lazer",                    id: "112952330",  genre: "house"   },
-    { label: "I Feel It Coming — The Weeknd",            id: "136887010",  genre: "house"   },
-    // ── Urbain ──
-    { label: "Blinding Lights — The Weeknd",             id: "819736552",  genre: "urbain"  },
-    { label: "SICKO MODE — Travis Scott",                id: "536421002",  genre: "urbain"  },
-    { label: "God's Plan — Drake",                       id: "533609232",  genre: "urbain"  },
-    { label: "Señorita — Shawn Mendes & Camila Cabello", id: "698905582",  genre: "urbain"  },
-    // ── Latino ──
-    { label: "Despacito — Luis Fonsi ft. Daddy Yankee",  id: "143783500",  genre: "latino"  },
-    { label: "Shape of You — Ed Sheeran",                id: "142986204",  genre: "latino"  },
-    { label: "Con Calma — Daddy Yankee",                 id: "619949882",  genre: "latino"  },
-    { label: "Taki Taki — DJ Snake",                     id: "716383912",  genre: "latino"  },
-];
+// ── BASE DE TITRES — chargée dynamiquement depuis blindtest.xlsx ──
+var BT_SONGS = []; // sera rempli par btLoadSongsFromXLSX()
+
+/* ──────────────────────────────────────────────────────────────────
+   Chargement du fichier Excel blindtest.xlsx via SheetJS (CDN).
+   Le fichier doit être placé à la racine du site, au même niveau
+   que index.html.
+   Colonnes attendues : Titre | Artiste | ID Deezer | Genre
+   ────────────────────────────────────────────────────────────────── */
+function btLoadSongsFromXLSX(callback) {
+    if (typeof XLSX === 'undefined') {
+        console.error('[BlindTest] SheetJS non disponible. Vérifie le script CDN dans index.html.');
+        callback([]);
+        return;
+    }
+
+    fetch('blindtest.xlsx')
+        .then(function(r) {
+            if (!r.ok) throw new Error('Fichier blindtest.xlsx introuvable (HTTP ' + r.status + ')');
+            return r.arrayBuffer();
+        })
+        .then(function(buffer) {
+            var wb   = XLSX.read(buffer, { type: 'array' });
+            var ws   = wb.Sheets[wb.SheetNames[0]];
+            var rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+
+            var songs = [];
+            rows.forEach(function(row) {
+                var titre   = (row['Titre']     || '').toString().trim();
+                var artiste = (row['Artiste']   || '').toString().trim();
+                var id      = (row['ID Deezer'] || '').toString().trim();
+                var genre   = (row['Genre']     || 'autre').toString().trim().toLowerCase();
+
+                if (titre && artiste && id) {
+                    songs.push({
+                        label: titre + ' — ' + artiste,
+                        id:    id,
+                        genre: genre
+                    });
+                }
+            });
+
+            if (songs.length < 4) {
+                console.warn('[BlindTest] Moins de 4 titres valides dans blindtest.xlsx (' + songs.length + ' trouvés).');
+            }
+
+            callback(songs);
+        })
+        .catch(function(err) {
+            console.error('[BlindTest] Erreur chargement Excel :', err.message);
+            callback([]);
+        });
+}
 
 // Nombre de cartes par partie (session complète)
 var BT_CARDS_COUNT = 5;
@@ -1985,6 +2014,9 @@ function btResetScore() {
 // ─── Init au chargement ───────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', function() {
-    btGenerate();
     btUpdateScore();
+    btLoadSongsFromXLSX(function(songs) {
+        BT_SONGS = songs;
+        btGenerate();
+    });
 });
