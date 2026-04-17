@@ -1651,7 +1651,34 @@ function loadLazyVideo(wrapper) {
     var iframe = document.createElement('iframe');
     iframe.src = src;
     iframe.allow = 'autoplay';
-    iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;z-index:2;';
+
+    // Le player Google Drive a une largeur interne minimale (~400px) qui déborde
+    // dans les petites cards. On scale l'iframe pour qu'elle rentre parfaitement.
+    var isGoogleDrive = src.indexOf('drive.google.com') !== -1;
+    if (isGoogleDrive) {
+        var GDRIVE_PLAYER_MIN_W = 400; // largeur interne fixe du player Google Drive
+        var wrapperW = wrapper.offsetWidth || wrapper.getBoundingClientRect().width;
+        if (wrapperW > 0 && wrapperW < GDRIVE_PLAYER_MIN_W) {
+            var scale = wrapperW / GDRIVE_PLAYER_MIN_W;
+            var wrapperH = wrapper.offsetHeight || wrapper.getBoundingClientRect().height;
+            // Iframe à la taille réelle du player, puis scale down via transform
+            iframe.style.cssText = [
+                'position:absolute',
+                'top:0',
+                'left:0',
+                'width:' + GDRIVE_PLAYER_MIN_W + 'px',
+                'height:' + Math.round(wrapperH / scale) + 'px',
+                'border:none',
+                'z-index:2',
+                'transform:scale(' + scale + ')',
+                'transform-origin:top left'
+            ].join(';');
+        } else {
+            iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;z-index:2;';
+        }
+    } else {
+        iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;z-index:2;';
+    }
     wrapper.appendChild(iframe);
     // Désactive le clic une fois lancé
     wrapper.style.cursor = 'default';
