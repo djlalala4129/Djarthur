@@ -843,6 +843,13 @@ body {
         scroll-snap-align: none;
         max-width: 300px;
     }
+
+    /* Réduit la hauteur des contenus de cards de 15% sur mobile (480px → 408px) */
+    #demoGrid .demo-card .lazy-video-wrapper,
+    #demoGrid .demo-card [style*="min-height:480px"],
+    #demoGrid .demo-card [style*="min-height: 480px"] {
+        min-height: 408px !important;
+    }
 }
 
 /* ============================================================
