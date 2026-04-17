@@ -838,10 +838,10 @@ body {
     }
 
     #demoGrid .demo-card {
-        flex: 0 0 85vw;
+        flex: 0 0 78vw;
         min-width: 0;
         scroll-snap-align: none;
-        max-width: 340px;
+        max-width: 300px;
     }
 }
 
