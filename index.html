@@ -1520,10 +1520,10 @@
 
                     <!-- Sélecteur de mode -->
                     <div class="flex items-center justify-center gap-3 mt-8">
-                        <button id="bt-mode-qcm" onclick="btSetMode('qcm')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all hover:scale-105" style="background:rgba(57,131,249,0.25);border:1.5px solid #3983F9;color:#3983F9;">
+                        <button id="bt-mode-qcm" onclick="btSetMode('qcm')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all hover:scale-105" style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.15);color:#A0A0A0;">
                             <i class="fas fa-list-ul"></i> 4 Propositions
                         </button>
-                        <button id="bt-mode-libre" onclick="btSetMode('libre')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all hover:scale-105" style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.15);color:#A0A0A0;">
+                        <button id="bt-mode-libre" onclick="btSetMode('libre')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all hover:scale-105" style="background:rgba(57,131,249,0.25);border:1.5px solid #3983F9;color:#3983F9;">
                             <i class="fas fa-keyboard"></i> Saisie libre
                         </button>
                     </div>
@@ -1531,14 +1531,10 @@
                     <!-- Score + boutons -->
                     <div class="flex flex-wrap items-center justify-center gap-4 mt-5">
                         <div class="inline-flex items-center gap-4 px-6 py-3 rounded-full" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);">
-                            <span class="text-gray text-sm">Score</span>
+                            <span class="text-gray text-sm">Points</span>
                             <span id="bt-score-correct" class="text-green-400 font-bold text-xl">0</span>
-                            <span class="text-gray opacity-40">/</span>
-                            <span id="bt-score-total" class="text-secondary font-bold text-xl">5</span>
                         </div>
-                        <button id="bt-btn-new" onclick="btGenerate()" class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm transition-all hover:scale-105" style="background:rgba(57,131,249,0.18);border:1.5px solid rgba(57,131,249,0.5);color:#3983F9;">
-                            <i class="fas fa-random"></i> Nouvelle partie
-                        </button>
+
                     </div>
                 </div>
 

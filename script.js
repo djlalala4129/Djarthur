@@ -1758,13 +1758,11 @@ function btShuffle(arr) {
 
 function btUpdateScore() {
     var el1 = document.getElementById('bt-score-correct');
-    var el2 = document.getElementById('bt-score-total');
     if (el1) el1.textContent = btScoreCorrect;
-    if (el2) el2.textContent = BT_CARDS_COUNT;
 }
 
 // ─── Mode de jeu : 'qcm' ou 'libre' ──────────────────────────
-var BT_MODE = 'qcm';
+var BT_MODE = 'libre';
 
 function btSetMode(mode) {
     BT_MODE = mode;
@@ -1987,7 +1985,8 @@ function btAnswerLibre(cardIdx) {
     btns.forEach(function(b) { if (!b.classList.contains('bt-next-btn')) b.style.display = 'none'; });
 
     btScoreTotal++;
-    if (isCorrect) btScoreCorrect++;
+    if (bonTitre)   btScoreCorrect++;
+    if (bonArtiste) btScoreCorrect++;
     btUpdateScore();
 
     var nx = card.querySelector('.bt-next-btn');
@@ -2045,7 +2044,8 @@ function btShowCurrentCard() {
     if (!grid) return;
 
     if (btCurrentIdx >= btPicks.length) {
-        var pct = btPicks.length > 0 ? Math.round((btScoreCorrect / btPicks.length) * 100) : 0;
+        var maxPoints = BT_MODE === 'libre' ? btPicks.length * 2 : btPicks.length * 2;
+        var pct = maxPoints > 0 ? Math.round((btScoreCorrect / maxPoints) * 100) : 0;
         var emoji = pct >= 80 ? '🏆' : pct >= 50 ? '👍' : '😅';
         grid.style.transition = 'opacity .2s';
         grid.style.opacity = '0';
@@ -2053,7 +2053,7 @@ function btShowCurrentCard() {
             grid.innerHTML = '<div class="bt-card glass-card rounded-3xl p-8 flex flex-col items-center gap-5 text-center">'
                 + '<div class="text-5xl">' + emoji + '</div>'
                 + '<p class="font-heading font-bold text-secondary text-xl">Partie terminée !</p>'
-                + '<p class="text-gray">Tu as répondu correctement à <strong style="color:#3983F9">' + btScoreCorrect + '/' + btPicks.length + '</strong> questions (' + pct + '%)</p>'
+                + '<p class="text-gray">Score final : <strong style="color:#3983F9">' + btScoreCorrect + ' point' + (btScoreCorrect > 1 ? 's' : '') + '</strong> sur ' + maxPoints + ' (' + pct + '%)</p>'
                 + '<button onclick="btGenerate()" class="mt-2 px-6 py-3 rounded-2xl font-bold text-sm" style="background:rgba(57,131,249,0.18);border:1px solid rgba(57,131,249,0.45);color:#93c5fd;cursor:pointer;">'
                 + '<i class="fas fa-redo mr-2"></i>Rejouer</button>'
                 + '</div>';
@@ -2126,7 +2126,7 @@ function btAnswer(btn, chosenIdx) {
     if (rv) rv.style.display = 'none';
 
     btScoreTotal++;
-    if (isCorrect) btScoreCorrect++;
+    if (isCorrect) btScoreCorrect += 2;
     btUpdateScore();
 
     var nx = card.querySelector('.bt-next-btn');
