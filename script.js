@@ -1043,15 +1043,35 @@ document.addEventListener('mouseleave', () => {
     let sdkLoaded     = false;
 
     function setLiveState(isLive) {
+        // Toujours visible
+        navDesktop.classList.remove('hidden');
+        navMobile.classList.remove('hidden');
+
+        const dotDesktop  = document.getElementById('live-dot-desktop');
+        const dotMobile   = document.getElementById('live-dot-mobile');
+        const iconDesktop = document.getElementById('live-icon-desktop');
+        const iconMobile  = document.getElementById('live-icon-mobile');
+
         if (isLive) {
-            navDesktop.classList.remove('hidden');
-            navMobile.classList.remove('hidden');
+            // Style rouge — stream en cours
+            navDesktop.classList.remove('text-secondary', 'hover:text-accent');
+            navDesktop.classList.add('text-red-500', 'hover:text-red-400');
+            navMobile.classList.remove('text-gray', 'hover:text-accent');
+            navMobile.classList.add('text-red-500', 'hover:text-red-400');
+            if (dotDesktop)  dotDesktop.classList.remove('hidden');
+            if (dotMobile)   dotMobile.classList.remove('hidden');
+            if (iconDesktop) iconDesktop.classList.add('hidden');
+            if (iconMobile)  iconMobile.classList.add('hidden');
         } else {
-            navDesktop.classList.add('hidden');
-            navMobile.classList.add('hidden');
-            if (liveSection.classList.contains('active')) {
-                if (typeof showSection === 'function') showSection('home', null);
-            }
+            // Style normal — même apparence que les autres liens
+            navDesktop.classList.remove('text-red-500', 'hover:text-red-400');
+            navDesktop.classList.add('text-secondary', 'hover:text-accent');
+            navMobile.classList.remove('text-red-500', 'hover:text-red-400');
+            navMobile.classList.add('text-gray', 'hover:text-accent');
+            if (dotDesktop)  dotDesktop.classList.add('hidden');
+            if (dotMobile)   dotMobile.classList.add('hidden');
+            if (iconDesktop) iconDesktop.classList.remove('hidden');
+            if (iconMobile)  iconMobile.classList.remove('hidden');
         }
     }
 

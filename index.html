@@ -161,10 +161,10 @@
                         <i class="fas fa-calendar-alt mr-2"></i>Contact
                         <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
                     </a>
-                    <a id="nav-live-desktop" onclick="showSection('live', event); return false;" class="nav-link text-red-500 hover:text-red-400 transition-colors font-medium cursor-pointer relative flex items-center gap-2 hidden">
-                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                        <span class="font-bold">Live</span>
-                        <span class="absolute bottom-0 left-0 h-0.5 bg-red-500 transition-all duration-300"></span>
+                    <a id="nav-live-desktop" onclick="showSection('live', event); return false;" class="nav-link text-secondary hover:text-accent transition-colors font-medium cursor-pointer relative flex items-center gap-2">
+                        <span id="live-dot-desktop" class="w-2 h-2 rounded-full bg-red-500 animate-pulse hidden"></span>
+                        <i id="live-icon-desktop" class="fas fa-tower-broadcast mr-2"></i><span>Live</span>
+                        <span class="absolute bottom-0 left-0 h-0.5 bg-accent transition-all duration-300"></span>
                     </a>
                 </div>
 
@@ -204,9 +204,10 @@
                 <i class="fas fa-calendar-alt text-xl group-hover:text-accent transition-colors"></i>
                 <span class="text-gray group-hover:text-accent transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Contact</span>
             </a>
-            <a id="nav-live-mobile" onclick="showSection('live', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-red-400 transition-colors cursor-pointer group hidden">
-                <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
-                <span class="text-gray group-hover:text-red-400 transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Live</span>
+            <a id="nav-live-mobile" onclick="showSection('live', event); closeMobileMenuFunc(); return false;" class="flex flex-col items-center gap-1 text-gray hover:text-accent transition-colors cursor-pointer group">
+                <span id="live-dot-mobile" class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse hidden"></span>
+                <i id="live-icon-mobile" class="fas fa-tower-broadcast text-xl group-hover:text-accent transition-colors"></i>
+                <span class="text-gray group-hover:text-accent transition-colors" style="font-size:0.5rem; letter-spacing:0.05em; font-family:'Orbitron',sans-serif; text-transform:uppercase;">Live</span>
             </a>
         </div>
     </div>
@@ -287,7 +288,7 @@
                 <button onclick="showSection('event', event); return false;" id="eventBtn" class="hidden md:flex" style="
                     position: absolute;
                     bottom: 32px;
-                    right: 32px;
+                    left: 32px;
                     z-index: 30;
                     align-items: center;
                     gap: 10px;
@@ -1473,18 +1474,44 @@
                         <div id="twitch-embed-player" style="position:absolute;inset:0;width:100%;height:100%;"></div>
                     </div>
 
-                    <!-- Chat Twitch -->
-                    <div class="lg:w-80 rounded-2xl overflow-hidden glass-card flex flex-col" style="border-color: rgba(145,71,255,0.4); min-height:320px;">
-                        <div class="flex items-center gap-2 px-4 py-3 flex-shrink-0" style="background:rgba(145,71,255,0.1); border-bottom: 1px solid rgba(145,71,255,0.2);">
-                            <i class="fas fa-comments" style="color:#9147FF;"></i>
+                    <!-- Chat intégré (Live) -->
+                    <div id="live-chat-panel" class="lg:w-80 rounded-2xl overflow-hidden glass-card flex flex-col" style="border-color: rgba(57,131,249,0.4); min-height:320px; font-family:'Poppins',sans-serif;">
+                        <!-- Header -->
+                        <div class="flex items-center gap-2 px-4 py-3 flex-shrink-0" style="background:rgba(57,131,249,0.1); border-bottom: 1px solid rgba(57,131,249,0.2);">
+                            <i class="fas fa-comments" style="color:#3983F9;"></i>
                             <span class="font-bold text-sm text-secondary">Chat en direct</span>
                             <span class="ml-auto w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
                         </div>
-                        <div class="flex-1" style="min-height:0;">
-                            <iframe
-                                id="twitch-chat-iframe"
-                                style="width:100%;height:100%;min-height:300px;border:none;display:block;">
-                            </iframe>
+                        <!-- Tabs -->
+                        <div style="display:flex;border-bottom:1px solid var(--dj-border);background:var(--dj-card);flex-shrink:0;">
+                            <button class="live-tab active" onclick="liveSwitchTab('chat', this)" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:700;color:var(--dj-accent);cursor:pointer;border:none;background:none;border-bottom:2px solid var(--dj-accent);font-family:'Poppins',sans-serif;letter-spacing:0.5px;">💬 Chat</button>
+                            <button class="live-tab" onclick="liveSwitchTab('votes', this)" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:700;color:var(--dj-muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;font-family:'Poppins',sans-serif;letter-spacing:0.5px;">🎶 Votes</button>
+                        </div>
+                        <!-- Tab Chat -->
+                        <div id="live-tab-chat" class="live-tab-content" style="display:flex;flex:1;flex-direction:column;overflow:hidden;">
+                            <div id="live-messages" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;scrollbar-width:thin;scrollbar-color:var(--dj-border) transparent;"></div>
+                            <div style="padding:10px 12px;border-top:1px solid var(--dj-border);background:var(--dj-card);flex-shrink:0;">
+                                <div style="display:flex;gap:6px;margin-bottom:6px;">
+                                    <input id="live-pseudo-input" type="text" placeholder="Ton pseudo" maxlength="20"
+                                        style="flex:1;background:#1a1a1a;border:1px solid var(--dj-border);border-radius:8px;padding:7px 10px;font-size:12px;color:var(--dj-text);font-family:'Poppins',sans-serif;outline:none;" />
+                                </div>
+                                <div style="display:flex;gap:6px;">
+                                    <textarea id="live-msg-input" placeholder="Envoie un message..." rows="1" maxlength="200"
+                                        style="flex:1;background:#1a1a1a;border:1px solid var(--dj-border);border-radius:8px;padding:8px 10px;font-size:13px;color:var(--dj-text);font-family:'Poppins',sans-serif;outline:none;resize:none;min-height:38px;max-height:80px;"></textarea>
+                                    <button id="live-send-btn" onclick="liveSendMessage()" disabled
+                                        style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--dj-accent),var(--dj-pink));border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:transform 0.15s,opacity 0.15s;flex-shrink:0;align-self:flex-end;opacity:0.3;">↑</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tab Votes -->
+                        <div id="live-tab-votes" class="live-tab-content" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
+                            <div id="live-votes-content" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;">
+                                <div id="live-votes-empty" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--dj-muted);font-size:13px;text-align:center;">
+                                    <span style="font-size:32px">🎵</span>
+                                    <span>Aucun vote en cours.<br>Reviens pendant le set !</span>
+                                </div>
+                            </div>
+                            <div style="padding:10px 12px;text-align:center;font-size:11px;color:var(--dj-muted);border-top:1px solid var(--dj-border);background:var(--dj-card);flex-shrink:0;">Clique sur une chanson pour voter · Tu peux changer ton vote</div>
                         </div>
                     </div>
 
@@ -1646,5 +1673,696 @@
     <!-- SheetJS : lecture du fichier Excel blindtest.xlsx -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="script.js"></script>
+
+    <!--
+      ═══════════════════════════════════════════════════════════
+      DJ ARTHUR — Widget Chat + Vote
+      À coller juste avant </body> dans index.html
+      ═══════════════════════════════════════════════════════════
+    -->
+     
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+     
+    <style>
+    /* ── Variables ── */
+    :root {
+      --dj-accent:  #3983F9;
+      --dj-pink:    #FF00F5;
+      --dj-yellow:  #E3F939;
+      --dj-bg:      #0D0D0D;
+      --dj-card:    #141414;
+      --dj-border:  #222222;
+      --dj-text:    #F3F2F2;
+      --dj-muted:   #666;
+    }
+     
+    /* ── Bouton flottant ── */
+    #dj-chat-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--dj-accent), var(--dj-pink));
+      border: none;
+      cursor: pointer;
+      z-index: 9998;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 24px rgba(57,131,249,0.5);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    #dj-chat-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 32px rgba(57,131,249,0.7);
+    }
+    #dj-chat-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #EF4444;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+    }
+     
+    /* ── Panneau principal ── */
+    #dj-chat-panel {
+      position: fixed;
+      bottom: 96px;
+      right: 24px;
+      width: 360px;
+      max-width: calc(100vw - 32px);
+      height: 520px;
+      max-height: calc(100vh - 120px);
+      background: var(--dj-bg);
+      border: 1px solid var(--dj-border);
+      border-radius: 20px;
+      z-index: 9997;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.8), 0 0 0 1px rgba(57,131,249,0.15);
+      transform: scale(0.9) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+    #dj-chat-panel.open {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+     
+    /* ── Header ── */
+    #dj-panel-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--dj-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--dj-card);
+      flex-shrink: 0;
+    }
+    #dj-panel-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--dj-text);
+      letter-spacing: 0.5px;
+    }
+    #dj-panel-title span { color: var(--dj-accent); }
+     
+    /* ── Tabs ── */
+    #dj-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--dj-border);
+      flex-shrink: 0;
+      background: var(--dj-card);
+    }
+    .dj-tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--dj-muted);
+      cursor: pointer;
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    .dj-tab.active {
+      color: var(--dj-accent);
+      border-bottom-color: var(--dj-accent);
+    }
+     
+    /* ── Contenu ── */
+    .dj-tab-content { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+    .dj-tab-content.active { display: flex; }
+     
+    /* ── Chat ── */
+    #dj-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--dj-border) transparent;
+    }
+    .dj-msg {
+      max-width: 85%;
+      padding: 9px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      animation: dj-pop 0.25s ease;
+    }
+    @keyframes dj-pop {
+      from { transform: scale(0.9); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .dj-msg.user {
+      background: var(--dj-card);
+      border: 1px solid var(--dj-border);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .dj-msg.dj {
+      background: linear-gradient(135deg, #0a1a3a, #0d1f4a);
+      border: 1px solid rgba(57,131,249,0.3);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .dj-msg-pseudo {
+      font-size: 10px;
+      font-weight: 700;
+      margin-bottom: 3px;
+      color: var(--dj-accent);
+    }
+    .dj-msg.dj .dj-msg-pseudo { color: var(--dj-yellow); }
+    .dj-msg-text { color: var(--dj-text); }
+    .dj-msg-time { font-size: 10px; color: var(--dj-muted); margin-top: 3px; text-align: right; }
+     
+    /* ── Barre d'envoi ── */
+    #dj-chat-form {
+      padding: 10px 12px;
+      border-top: 1px solid var(--dj-border);
+      background: var(--dj-card);
+      flex-shrink: 0;
+    }
+    #dj-pseudo-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    #dj-pseudo-input {
+      flex: 1;
+      background: #1a1a1a;
+      border: 1px solid var(--dj-border);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 12px;
+      color: var(--dj-text);
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+    }
+    #dj-pseudo-input:focus { border-color: var(--dj-accent); }
+    #dj-msg-row {
+      display: flex;
+      gap: 6px;
+    }
+    #dj-msg-input {
+      flex: 1;
+      background: #1a1a1a;
+      border: 1px solid var(--dj-border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 13px;
+      color: var(--dj-text);
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+      resize: none;
+      min-height: 38px;
+      max-height: 80px;
+    }
+    #dj-msg-input:focus { border-color: var(--dj-accent); }
+    #dj-send-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--dj-accent), var(--dj-pink));
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+      flex-shrink: 0;
+      align-self: flex-end;
+    }
+    #dj-send-btn:hover { transform: scale(1.1); }
+    #dj-send-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+     
+    /* ── Votes ── */
+    #dj-votes-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dj-vote-card {
+      background: var(--dj-card);
+      border: 1px solid var(--dj-border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+      user-select: none;
+    }
+    .dj-vote-card:hover { border-color: rgba(57,131,249,0.4); transform: translateY(-1px); }
+    .dj-vote-card.voted { border-color: var(--dj-accent); background: rgba(57,131,249,0.06); }
+    .dj-vote-card.first { border-color: rgba(227,249,57,0.4); background: rgba(227,249,57,0.04); }
+    .dj-vote-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .dj-vote-info {}
+    .dj-vote-titre { font-size: 14px; font-weight: 700; color: var(--dj-text); }
+    .dj-vote-artiste { font-size: 11px; color: var(--dj-muted); margin-top: 1px; }
+    .dj-vote-count { font-size: 22px; font-weight: 900; color: var(--dj-accent); }
+    .dj-vote-card.first .dj-vote-count { color: var(--dj-yellow); }
+    .dj-vote-bar-bg { height: 3px; background: var(--dj-border); border-radius: 2px; overflow: hidden; }
+    .dj-vote-bar-fill { height: 3px; border-radius: 2px; background: var(--dj-accent); transition: width 0.5s ease; }
+    .dj-vote-card.first .dj-vote-bar-fill { background: var(--dj-yellow); }
+    .dj-vote-hint { font-size: 10px; color: var(--dj-muted); text-align: center; padding: 8px; }
+     
+    #dj-votes-empty {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--dj-muted);
+      font-size: 13px;
+      text-align: center;
+      padding: 20px;
+    }
+     
+    /* ── Bouton fermer ── */
+    #dj-close-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      border: none;
+      cursor: pointer;
+      color: var(--dj-muted);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+    #dj-close-btn:hover { color: var(--dj-text); }
+    </style>
+     
+    <!-- ── Bouton flottant ── -->
+    <button id="dj-chat-toggle" onclick="djTogglePanel()" aria-label="Ouvrir le chat">
+      🎵
+      <span id="dj-chat-badge"></span>
+    </button>
+     
+    <!-- ── Panneau ── -->
+    <div id="dj-chat-panel">
+     
+      <!-- Header -->
+      <div id="dj-panel-header">
+        <span id="dj-panel-title"><span>DJ</span> Arthur — Live Chat</span>
+        <button id="dj-close-btn" onclick="djTogglePanel()">✕</button>
+      </div>
+     
+      <!-- Tabs -->
+      <div id="dj-tabs">
+        <button class="dj-tab active" onclick="djSwitchTab('chat', this)">💬 Chat</button>
+        <button class="dj-tab" onclick="djSwitchTab('votes', this)">🎶 Votes</button>
+      </div>
+     
+      <!-- Tab Chat -->
+      <div id="dj-tab-chat" class="dj-tab-content active">
+        <div id="dj-messages"></div>
+        <div id="dj-chat-form">
+          <div id="dj-pseudo-row">
+            <input id="dj-pseudo-input" type="text" placeholder="Ton pseudo" maxlength="20" />
+          </div>
+          <div id="dj-msg-row">
+            <textarea id="dj-msg-input" placeholder="Envoie un message..." rows="1" maxlength="200"></textarea>
+            <button id="dj-send-btn" onclick="djSendMessage()" disabled>↑</button>
+          </div>
+        </div>
+      </div>
+     
+      <!-- Tab Votes -->
+      <div id="dj-tab-votes" class="dj-tab-content">
+        <div id="dj-votes-content">
+          <div id="dj-votes-empty">
+            <span style="font-size:32px">🎵</span>
+            <span>Aucun vote en cours.<br>Reviens pendant le set !</span>
+          </div>
+        </div>
+        <div class="dj-vote-hint">Clique sur une chanson pour voter · Tu peux changer ton vote</div>
+      </div>
+     
+    </div>
+     
+    <script>
+    (function () {
+      // ── Config ──
+      const SUPABASE_URL  = 'https://disvjynayckjlksllpok.supabase.co';
+      const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpc3ZqeW5heWNramxrc2xscG9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNjQ5MTksImV4cCI6MjA5Mjk0MDkxOX0.iKl4Uf8Kzs5ZyLUVLOHHe5OHaDGTy4mkXdkwnnEGMNU';
+      const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      let panelOpen = false;
+
+      // ── Masquer/afficher le bouton flottant selon la section ──
+      const origShowSection = window.showSection;
+      window.showSection = function(section, event) {
+        if (origShowSection) origShowSection(section, event);
+        const toggle = document.getElementById('dj-chat-toggle');
+        const panel  = document.getElementById('dj-chat-panel');
+        if (section === 'live') {
+          toggle.style.display = 'none';
+          if (panel) { panel.classList.remove('open'); panelOpen = false; }
+        } else {
+          toggle.style.display = 'flex';
+        }
+      };
+
+      // ── Live Chat : onglets ──
+      window.liveSwitchTab = function(tab, btn) {
+        document.querySelectorAll('.live-tab').forEach(b => {
+          b.style.color = 'var(--dj-muted)';
+          b.style.borderBottom = '2px solid transparent';
+        });
+        btn.style.color = 'var(--dj-accent)';
+        btn.style.borderBottom = '2px solid var(--dj-accent)';
+        document.getElementById('live-tab-chat').style.display  = tab === 'chat'  ? 'flex' : 'none';
+        document.getElementById('live-tab-votes').style.display = tab === 'votes' ? 'flex' : 'none';
+        if (tab === 'votes') liveRenderVotes();
+      };
+
+      // ── Live Chat : envoi ──
+      const liveMsgInput    = document.getElementById('live-msg-input');
+      const livePseudoInput = document.getElementById('live-pseudo-input');
+      const liveSendBtn     = document.getElementById('live-send-btn');
+
+      function liveCheckSendable() {
+        const ok = liveMsgInput.value.trim() && livePseudoInput.value.trim();
+        liveSendBtn.disabled = !ok;
+        liveSendBtn.style.opacity = ok ? '1' : '0.3';
+        liveSendBtn.style.cursor  = ok ? 'pointer' : 'default';
+      }
+      liveMsgInput.addEventListener('input', liveCheckSendable);
+      livePseudoInput.addEventListener('input', liveCheckSendable);
+      liveMsgInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); liveSendMessage(); }
+      });
+
+      window.liveSendMessage = async function() {
+        const pseudo  = livePseudoInput.value.trim();
+        const message = liveMsgInput.value.trim();
+        if (!pseudo || !message) return;
+        liveSendBtn.disabled = true;
+        liveSendBtn.style.opacity = '0.3';
+        liveMsgInput.value = '';
+        liveCheckSendable();
+        await sb.from('chat_messages').insert({ pseudo, message, is_dj: false });
+      };
+
+      // ── Live Chat : afficher un message ──
+      function liveAppendMessage(msg) {
+        const container = document.getElementById('live-messages');
+        if (!container) return;
+        const div = document.createElement('div');
+        div.style.cssText = `max-width:85%;padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.5;animation:dj-pop 0.25s ease;${msg.is_dj ? 'background:linear-gradient(135deg,#0a1a3a,#0d1f4a);border:1px solid rgba(57,131,249,0.3);align-self:flex-end;border-bottom-right-radius:4px;' : 'background:var(--dj-card);border:1px solid var(--dj-border);align-self:flex-start;border-bottom-left-radius:4px;'}`;
+        const time = new Date(msg.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        div.innerHTML = `<div style="font-size:10px;font-weight:700;margin-bottom:3px;color:${msg.is_dj ? 'var(--dj-yellow)' : 'var(--dj-accent)'};">${liveEsc(msg.pseudo || 'Anonyme')}</div><div style="color:var(--dj-text);">${liveEsc(msg.message)}</div><div style="font-size:10px;color:var(--dj-muted);margin-top:3px;text-align:right;">${time}</div>`;
+        container.appendChild(div);
+        setTimeout(() => container.scrollTop = container.scrollHeight, 50);
+      }
+
+      // ── Live Chat : charger messages ──
+      async function liveLoadMessages() {
+        const { data } = await sb.from('chat_messages').select('*').order('created_at', { ascending: true }).limit(100);
+        if (data) data.forEach(m => liveAppendMessage(m));
+      }
+
+      // ── Live Chat : realtime ──
+      sb.channel('live_chat_messages')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, p => {
+          liveAppendMessage(p.new);
+        })
+        .subscribe();
+
+      // ── Live Votes : charger ──
+      let liveVotes = [];
+      async function liveLoadVotes() {
+        const { data } = await sb.from('vote_songs').select('*').order('votes', { ascending: false });
+        if (data) { liveVotes = data; liveRenderVotes(); }
+      }
+
+      // ── Live Votes : afficher ──
+      function liveRenderVotes() {
+        const container = document.getElementById('live-votes-content');
+        const empty     = document.getElementById('live-votes-empty');
+        if (!container) return;
+        if (liveVotes.length === 0) { empty.style.display = 'flex'; return; }
+        empty.style.display = 'none';
+        container.querySelectorAll('.live-vote-card').forEach(c => c.remove());
+        const maxV = Math.max(...liveVotes.map(v => v.votes || 0), 1);
+        const votedFor = sessionStorage.getItem('dj_voted');
+        liveVotes.forEach((song, i) => {
+          const pct = Math.round(((song.votes || 0) / maxV) * 100);
+          const card = document.createElement('div');
+          card.className = 'live-vote-card';
+          const isFirst = i === 0 && song.votes > 0;
+          const isVoted = votedFor === String(song.id);
+          card.style.cssText = `padding:12px;border-radius:12px;cursor:pointer;transition:background 0.2s;background:${isVoted ? 'rgba(57,131,249,0.15)' : 'var(--dj-card)'};border:1px solid ${isFirst ? 'rgba(227,249,57,0.4)' : isVoted ? 'rgba(57,131,249,0.4)' : 'var(--dj-border)'};`;
+          card.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div><div style="font-size:13px;font-weight:700;color:var(--dj-text);">${liveEsc(song.titre)}</div><div style="font-size:11px;color:var(--dj-muted);">${liveEsc(song.artiste)}</div></div><div style="font-size:18px;font-weight:800;color:${isFirst ? 'var(--dj-yellow)' : 'var(--dj-accent)'};">${song.votes || 0}</div></div><div style="height:4px;border-radius:2px;background:rgba(255,255,255,0.08);overflow:hidden;"><div style="height:100%;width:${pct}%;border-radius:2px;background:${isFirst ? 'linear-gradient(90deg,var(--dj-yellow),var(--dj-accent))' : 'var(--dj-accent)'};transition:width 0.5s;"></div></div>`;
+          card.addEventListener('click', () => liveVote(song.id));
+          container.appendChild(card);
+        });
+      }
+
+      // ── Live Votes : voter ──
+      window.liveVote = async function(songId) {
+        const prevVotedFor = sessionStorage.getItem('dj_voted');
+        if (prevVotedFor === String(songId)) return; // déjà voté pour ce choix
+
+        // Si l'utilisateur avait déjà voté pour un autre choix, on décrémente l'ancien
+        if (prevVotedFor) {
+          const prevSong = liveVotes.find(v => String(v.id) === prevVotedFor);
+          if (prevSong && (prevSong.votes || 0) > 0) {
+            await sb.from('vote_songs').update({ votes: (prevSong.votes || 0) - 1 }).eq('id', prevSong.id);
+          }
+        }
+
+        sessionStorage.setItem('dj_voted', songId);
+        const song = liveVotes.find(v => v.id === songId);
+        if (!song) return;
+        await sb.from('vote_songs').update({ votes: (song.votes || 0) + 1 }).eq('id', songId);
+        await liveLoadVotes();
+      };
+
+      // ── Live Votes : realtime ──
+      sb.channel('live_vote_songs')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'vote_songs' }, () => liveLoadVotes())
+        .subscribe();
+
+      // ── Utilitaire ──
+      function liveEsc(str) {
+        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+
+      liveLoadMessages();
+      liveLoadVotes();
+     
+      let unread      = 0;
+      let votedFor    = sessionStorage.getItem('dj_voted') || null;
+      let votes       = [];
+     
+      // ── Toggle panneau ──
+      window.djTogglePanel = function () {
+        panelOpen = !panelOpen;
+        document.getElementById('dj-chat-panel').classList.toggle('open', panelOpen);
+        if (panelOpen) {
+          unread = 0;
+          updateBadge();
+          scrollToBottom();
+        }
+      };
+     
+      // ── Switch tab ──
+      window.djSwitchTab = function (tab, btn) {
+        document.querySelectorAll('.dj-tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.dj-tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('dj-tab-' + tab).classList.add('active');
+        if (tab === 'votes') renderVotes();
+      };
+     
+      // ── Validation inputs ──
+      const msgInput    = document.getElementById('dj-msg-input');
+      const pseudoInput = document.getElementById('dj-pseudo-input');
+      const sendBtn     = document.getElementById('dj-send-btn');
+     
+      function checkSendable() {
+        sendBtn.disabled = !msgInput.value.trim() || !pseudoInput.value.trim();
+      }
+      msgInput.addEventListener('input', checkSendable);
+      pseudoInput.addEventListener('input', checkSendable);
+      msgInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); djSendMessage(); }
+      });
+     
+      // ── Envoyer message ──
+      window.djSendMessage = async function () {
+        const pseudo  = pseudoInput.value.trim();
+        const message = msgInput.value.trim();
+        if (!pseudo || !message) return;
+     
+        sendBtn.disabled = true;
+        msgInput.value = '';
+        checkSendable();
+     
+        await sb.from('chat_messages').insert({ pseudo, message, is_dj: false });
+      };
+     
+      // ── Charger messages ──
+      async function loadMessages() {
+        const { data } = await sb.from('chat_messages')
+          .select('*')
+          .order('created_at', { ascending: true })
+          .limit(100);
+        if (data) { data.forEach(m => appendMessage(m)); scrollToBottom(); }
+      }
+     
+      // ── Ajouter bulle ──
+      function appendMessage(msg) {
+        const container = document.getElementById('dj-messages');
+        const div = document.createElement('div');
+        div.className = 'dj-msg ' + (msg.is_dj ? 'dj' : 'user');
+        const time = new Date(msg.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        div.innerHTML = `
+          <div class="dj-msg-pseudo">${escHtml(msg.pseudo || 'Anonyme')}</div>
+          <div class="dj-msg-text">${escHtml(msg.message)}</div>
+          <div class="dj-msg-time">${time}</div>
+        `;
+        container.appendChild(div);
+        if (!panelOpen && !msg.is_dj) { unread++; updateBadge(); }
+        if (panelOpen) scrollToBottom();
+      }
+     
+      function scrollToBottom() {
+        const el = document.getElementById('dj-messages');
+        setTimeout(() => el.scrollTop = el.scrollHeight, 50);
+      }
+     
+      function updateBadge() {
+        const badge = document.getElementById('dj-chat-badge');
+        if (unread > 0) {
+          badge.style.display = 'flex';
+          badge.textContent = unread > 9 ? '9+' : unread;
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+     
+      // ── Realtime messages ──
+      sb.channel('chat_messages')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, p => {
+          appendMessage(p.new);
+        })
+        .subscribe();
+     
+      // ── Charger votes ──
+      async function loadVotes() {
+        const { data } = await sb.from('vote_songs')
+          .select('*')
+          .order('votes', { ascending: false });
+        if (data) { votes = data; renderVotes(); }
+      }
+     
+      // ── Afficher votes ──
+      function renderVotes() {
+        const container = document.getElementById('dj-votes-content');
+        const empty     = document.getElementById('dj-votes-empty');
+        if (votes.length === 0) { empty.style.display = 'flex'; return; }
+        empty.style.display = 'none';
+     
+        // Vider les anciennes cartes
+        container.querySelectorAll('.dj-vote-card').forEach(c => c.remove());
+     
+        const maxV = Math.max(...votes.map(v => v.votes || 0), 1);
+     
+        votes.forEach((song, i) => {
+          const pct  = Math.round(((song.votes || 0) / maxV) * 100);
+          const card = document.createElement('div');
+          card.className = 'dj-vote-card' + (i === 0 && song.votes > 0 ? ' first' : '') + (votedFor === song.id ? ' voted' : '');
+          card.innerHTML = `
+            <div class="dj-vote-top">
+              <div class="dj-vote-info">
+                <div class="dj-vote-titre">${escHtml(song.titre)}</div>
+                <div class="dj-vote-artiste">${escHtml(song.artiste)}</div>
+              </div>
+              <div class="dj-vote-count">${song.votes || 0}</div>
+            </div>
+            <div class="dj-vote-bar-bg">
+              <div class="dj-vote-bar-fill" style="width:${pct}%"></div>
+            </div>
+          `;
+          card.addEventListener('click', () => djVote(song.id));
+          container.appendChild(card);
+        });
+      }
+     
+      // ── Voter ──
+      window.djVote = async function (songId) {
+        if (votedFor === songId) return; // déjà voté pour ce choix
+
+        // Si l'utilisateur avait déjà voté pour un autre choix, on décrémente l'ancien
+        if (votedFor) {
+          const prevSong = votes.find(v => v.id === votedFor);
+          if (prevSong && (prevSong.votes || 0) > 0) {
+            await sb.from('vote_songs').update({ votes: (prevSong.votes || 0) - 1 }).eq('id', votedFor);
+          }
+        }
+
+        votedFor = songId;
+        sessionStorage.setItem('dj_voted', songId);
+     
+        const song = votes.find(v => v.id === songId);
+        if (!song) return;
+     
+        await sb.from('vote_songs').update({ votes: (song.votes || 0) + 1 }).eq('id', songId);
+        await loadVotes();
+      };
+     
+      // ── Realtime votes ──
+      sb.channel('vote_songs')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'vote_songs' }, () => {
+          loadVotes();
+        })
+        .subscribe();
+     
+      // ── Utilitaire anti-XSS ──
+      function escHtml(str) {
+        return String(str)
+          .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+          .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+     
+      // ── Init ──
+      loadMessages();
+      loadVotes();
+    })();
+    </script>
 </body>
 </html>
