@@ -1505,6 +1505,9 @@
                         </div>
                         <!-- Tab Votes -->
                         <div id="live-tab-votes" class="live-tab-content" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
+                            <div style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--dj-border);flex-shrink:0;">
+                              <span class="votes-status-banner" style="font-size:12px;font-weight:700;">🔴 Votes fermés</span>
+                            </div>
                             <div id="live-votes-content" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;">
                                 <div id="live-votes-empty" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--dj-muted);font-size:13px;text-align:center;">
                                     <span style="font-size:32px">🎵</span>
@@ -2021,6 +2024,9 @@
      
       <!-- Tab Votes -->
       <div id="dj-tab-votes" class="dj-tab-content">
+        <div style="padding:8px 12px;text-align:center;border-bottom:1px solid var(--dj-border);">
+          <span class="votes-status-banner" style="font-size:12px;font-weight:700;">🔴 Votes fermés</span>
+        </div>
         <div id="dj-votes-content">
           <div id="dj-votes-empty">
             <span style="font-size:32px">🎵</span>
@@ -2167,8 +2173,9 @@
 
       // ── Live Votes : voter ──
       window.liveVote = async function(songId) {
+        if (!votesOpen) return; // votes fermés
         const prevVotedFor = sessionStorage.getItem('dj_voted');
-        if (prevVotedFor === String(songId)) return; // déjà voté pour ce choix
+        if (prevVotedFor === String(songId)) return;
 
         // Si l'utilisateur avait déjà voté pour un autre choix, on décrémente l'ancien
         if (prevVotedFor) {
@@ -2230,6 +2237,33 @@
       let unread      = 0;
       let votedFor    = sessionStorage.getItem('dj_voted') || null;
       let votes       = [];
+      let votesOpen   = false;
+
+      // ── Charger settings ──
+      async function loadSettings() {
+        const { data } = await sb.from('settings').select('*').eq('id', 1).single();
+        if (data) { votesOpen = data.votes_open; updateVotesBanner(); }
+      }
+
+      // ── Realtime settings ──
+      sb.channel('settings')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'settings' }, (p) => {
+          if (p.new) { votesOpen = p.new.votes_open; updateVotesBanner(); liveRenderVotes(); renderVotes(); }
+        })
+        .subscribe();
+
+      // ── Bannière statut votes ──
+      function updateVotesBanner() {
+        document.querySelectorAll('.votes-status-banner').forEach(el => {
+          el.textContent = votesOpen ? '🟢 Votes ouverts' : '🔴 Votes fermés';
+          el.style.color = votesOpen ? '#4ade80' : '#ef4444';
+        });
+        // Griser les cartes de vote si fermés
+        document.querySelectorAll('.live-vote-card, .dj-vote-card').forEach(card => {
+          card.style.opacity = votesOpen ? '1' : '0.5';
+          card.style.cursor  = votesOpen ? 'pointer' : 'not-allowed';
+        });
+      }
      
       // ── Toggle panneau ──
       window.djTogglePanel = function () {
@@ -2380,7 +2414,8 @@
      
       // ── Voter ──
       window.djVote = async function (songId) {
-        if (votedFor === songId) return; // déjà voté pour ce choix
+        if (!votesOpen) return; // votes fermés
+        if (votedFor === songId) return;
 
         // Si l'utilisateur avait déjà voté pour un autre choix, on décrémente l'ancien
         if (votedFor) {
@@ -2417,6 +2452,7 @@
       // ── Init ──
       loadMessages();
       loadVotes();
+      loadSettings();
     })();
     </script>
 </body>
