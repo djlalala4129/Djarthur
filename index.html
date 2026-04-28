@@ -2101,9 +2101,12 @@
         const container = document.getElementById('live-messages');
         if (!container) return;
         const div = document.createElement('div');
+        div.dataset.id = msg.id;
         div.style.cssText = `max-width:85%;padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.5;animation:dj-pop 0.25s ease;${msg.is_dj ? 'background:linear-gradient(135deg,#0a1a3a,#0d1f4a);border:1px solid rgba(57,131,249,0.3);align-self:flex-end;border-bottom-right-radius:4px;' : 'background:var(--dj-card);border:1px solid var(--dj-border);align-self:flex-start;border-bottom-left-radius:4px;'}`;
         const time = new Date(msg.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
         div.innerHTML = `<div style="font-size:10px;font-weight:700;margin-bottom:3px;color:${msg.is_dj ? 'var(--dj-yellow)' : 'var(--dj-accent)'};">${liveEsc(msg.pseudo || 'Anonyme')}</div><div style="color:var(--dj-text);">${liveEsc(msg.message)}</div><div style="font-size:10px;color:var(--dj-muted);margin-top:3px;text-align:right;">${time}</div>`;
+        // Long press / clic droit → supprimer
+        addDeleteGesture(div, msg);
         container.appendChild(div);
         setTimeout(() => container.scrollTop = container.scrollHeight, 50);
       }
@@ -2118,6 +2121,9 @@
       sb.channel('live_chat_messages')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, p => {
           liveAppendMessage(p.new);
+        })
+        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'chat_messages' }, p => {
+          document.querySelectorAll(`[data-id="${p.old.id}"]`).forEach(el => el.remove());
         })
         .subscribe();
 
@@ -2179,6 +2185,35 @@
       // ── Utilitaire ──
       function liveEsc(str) {
         return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+
+      // ── Supprimer un message (long press mobile / clic droit desktop) ──
+      function addDeleteGesture(el, msg) {
+        let pressTimer = null;
+
+        // Mobile : long press (600 ms)
+        el.addEventListener('touchstart', () => {
+          pressTimer = setTimeout(() => {
+            pressTimer = null;
+            confirmDelete(msg);
+          }, 600);
+        }, { passive: true });
+        el.addEventListener('touchend',   () => { clearTimeout(pressTimer); pressTimer = null; }, { passive: true });
+        el.addEventListener('touchmove',  () => { clearTimeout(pressTimer); pressTimer = null; }, { passive: true });
+
+        // Desktop : clic droit
+        el.addEventListener('contextmenu', e => {
+          e.preventDefault();
+          confirmDelete(msg);
+        });
+      }
+
+      async function confirmDelete(msg) {
+        const preview = msg.message.length > 60 ? msg.message.slice(0, 60) + '…' : msg.message;
+        if (!confirm(`Supprimer ce message ?\n"${preview}"\n— ${msg.pseudo || 'Anonyme'}`)) return;
+        await sb.from('chat_messages').delete().eq('id', msg.id);
+        // Suppression locale immédiate (le realtime DELETE propagera aux autres sessions)
+        document.querySelectorAll(`[data-id="${msg.id}"]`).forEach(el => el.remove());
       }
 
       liveLoadMessages();
@@ -2249,12 +2284,15 @@
         const container = document.getElementById('dj-messages');
         const div = document.createElement('div');
         div.className = 'dj-msg ' + (msg.is_dj ? 'dj' : 'user');
+        div.dataset.id = msg.id;
         const time = new Date(msg.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
         div.innerHTML = `
           <div class="dj-msg-pseudo">${escHtml(msg.pseudo || 'Anonyme')}</div>
           <div class="dj-msg-text">${escHtml(msg.message)}</div>
           <div class="dj-msg-time">${time}</div>
         `;
+        // Long press / clic droit → supprimer
+        addDeleteGesture(div, msg);
         container.appendChild(div);
         if (!panelOpen && !msg.is_dj) { unread++; updateBadge(); }
         if (panelOpen) scrollToBottom();
@@ -2279,6 +2317,10 @@
       sb.channel('chat_messages')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, p => {
           appendMessage(p.new);
+        })
+        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'chat_messages' }, p => {
+          // Supprimer la bulle des deux chats (dj-messages + live-messages)
+          document.querySelectorAll(`[data-id="${p.old.id}"]`).forEach(el => el.remove());
         })
         .subscribe();
      
