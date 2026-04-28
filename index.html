@@ -2122,8 +2122,16 @@
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, p => {
           liveAppendMessage(p.new);
         })
-        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'chat_messages' }, p => {
-          document.querySelectorAll(`[data-id="${p.old.id}"]`).forEach(el => el.remove());
+        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'chat_messages' }, async () => {
+          // Recharger tous les messages (payload.old.id peut être vide si RLS actif)
+          const { data } = await sb.from('chat_messages').select('*').order('created_at', { ascending: true }).limit(100);
+          if (data) {
+            const container = document.getElementById('live-messages');
+            if (container) {
+              container.innerHTML = '';
+              data.forEach(m => liveAppendMessage(m));
+            }
+          }
         })
         .subscribe();
 
@@ -2318,9 +2326,14 @@
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, p => {
           appendMessage(p.new);
         })
-        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'chat_messages' }, p => {
-          // Supprimer la bulle des deux chats (dj-messages + live-messages)
-          document.querySelectorAll(`[data-id="${p.old.id}"]`).forEach(el => el.remove());
+        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'chat_messages' }, async () => {
+          // Recharger tous les messages (payload.old.id peut être vide si RLS actif)
+          const { data } = await sb.from('chat_messages').select('*').order('created_at', { ascending: true }).limit(100);
+          if (data) {
+            document.getElementById('dj-messages').innerHTML = '';
+            data.forEach(m => appendMessage(m));
+            scrollToBottom();
+          }
         })
         .subscribe();
      
