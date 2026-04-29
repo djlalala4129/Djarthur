@@ -1467,15 +1467,15 @@
                 </div>
 
                 <!-- Player + Chat côte à côte sur desktop -->
-                <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-4" style="height: clamp(420px, 60vh, 700px);">
+                <div class="live-player-wrap max-w-7xl mx-auto flex flex-col lg:flex-row gap-4">
 
                     <!-- Player Twitch (SDK Embed) -->
-                    <div class="flex-1 rounded-2xl overflow-hidden glass-card" style="border-color: rgba(145,71,255,0.4); position:relative; min-height:320px;">
+                    <div class="live-twitch-player flex-1 rounded-2xl overflow-hidden glass-card" style="border-color: rgba(145,71,255,0.4); position:relative;">
                         <div id="twitch-embed-player" style="position:absolute;inset:0;width:100%;height:100%;"></div>
                     </div>
 
                     <!-- Chat intégré (Live) -->
-                    <div id="live-chat-panel" class="lg:w-80 rounded-2xl overflow-hidden glass-card flex flex-col" style="border-color: rgba(57,131,249,0.4); min-height:320px; font-family:'Poppins',sans-serif;">
+                    <div id="live-chat-panel" class="live-chat-box lg:w-80 rounded-2xl overflow-hidden glass-card flex flex-col" style="border-color: rgba(57,131,249,0.4); font-family:'Poppins',sans-serif;">
                         <!-- Header -->
                         <div class="flex items-center gap-2 px-4 py-3 flex-shrink-0" style="background:rgba(57,131,249,0.1); border-bottom: 1px solid rgba(57,131,249,0.2);">
                             <i class="fas fa-comments" style="color:#3983F9;"></i>

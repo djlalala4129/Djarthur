@@ -909,3 +909,45 @@ body {
     font-weight: 700;
     border: 1px solid transparent;
 }
+
+/* ============================================================
+   14. SECTION LIVE — layout responsive player + chat
+   ============================================================ */
+
+/* Desktop : hauteur fixe partagée entre player et chat */
+.live-player-wrap {
+    height: clamp(420px, 60vh, 700px);
+}
+
+.live-twitch-player {
+    min-height: 0;
+}
+
+.live-chat-box {
+    min-height: 0;
+}
+
+/* Mobile (< lg = 1024px) : chaque bloc a sa propre hauteur */
+@media (max-width: 1023px) {
+    .live-player-wrap {
+        height: auto;
+    }
+
+    /* Player : ratio 16/9 natif */
+    .live-twitch-player {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%;
+        height: 0 !important;
+        min-height: unset !important;
+        flex: none !important;
+    }
+
+    /* Chat/Vote : hauteur calculée pour afficher 5 cartes de vote
+       5 × 72px (carte) + 4 × 8px (gap) + ~110px (header+tabs+footer) = 502px → 520px */
+    .live-chat-box {
+        height: 520px !important;
+        min-height: unset !important;
+        flex-shrink: 0;
+    }
+}
