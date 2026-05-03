@@ -1442,6 +1442,69 @@
                                 <span class="bg-accent/20 text-accent px-3 py-1 rounded-full text-sm">Soirées privées</span>
                             </div>
                         </div>
+
+                        <!-- ── MESSAGE PRIVÉ ── -->
+                        <div class="mt-10 pt-6 border-t border-gray/20" id="private-msg-section">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#3983F9,#FF00F5);">
+                                    <i class="fas fa-lock text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold leading-tight">Message privé</h4>
+                                    <p class="text-gray text-xs">Reçu directement sur mon téléphone 📱</p>
+                                </div>
+                            </div>
+                            <p class="text-gray text-sm mb-5">Tu as un projet, une question ou tu veux réserver ? Envoie-moi un message privé, je te réponds dès que possible.</p>
+
+                            <!-- Formulaire -->
+                            <div id="pm-form" class="flex flex-col gap-3">
+                                <input
+                                    id="pm-name"
+                                    type="text"
+                                    maxlength="50"
+                                    placeholder="Ton prénom / nom *"
+                                    class="w-full px-4 py-3 rounded-xl text-sm text-secondary outline-none transition-all"
+                                    style="background:#1a1a1a;border:1px solid #333;font-family:'Poppins',sans-serif;"
+                                    onfocus="this.style.borderColor='#3983F9'" onblur="this.style.borderColor='#333'"
+                                />
+                                <textarea
+                                    id="pm-message"
+                                    maxlength="500"
+                                    rows="4"
+                                    placeholder="Ton message... (500 caractères max) *"
+                                    class="w-full px-4 py-3 rounded-xl text-sm text-secondary outline-none resize-none transition-all"
+                                    style="background:#1a1a1a;border:1px solid #333;font-family:'Poppins',sans-serif;"
+                                    onfocus="this.style.borderColor='#3983F9'" onblur="this.style.borderColor='#333'"
+                                ></textarea>
+                                <div class="flex items-center justify-between">
+                                    <span id="pm-chars" class="text-gray text-xs">0 / 500</span>
+                                    <button
+                                        id="pm-send-btn"
+                                        onclick="sendPrivateMessage()"
+                                        class="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all duration-200 hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed"
+                                        style="background:linear-gradient(135deg,#3983F9,#FF00F5);color:#fff;border:none;cursor:pointer;"
+                                    >
+                                        <i class="fas fa-paper-plane"></i> Envoyer
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- État envoi -->
+                            <div id="pm-success" class="hidden flex-col items-center gap-3 py-6 text-center">
+                                <div class="w-14 h-14 rounded-full flex items-center justify-center" style="background:rgba(74,222,128,0.15);border:2px solid rgba(74,222,128,0.5);">
+                                    <i class="fas fa-check text-green-400 text-xl"></i>
+                                </div>
+                                <p class="font-bold text-secondary">Message envoyé !</p>
+                                <p class="text-gray text-sm">Je l'ai reçu sur mon téléphone et je te répondrai dès que possible.</p>
+                                <button onclick="resetPrivateForm()" class="text-accent text-sm hover:underline mt-1">Envoyer un autre message</button>
+                            </div>
+                            <div id="pm-error" class="hidden items-center gap-2 mt-3 px-4 py-3 rounded-xl text-sm" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#ef4444;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span id="pm-error-text">Une erreur est survenue. Réessaie.</span>
+                            </div>
+                        </div>
+                        <!-- ── FIN MESSAGE PRIVÉ ── -->
+
                     </div>
                     
 
@@ -1686,6 +1749,80 @@
      
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- ── Script Messagerie Privée ── -->
+    <script>
+    (function() {
+      // Compteur de caractères
+      const msgArea  = document.getElementById('pm-message');
+      const charCount = document.getElementById('pm-chars');
+      if (msgArea) {
+        msgArea.addEventListener('input', () => {
+          charCount.textContent = msgArea.value.length + ' / 500';
+        });
+      }
+
+      window.sendPrivateMessage = async function() {
+        const nameEl = document.getElementById('pm-name');
+        const msgEl  = document.getElementById('pm-message');
+        const btn    = document.getElementById('pm-send-btn');
+        const errEl  = document.getElementById('pm-error');
+        const errTxt = document.getElementById('pm-error-text');
+
+        const name    = (nameEl.value || '').trim();
+        const message = (msgEl.value  || '').trim();
+
+        // Validation
+        if (!name || !message) {
+          errTxt.textContent = 'Merci de remplir tous les champs.';
+          errEl.classList.remove('hidden');
+          errEl.style.display = 'flex';
+          return;
+        }
+        errEl.classList.add('hidden');
+        errEl.style.display = 'none';
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
+
+        try {
+          // Réutilise le client Supabase déjà chargé par le widget
+          const sb = window.supabase.createClient(
+            'https://disvjynayckjlksllpok.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpc3ZqeW5heWNramxrc2xscG9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNjQ5MTksImV4cCI6MjA5Mjk0MDkxOX0.iKl4Uf8Kzs5ZyLUVLOHHe5OHaDGTy4mkXdkwnnEGMNU'
+          );
+          const { error } = await sb.from('private_messages').insert({ name, message, read: false });
+          if (error) throw error;
+
+          // Succès : affiche le message de confirmation
+          document.getElementById('pm-form').classList.add('hidden');
+          const successEl = document.getElementById('pm-success');
+          successEl.classList.remove('hidden');
+          successEl.style.display = 'flex';
+
+        } catch(e) {
+          errTxt.textContent = 'Erreur : ' + (e.message || 'Réessaie plus tard.');
+          errEl.classList.remove('hidden');
+          errEl.style.display = 'flex';
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer';
+        }
+      };
+
+      window.resetPrivateForm = function() {
+        document.getElementById('pm-name').value    = '';
+        document.getElementById('pm-message').value = '';
+        document.getElementById('pm-chars').textContent = '0 / 500';
+        const btn = document.getElementById('pm-send-btn');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer';
+        document.getElementById('pm-error').style.display = 'none';
+        document.getElementById('pm-success').style.display = 'none';
+        document.getElementById('pm-success').classList.add('hidden');
+        document.getElementById('pm-form').classList.remove('hidden');
+      };
+    })();
+    </script>
      
     <style>
     /* ── Variables ── */
