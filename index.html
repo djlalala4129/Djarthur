@@ -1549,6 +1549,7 @@
                         <div style="display:flex;border-bottom:1px solid var(--dj-border);background:var(--dj-card);flex-shrink:0;">
                             <button class="live-tab active" onclick="liveSwitchTab('chat', this)" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:700;color:var(--dj-accent);cursor:pointer;border:none;background:none;border-bottom:2px solid var(--dj-accent);font-family:'Poppins',sans-serif;letter-spacing:0.5px;">💬 Chat</button>
                             <button class="live-tab" onclick="liveSwitchTab('votes', this)" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:700;color:var(--dj-muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;font-family:'Poppins',sans-serif;letter-spacing:0.5px;">🎶 Votes</button>
+                            <button class="live-tab" onclick="liveSwitchTab('suggest', this)" style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:700;color:var(--dj-muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;font-family:'Poppins',sans-serif;letter-spacing:0.5px;">🎤 Proposer</button>
                         </div>
                         <!-- Tab Chat -->
                         <div id="live-tab-chat" class="live-tab-content" style="display:flex;flex:1;flex-direction:column;overflow:hidden;">
@@ -1579,8 +1580,26 @@
                             </div>
                             <div style="padding:10px 12px;text-align:center;font-size:11px;color:var(--dj-muted);border-top:1px solid var(--dj-border);background:var(--dj-card);flex-shrink:0;">Clique sur une chanson pour voter · Tu peux changer ton vote</div>
                         </div>
+                        <!-- Tab Proposer (Live) -->
+                        <div id="live-tab-suggest" class="live-tab-content" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
+                            <div style="padding:16px;display:flex;flex-direction:column;gap:12px;flex:1;overflow-y:auto;">
+                                <p style="font-size:12px;color:var(--dj-muted);text-align:center;line-height:1.6;margin:0;">
+                                    🎶 Propose une chanson à DJ Arthur.<br>Il décidera si elle passe dans le vote.
+                                </p>
+                                <input id="live-suggest-pseudo" type="text" placeholder="Ton pseudo (optionnel)" maxlength="20"
+                                    style="background:var(--dj-card);border:1px solid var(--dj-border);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--dj-text);outline:none;font-family:'Poppins',sans-serif;width:100%;box-sizing:border-box;" />
+                                <input id="live-suggest-titre" type="text" placeholder="Titre de la chanson *" maxlength="80"
+                                    style="background:var(--dj-card);border:1px solid var(--dj-border);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--dj-text);outline:none;font-family:'Poppins',sans-serif;width:100%;box-sizing:border-box;" />
+                                <input id="live-suggest-artiste" type="text" placeholder="Artiste *" maxlength="80"
+                                    style="background:var(--dj-card);border:1px solid var(--dj-border);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--dj-text);outline:none;font-family:'Poppins',sans-serif;width:100%;box-sizing:border-box;" />
+                                <button id="live-suggest-btn" onclick="liveSuggestSong()"
+                                    style="background:linear-gradient(135deg,var(--dj-accent),var(--dj-pink));border:none;border-radius:10px;padding:12px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Poppins',sans-serif;transition:opacity 0.2s;width:100%;">
+                                    Envoyer la proposition 🎤
+                                </button>
+                                <div id="live-suggest-feedback" style="display:none;font-size:12px;text-align:center;padding:10px 12px;border-radius:8px;"></div>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
 
                 <!-- Bouton Twitch -->
@@ -2125,8 +2144,8 @@
     </style>
      
     <!-- ── Bouton flottant ── -->
-    <button id="dj-chat-toggle" onclick="djTogglePanel()" aria-label="Ouvrir le chat">
-      🎵
+    <button id="dj-chat-toggle" onclick="showSection('live', event); return false;" aria-label="Ouvrir le chat">
+      <p class="text-gray text-lg max-w-2xl mx-auto">Chat</p>
       <span id="dj-chat-badge"></span>
     </button>
      
@@ -2222,13 +2241,14 @@
       // ── Live Chat : onglets ──
       window.liveSwitchTab = function(tab, btn) {
         document.querySelectorAll('.live-tab').forEach(b => {
-          b.style.color = 'var(--dj-muted)';
-          b.style.borderBottom = '2px solid transparent';
+            b.style.color = 'var(--dj-muted)';
+            b.style.borderBottom = '2px solid transparent';
         });
         btn.style.color = 'var(--dj-accent)';
         btn.style.borderBottom = '2px solid var(--dj-accent)';
-        document.getElementById('live-tab-chat').style.display  = tab === 'chat'  ? 'flex' : 'none';
-        document.getElementById('live-tab-votes').style.display = tab === 'votes' ? 'flex' : 'none';
+        document.getElementById('live-tab-chat').style.display    = tab === 'chat'    ? 'flex' : 'none';
+        document.getElementById('live-tab-votes').style.display   = tab === 'votes'   ? 'flex' : 'none';
+        document.getElementById('live-tab-suggest').style.display = tab === 'suggest' ? 'flex' : 'none';
         if (tab === 'votes') liveRenderVotes();
       };
 
@@ -2354,6 +2374,61 @@
       sb.channel('live_vote_songs')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'vote_songs' }, () => liveLoadVotes())
         .subscribe();
+
+      window.liveSuggestSong = async function() {
+        const pseudo   = (document.getElementById('live-suggest-pseudo').value || '').trim();
+        const titre    = (document.getElementById('live-suggest-titre').value   || '').trim();
+        const artiste  = (document.getElementById('live-suggest-artiste').value || '').trim();
+        const btn      = document.getElementById('live-suggest-btn');
+        const feedback = document.getElementById('live-suggest-feedback');
+
+        if (!titre || !artiste) {
+            feedback.style.display = 'block';
+            feedback.style.background = 'rgba(239,68,68,0.15)';
+            feedback.style.color = '#ef4444';
+            feedback.style.border = '1px solid rgba(239,68,68,0.3)';
+            feedback.textContent = '⚠️ Merci de renseigner le titre et l\'artiste.';
+            return;
+        }
+
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.textContent = 'Envoi en cours...';
+        feedback.style.display = 'none';
+
+        const { error } = await sb.from('song_suggestions').insert({
+            pseudo: pseudo || 'Anonyme',
+            titre,
+            artiste,
+            status: 'pending'
+        });
+
+        if (error) {
+            feedback.style.display = 'block';
+            feedback.style.background = 'rgba(239,68,68,0.15)';
+            feedback.style.color = '#ef4444';
+            feedback.style.border = '1px solid rgba(239,68,68,0.3)';
+            feedback.textContent = '❌ Erreur, réessaie plus tard.';
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.textContent = 'Envoyer la proposition 🎤';
+        } else {
+            feedback.style.display = 'block';
+            feedback.style.background = 'rgba(74,222,128,0.15)';
+            feedback.style.color = '#4ade80';
+            feedback.style.border = '1px solid rgba(74,222,128,0.3)';
+            feedback.textContent = '✅ Proposition envoyée ! DJ Arthur la verra bientôt.';
+            document.getElementById('live-suggest-titre').value = '';
+            document.getElementById('live-suggest-artiste').value = '';
+            document.getElementById('live-suggest-pseudo').value = '';
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.textContent = 'Envoyer la proposition 🎤';
+                feedback.style.display = 'none';
+            }, 4000);
+        }
+      }; 
 
       // ── Utilitaire ──
       function liveEsc(str) {
