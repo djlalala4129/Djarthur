@@ -2143,6 +2143,7 @@
       <div id="dj-tabs">
         <button class="dj-tab active" onclick="djSwitchTab('chat', this)">💬 Chat</button>
         <button class="dj-tab" onclick="djSwitchTab('votes', this)">🎶 Votes</button>
+        <button class="dj-tab" onclick="djSwitchTab('suggest', this)">🎤 Proposer</button>
       </div>
      
       <!-- Tab Chat -->
@@ -2171,6 +2172,26 @@
           </div>
         </div>
         <div class="dj-vote-hint">Clique sur une chanson pour voter · Tu peux changer ton vote</div>
+      </div>
+
+      <!-- Tab Proposer une chanson -->
+      <div id="dj-tab-suggest" class="dj-tab-content">
+        <div id="dj-suggest-wrap" style="padding:16px;display:flex;flex-direction:column;gap:12px;flex:1;overflow-y:auto;">
+          <p style="font-size:12px;color:var(--dj-muted);text-align:center;line-height:1.6;margin:0;">
+            🎶 Propose une chanson à DJ Arthur.<br>Il décidera si elle passe dans le vote.
+          </p>
+          <input id="dj-suggest-pseudo" type="text" placeholder="Ton pseudo (optionnel)" maxlength="20"
+            style="background:var(--dj-card);border:1px solid var(--dj-border);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--dj-text);outline:none;font-family:'Poppins',sans-serif;width:100%;box-sizing:border-box;" />
+          <input id="dj-suggest-titre" type="text" placeholder="Titre de la chanson *" maxlength="80"
+            style="background:var(--dj-card);border:1px solid var(--dj-border);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--dj-text);outline:none;font-family:'Poppins',sans-serif;width:100%;box-sizing:border-box;" />
+          <input id="dj-suggest-artiste" type="text" placeholder="Artiste *" maxlength="80"
+            style="background:var(--dj-card);border:1px solid var(--dj-border);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--dj-text);outline:none;font-family:'Poppins',sans-serif;width:100%;box-sizing:border-box;" />
+          <button id="dj-suggest-btn" onclick="djSuggestSong()"
+            style="background:linear-gradient(135deg,var(--dj-accent),var(--dj-pink));border:none;border-radius:10px;padding:12px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Poppins',sans-serif;transition:opacity 0.2s;width:100%;">
+            Envoyer la proposition 🎤
+          </button>
+          <div id="dj-suggest-feedback" style="display:none;font-size:12px;text-align:center;padding:10px 12px;border-radius:8px;"></div>
+        </div>
       </div>
      
     </div>
@@ -2420,6 +2441,62 @@
         btn.classList.add('active');
         document.getElementById('dj-tab-' + tab).classList.add('active');
         if (tab === 'votes') renderVotes();
+      };
+
+      // ── Proposer une chanson ──
+      window.djSuggestSong = async function() {
+        const pseudo   = (document.getElementById('dj-suggest-pseudo').value || '').trim();
+        const titre    = (document.getElementById('dj-suggest-titre').value   || '').trim();
+        const artiste  = (document.getElementById('dj-suggest-artiste').value || '').trim();
+        const btn      = document.getElementById('dj-suggest-btn');
+        const feedback = document.getElementById('dj-suggest-feedback');
+
+        if (!titre || !artiste) {
+          feedback.style.display = 'block';
+          feedback.style.background = 'rgba(239,68,68,0.15)';
+          feedback.style.color = '#ef4444';
+          feedback.style.border = '1px solid rgba(239,68,68,0.3)';
+          feedback.textContent = '⚠️ Merci de renseigner le titre et l\'artiste.';
+          return;
+        }
+
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.textContent = 'Envoi en cours...';
+        feedback.style.display = 'none';
+
+        const { error } = await sb.from('song_suggestions').insert({
+          pseudo: pseudo || 'Anonyme',
+          titre,
+          artiste,
+          status: 'pending'
+        });
+
+        if (error) {
+          feedback.style.display = 'block';
+          feedback.style.background = 'rgba(239,68,68,0.15)';
+          feedback.style.color = '#ef4444';
+          feedback.style.border = '1px solid rgba(239,68,68,0.3)';
+          feedback.textContent = '❌ Erreur, réessaie plus tard.';
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          btn.textContent = 'Envoyer la proposition 🎤';
+        } else {
+          feedback.style.display = 'block';
+          feedback.style.background = 'rgba(74,222,128,0.15)';
+          feedback.style.color = '#4ade80';
+          feedback.style.border = '1px solid rgba(74,222,128,0.3)';
+          feedback.textContent = '✅ Proposition envoyée ! DJ Arthur la verra bientôt.';
+          document.getElementById('dj-suggest-titre').value = '';
+          document.getElementById('dj-suggest-artiste').value = '';
+          document.getElementById('dj-suggest-pseudo').value = '';
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.textContent = 'Envoyer la proposition 🎤';
+            feedback.style.display = 'none';
+          }, 4000);
+        }
       };
      
       // ── Validation inputs ──
