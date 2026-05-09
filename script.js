@@ -1051,6 +1051,7 @@ document.addEventListener('mouseleave', () => {
         const dotMobile   = document.getElementById('live-dot-mobile');
         const iconDesktop = document.getElementById('live-icon-desktop');
         const iconMobile  = document.getElementById('live-icon-mobile');
+        const playerWrap = document.getElementById('live-player-wrap');
 
         // ── Éléments de la section Live ──
         const twitchPlayer   = document.querySelector('.live-twitch-player');
@@ -1072,6 +1073,9 @@ document.addEventListener('mouseleave', () => {
             // Afficher le player
             if (twitchPlayer) twitchPlayer.style.display = '';
 
+            // Mettre le chat à gauche
+            if (playerWrap) playerWrap.classList.remove('lg:flex-row', 'justify-center');
+
             // Textes : en live
             if (liveTitle)    liveTitle.textContent = 'DJ Arthur est en LIVE 🔴';
             if (liveSubtitle) liveSubtitle.textContent = 'Pas besoin de rejoindre le stream sur Twitch. Écoute, regarde et discute en direct sur mon site !';
@@ -1089,6 +1093,10 @@ document.addEventListener('mouseleave', () => {
             if (iconMobile)  iconMobile.classList.remove('hidden');
 
             // Cacher le player
+            if (twitchPlayer) twitchPlayer.style.display = 'none';
+
+            // Centrer le chat
+            if (playerWrap) playerWrap.classList.add('justify-center');
             if (twitchPlayer) twitchPlayer.style.display = 'none';
 
             // Textes : hors live
