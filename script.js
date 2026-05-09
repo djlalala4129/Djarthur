@@ -1052,8 +1052,14 @@ document.addEventListener('mouseleave', () => {
         const iconDesktop = document.getElementById('live-icon-desktop');
         const iconMobile  = document.getElementById('live-icon-mobile');
 
+        // ── Éléments de la section Live ──
+        const twitchPlayer   = document.querySelector('.live-twitch-player');
+        const liveTitle      = document.querySelector('#live h2');
+        const liveSubtitle   = document.querySelector('#live .text-gray');
+        const liveBadge      = document.querySelector('#live .inline-flex');
+
         if (isLive) {
-            // Style rouge — stream en cours
+            // Nav rouge
             navDesktop.classList.remove('text-secondary', 'hover:text-accent');
             navDesktop.classList.add('text-red-500', 'hover:text-red-400');
             navMobile.classList.remove('text-gray', 'hover:text-accent');
@@ -1062,8 +1068,17 @@ document.addEventListener('mouseleave', () => {
             if (dotMobile)   dotMobile.classList.remove('hidden');
             if (iconDesktop) iconDesktop.classList.add('hidden');
             if (iconMobile)  iconMobile.classList.add('hidden');
+
+            // Afficher le player
+            if (twitchPlayer) twitchPlayer.style.display = '';
+
+            // Textes : en live
+            if (liveTitle)    liveTitle.textContent = 'DJ Arthur est en LIVE 🔴';
+            if (liveSubtitle) liveSubtitle.textContent = 'Pas besoin de rejoindre le stream sur Twitch. Écoute, regarde et discute en direct sur mon site !';
+            if (liveBadge)    liveBadge.style.display = '';
+
         } else {
-            // Style normal — même apparence que les autres liens
+            // Nav normale
             navDesktop.classList.remove('text-red-500', 'hover:text-red-400');
             navDesktop.classList.add('text-secondary', 'hover:text-accent');
             navMobile.classList.remove('text-red-500', 'hover:text-red-400');
@@ -1072,6 +1087,14 @@ document.addEventListener('mouseleave', () => {
             if (dotMobile)   dotMobile.classList.add('hidden');
             if (iconDesktop) iconDesktop.classList.remove('hidden');
             if (iconMobile)  iconMobile.classList.remove('hidden');
+
+            // Cacher le player
+            if (twitchPlayer) twitchPlayer.style.display = 'none';
+
+            // Textes : hors live
+            if (liveTitle)    liveTitle.textContent = 'Pas de live pour le moment';
+            if (liveSubtitle) liveSubtitle.textContent = 'Reviens plus tard ! Je stream régulièrement sur Twitch. Abonne-toi pour ne pas rater le prochain live.';
+            if (liveBadge)    liveBadge.style.display = 'none';
         }
     }
 
