@@ -322,6 +322,15 @@
                 <div class="container mx-auto px-6 py-24">
                     <div class="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
                         <div class="flex-1 text-left">
+
+                            <!-- ── BANDEAU ACTUALITÉ (masqué si vide) ── -->
+                            <div id="news-banner" class="hidden mb-6 px-5 py-4 rounded-2xl flex items-start gap-3"
+                                style="background:linear-gradient(135deg,rgba(57,131,249,0.12),rgba(255,0,245,0.08));border:1px solid rgba(57,131,249,0.35);">
+                                <span style="font-size:1.1rem;flex-shrink:0;margin-top:1px;">📢</span>
+                                <p id="news-text" class="text-secondary text-sm leading-relaxed" style="margin:0;"></p>
+                            </div>
+                            <!-- ── FIN BANDEAU ── -->
+
                             <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 gradient-text">DJ Arthur</h2>
                             <p class="text-secondary text-lg leading-relaxed mb-4">
                                 Je suis un Dj de 16 ans, passionné de musique depuis toujours. Je mixe depuis 2022, soit 4 ans de pratique et de sets qui n'ont cessé d'évoluer.
@@ -1768,6 +1777,48 @@
      
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- ── Script Actualité ── -->
+    <script>
+    (function() {
+      const SB_URL = 'https://disvjynayckjlksllpok.supabase.co';
+      const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpc3ZqeW5heWNramxrc2xscG9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNjQ5MTksImV4cCI6MjA5Mjk0MDkxOX0.iKl4Uf8Kzs5ZyLUVLOHHe5OHaDGTy4mkXdkwnnEGMNU';
+
+      function applyNews(text) {
+        const banner = document.getElementById('news-banner');
+        const el     = document.getElementById('news-text');
+        if (!banner || !el) return;
+        if (text && text.trim()) {
+          el.textContent = text.trim();
+          banner.classList.remove('hidden');
+          banner.style.display = 'flex';
+        } else {
+          banner.classList.add('hidden');
+          banner.style.display = 'none';
+        }
+      }
+
+      async function initNews() {
+        // Attend que le SDK Supabase soit chargé
+        if (!window.supabase) { setTimeout(initNews, 100); return; }
+
+        const sb = window.supabase.createClient(SB_URL, SB_KEY);
+
+        // Chargement initial
+        const { data } = await sb.from('settings').select('news_text').eq('id', 1).single();
+        if (data) applyNews(data.news_text);
+
+        // Mise à jour en temps réel
+        sb.channel('settings-news')
+          .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'settings', filter: 'id=eq.1' }, (payload) => {
+            if (payload.new) applyNews(payload.new.news_text);
+          })
+          .subscribe();
+      }
+
+      document.addEventListener('DOMContentLoaded', initNews);
+    })();
+    </script>
 
     <!-- ── Script Messagerie Privée ── -->
     <script>
